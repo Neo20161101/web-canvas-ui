@@ -1,0 +1,238 @@
+@use "sass:color";
+
+$primary: #1668dc !default;
+$white: #ffffff;
+$black: #000000;
+
+$primary-light: color.mix($white, $primary, 90%);
+$primary-hover: color.scale($primary, $lightness: -18%);
+$primary-dark: color.scale($primary, $lightness: 20%);
+$primary-dark-hover: color.scale($primary-dark, $lightness: -18%);
+$theme-colors: (
+  "blue": #1668dc,
+  "green": #389e0d,
+  "purple": #722ed1,
+  "orange": #d46b08,
+  "red": #cf1322,
+);
+
+@mixin light-primary-theme($base) {
+  $light: color.mix($white, $base, 90%);
+  $hover: color.scale($base, $lightness: -18%);
+
+  --canvas-ui-primary: #{$base};
+  --canvas-ui-primary-light: #{$light};
+  --canvas-ui-primary-hover: #{$hover};
+  --canvas-ui-primary-dark: #{color.scale($base, $lightness: 20%)};
+  --canvas-ui-button-background: #{$base};
+  --canvas-ui-button-border: #{$base};
+  --canvas-ui-button-pressed-background: #{$hover};
+  --canvas-ui-carousel-active-dot: #{$base};
+  --canvas-ui-choice-active: #{$base};
+  --canvas-ui-dialog-confirm-background: #{$base};
+  --canvas-ui-dropdown-focus-border: #{$base};
+  --canvas-ui-input-focus-border: #{$base};
+  --canvas-ui-progress-active: #{$base};
+  --canvas-ui-slider-active: #{$base};
+  --canvas-ui-switch-on: #{$base};
+  --canvas-ui-tabs-active-color: #{$base};
+  --canvas-ui-tabs-indicator: #{$base};
+}
+
+@mixin dark-primary-theme($base) {
+  $highlight: color.scale($base, $lightness: 20%);
+  $pressed: color.scale($base, $lightness: -18%);
+
+  --canvas-ui-primary: #{$base};
+  --canvas-ui-primary-light: #{color.mix($white, $base, 90%)};
+  --canvas-ui-primary-hover: #{$pressed};
+  --canvas-ui-primary-dark: #{$highlight};
+  --canvas-ui-button-background: #{$base};
+  --canvas-ui-button-border: #{$base};
+  --canvas-ui-button-pressed-background: #{$pressed};
+  --canvas-ui-carousel-active-dot: #{$highlight};
+  --canvas-ui-choice-active: #{$highlight};
+  --canvas-ui-dialog-confirm-background: #{$base};
+  --canvas-ui-dropdown-focus-border: #{$highlight};
+  --canvas-ui-input-focus-border: #{$highlight};
+  --canvas-ui-progress-active: #{$highlight};
+  --canvas-ui-slider-active: #{$highlight};
+  --canvas-ui-switch-on: #{$base};
+  --canvas-ui-tabs-active-color: #{$highlight};
+  --canvas-ui-tabs-indicator: #{$highlight};
+}
+
+$gray-50: #fafafa;
+$gray-100: #f5f5f5;
+$gray-150: #f0f0f0;
+$gray-200: #e3e7ed;
+$gray-300: #d9d9d9;
+$gray-400: #bfbfbf;
+$gray-500: #999999;
+$gray-600: #595959;
+$gray-700: #434343;
+$gray-800: #262626;
+$gray-850: #1f1f1f;
+$gray-900: #141414;
+$text-primary: #333333;
+$text-secondary: #666666;
+$text-dark: #e6e6e6;
+$text-placeholder-dark: #8c8c8c;
+
+:root {
+  --canvas-ui-primary: #{$primary};
+  --canvas-ui-primary-light: #{$primary-light};
+  --canvas-ui-primary-hover: #{$primary-hover};
+  --canvas-ui-primary-dark: #{$primary-dark};
+
+  --canvas-ui-button-background: #{$primary};
+  --canvas-ui-button-color: #{$white};
+  --canvas-ui-button-border: #{$primary};
+  --canvas-ui-button-pressed-background: #{$primary-hover};
+  --canvas-ui-button-disabled-background: #{$gray-100};
+  --canvas-ui-button-disabled-color: #{$gray-400};
+
+  --canvas-ui-carousel-arrow: #{$white};
+  --canvas-ui-carousel-dot: rgba(255, 255, 255, 0.65);
+  --canvas-ui-carousel-active-dot: #{$primary};
+
+  --canvas-ui-choice-active: #{$primary};
+  --canvas-ui-choice-border: #{$gray-300};
+  --canvas-ui-choice-color: #{$text-primary};
+  --canvas-ui-choice-disabled: #{$gray-400};
+  --canvas-ui-choice-disabled-background: #{$gray-100};
+
+  --canvas-ui-collapse-header-background: #{$gray-50};
+  --canvas-ui-collapse-border: #{$gray-300};
+  --canvas-ui-collapse-color: #{$gray-800};
+  --canvas-ui-collapse-disabled-color: #{$gray-400};
+
+  --canvas-ui-dialog-mask: rgba(0, 0, 0, 0.45);
+  --canvas-ui-dialog-background: #{$white};
+  --canvas-ui-dialog-title-color: #{$gray-850};
+  --canvas-ui-dialog-border: #{$gray-150};
+  --canvas-ui-dialog-confirm-background: #{$primary};
+  --canvas-ui-dialog-cancel-background: #{$white};
+  --canvas-ui-dialog-confirm-color: #{$white};
+  --canvas-ui-dialog-cancel-color: #{$text-primary};
+
+  --canvas-ui-dropdown-background: #{$white};
+  --canvas-ui-dropdown-color: #{$text-primary};
+  --canvas-ui-dropdown-placeholder-color: #{$gray-500};
+  --canvas-ui-dropdown-border: #{$gray-300};
+  --canvas-ui-dropdown-focus-border: #{$primary};
+  --canvas-ui-dropdown-option-background: #{$white};
+  --canvas-ui-dropdown-option-border: #{$gray-200};
+  --canvas-ui-dropdown-disabled-color: #{$gray-500};
+
+  --canvas-ui-input-background: #{$white};
+  --canvas-ui-input-color: #{$text-primary};
+  --canvas-ui-input-placeholder-color: #{$gray-500};
+  --canvas-ui-input-border: #{$gray-300};
+  --canvas-ui-input-focus-border: #{$primary};
+
+  --canvas-ui-progress-track: #{$gray-150};
+  --canvas-ui-progress-active: #{$primary};
+  --canvas-ui-progress-text: #{$text-primary};
+
+  --canvas-ui-rect-background: transparent;
+  --canvas-ui-rect-border: #{$black};
+  --canvas-ui-circle-background: #e74c3c;
+  --canvas-ui-circle-border: #{$black};
+  --canvas-ui-text-color: #{$text-primary};
+  --canvas-ui-icon-color: #{$text-primary};
+
+  --canvas-ui-slider-track: #{$gray-150};
+  --canvas-ui-slider-active: #{$primary};
+  --canvas-ui-slider-thumb: #{$white};
+  --canvas-ui-slider-disabled-thumb: #{$gray-400};
+
+  --canvas-ui-switch-on: #{$primary};
+  --canvas-ui-switch-off: #{$gray-300};
+  --canvas-ui-switch-thumb: #{$white};
+
+  --canvas-ui-tabs-background: #{$white};
+  --canvas-ui-tabs-color: #{$gray-600};
+  --canvas-ui-tabs-active-color: #{$primary};
+  --canvas-ui-tabs-indicator: #{$primary};
+  --canvas-ui-tabs-disabled-color: #{$gray-400};
+}
+
+.dark,
+[data-theme="dark"] {
+  --canvas-ui-primary-dark: #{$primary-dark};
+
+  --canvas-ui-button-background: #{$primary};
+  --canvas-ui-button-border: #{$primary};
+  --canvas-ui-button-pressed-background: #{$primary-dark-hover};
+
+  --canvas-ui-carousel-active-dot: #{$primary-dark};
+
+  --canvas-ui-choice-active: #{$primary-dark};
+  --canvas-ui-choice-border: #{$gray-700};
+  --canvas-ui-choice-color: #{$text-dark};
+  --canvas-ui-choice-disabled: #{$gray-600};
+  --canvas-ui-choice-disabled-background: #{$gray-800};
+
+  --canvas-ui-collapse-header-background: #{$gray-850};
+  --canvas-ui-collapse-border: #{$gray-700};
+  --canvas-ui-collapse-color: #{$text-dark};
+  --canvas-ui-collapse-disabled-color: #{$gray-600};
+
+  --canvas-ui-dialog-background: #{$gray-850};
+  --canvas-ui-dialog-title-color: #{$text-dark};
+  --canvas-ui-dialog-border: #{$gray-700};
+  --canvas-ui-dialog-confirm-background: #{$primary};
+  --canvas-ui-dialog-cancel-background: #{$gray-800};
+  --canvas-ui-dialog-confirm-color: #{$white};
+  --canvas-ui-dialog-cancel-color: #{$text-dark};
+
+  --canvas-ui-dropdown-background: #{$gray-850};
+  --canvas-ui-dropdown-color: #{$text-dark};
+  --canvas-ui-dropdown-placeholder-color: #{$text-placeholder-dark};
+  --canvas-ui-dropdown-border: #{$gray-700};
+  --canvas-ui-dropdown-focus-border: #{$primary-dark};
+  --canvas-ui-dropdown-option-background: #{$gray-850};
+  --canvas-ui-dropdown-option-border: #{$gray-700};
+  --canvas-ui-dropdown-disabled-color: #{$gray-600};
+
+  --canvas-ui-input-background: #{$gray-900};
+  --canvas-ui-input-color: #{$text-dark};
+  --canvas-ui-input-placeholder-color: #{$text-placeholder-dark};
+  --canvas-ui-input-border: #{$gray-700};
+  --canvas-ui-input-focus-border: #{$primary-dark};
+
+  --canvas-ui-progress-track: #{$gray-700};
+  --canvas-ui-progress-active: #{$primary-dark};
+  --canvas-ui-progress-text: #{$text-dark};
+
+  --canvas-ui-rect-border: #{$gray-300};
+  --canvas-ui-circle-border: #{$gray-300};
+  --canvas-ui-text-color: #{$text-dark};
+  --canvas-ui-icon-color: #{$text-dark};
+
+  --canvas-ui-slider-track: #{$gray-700};
+  --canvas-ui-slider-active: #{$primary-dark};
+  --canvas-ui-slider-disabled-thumb: #{$gray-600};
+
+  --canvas-ui-switch-on: #{$primary};
+  --canvas-ui-switch-off: #{$gray-700};
+
+  --canvas-ui-tabs-background: #{$gray-850};
+  --canvas-ui-tabs-color: #{$gray-400};
+  --canvas-ui-tabs-active-color: #{$primary-dark};
+  --canvas-ui-tabs-indicator: #{$primary-dark};
+  --canvas-ui-tabs-disabled-color: #{$gray-600};
+}
+
+@each $name, $color in $theme-colors {
+  .theme-#{$name} {
+    @include light-primary-theme($color);
+  }
+
+  .dark .theme-#{$name},
+  .theme-#{$name}.dark,
+  .theme-#{$name}[data-theme="dark"] {
+    @include dark-primary-theme($color);
+  }
+}

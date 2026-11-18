@@ -1,0 +1,331 @@
+:root {
+  --canvas-ui-primary: #1668dc;
+  --canvas-ui-primary-light: rgb(90.862745098%, 94.0784313725%, 98.6274509804%);
+  --canvas-ui-primary-hover: rgb(7.0745098039%, 33.4431372549%, 70.7450980392%);
+  --canvas-ui-primary-dark: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
+  --canvas-ui-button-background: #1668dc;
+  --canvas-ui-button-color: #ffffff;
+  --canvas-ui-button-border: #1668dc;
+  --canvas-ui-button-pressed-background: rgb(7.0745098039%, 33.4431372549%, 70.7450980392%);
+  --canvas-ui-button-disabled-background: #f5f5f5;
+  --canvas-ui-button-disabled-color: #bfbfbf;
+  --canvas-ui-carousel-arrow: #ffffff;
+  --canvas-ui-carousel-dot: rgba(255, 255, 255, 0.65);
+  --canvas-ui-carousel-active-dot: #1668dc;
+  --canvas-ui-choice-active: #1668dc;
+  --canvas-ui-choice-border: #d9d9d9;
+  --canvas-ui-choice-color: #333333;
+  --canvas-ui-choice-disabled: #bfbfbf;
+  --canvas-ui-choice-disabled-background: #f5f5f5;
+  --canvas-ui-collapse-header-background: #fafafa;
+  --canvas-ui-collapse-border: #d9d9d9;
+  --canvas-ui-collapse-color: #262626;
+  --canvas-ui-collapse-disabled-color: #bfbfbf;
+  --canvas-ui-dialog-mask: rgba(0, 0, 0, 0.45);
+  --canvas-ui-dialog-background: #ffffff;
+  --canvas-ui-dialog-title-color: #1f1f1f;
+  --canvas-ui-dialog-border: #f0f0f0;
+  --canvas-ui-dialog-confirm-background: #1668dc;
+  --canvas-ui-dialog-cancel-background: #ffffff;
+  --canvas-ui-dialog-confirm-color: #ffffff;
+  --canvas-ui-dialog-cancel-color: #333333;
+  --canvas-ui-dropdown-background: #ffffff;
+  --canvas-ui-dropdown-color: #333333;
+  --canvas-ui-dropdown-placeholder-color: #999999;
+  --canvas-ui-dropdown-border: #d9d9d9;
+  --canvas-ui-dropdown-focus-border: #1668dc;
+  --canvas-ui-dropdown-option-background: #ffffff;
+  --canvas-ui-dropdown-option-border: #e3e7ed;
+  --canvas-ui-dropdown-disabled-color: #999999;
+  --canvas-ui-input-background: #ffffff;
+  --canvas-ui-input-color: #333333;
+  --canvas-ui-input-placeholder-color: #999999;
+  --canvas-ui-input-border: #d9d9d9;
+  --canvas-ui-input-focus-border: #1668dc;
+  --canvas-ui-progress-track: #f0f0f0;
+  --canvas-ui-progress-active: #1668dc;
+  --canvas-ui-progress-text: #333333;
+  --canvas-ui-rect-background: transparent;
+  --canvas-ui-rect-border: #000000;
+  --canvas-ui-circle-background: #e74c3c;
+  --canvas-ui-circle-border: #000000;
+  --canvas-ui-text-color: #333333;
+  --canvas-ui-icon-color: #333333;
+  --canvas-ui-slider-track: #f0f0f0;
+  --canvas-ui-slider-active: #1668dc;
+  --canvas-ui-slider-thumb: #ffffff;
+  --canvas-ui-slider-disabled-thumb: #bfbfbf;
+  --canvas-ui-switch-on: #1668dc;
+  --canvas-ui-switch-off: #d9d9d9;
+  --canvas-ui-switch-thumb: #ffffff;
+  --canvas-ui-tabs-background: #ffffff;
+  --canvas-ui-tabs-color: #595959;
+  --canvas-ui-tabs-active-color: #1668dc;
+  --canvas-ui-tabs-indicator: #1668dc;
+  --canvas-ui-tabs-disabled-color: #bfbfbf;
+}
+
+.dark,
+[data-theme=dark] {
+  --canvas-ui-primary-dark: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
+  --canvas-ui-button-background: #1668dc;
+  --canvas-ui-button-border: #1668dc;
+  --canvas-ui-button-pressed-background: rgb(8.641426025%, 40.8503775725%, 86.4142602496%);
+  --canvas-ui-carousel-active-dot: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
+  --canvas-ui-choice-active: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
+  --canvas-ui-choice-border: #434343;
+  --canvas-ui-choice-color: #e6e6e6;
+  --canvas-ui-choice-disabled: #595959;
+  --canvas-ui-choice-disabled-background: #262626;
+  --canvas-ui-collapse-header-background: #1f1f1f;
+  --canvas-ui-collapse-border: #434343;
+  --canvas-ui-collapse-color: #e6e6e6;
+  --canvas-ui-collapse-disabled-color: #595959;
+  --canvas-ui-dialog-background: #1f1f1f;
+  --canvas-ui-dialog-title-color: #e6e6e6;
+  --canvas-ui-dialog-border: #434343;
+  --canvas-ui-dialog-confirm-background: #1668dc;
+  --canvas-ui-dialog-cancel-background: #262626;
+  --canvas-ui-dialog-confirm-color: #ffffff;
+  --canvas-ui-dialog-cancel-color: #e6e6e6;
+  --canvas-ui-dropdown-background: #1f1f1f;
+  --canvas-ui-dropdown-color: #e6e6e6;
+  --canvas-ui-dropdown-placeholder-color: #8c8c8c;
+  --canvas-ui-dropdown-border: #434343;
+  --canvas-ui-dropdown-focus-border: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
+  --canvas-ui-dropdown-option-background: #1f1f1f;
+  --canvas-ui-dropdown-option-border: #434343;
+  --canvas-ui-dropdown-disabled-color: #595959;
+  --canvas-ui-input-background: #141414;
+  --canvas-ui-input-color: #e6e6e6;
+  --canvas-ui-input-placeholder-color: #8c8c8c;
+  --canvas-ui-input-border: #434343;
+  --canvas-ui-input-focus-border: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
+  --canvas-ui-progress-track: #434343;
+  --canvas-ui-progress-active: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
+  --canvas-ui-progress-text: #e6e6e6;
+  --canvas-ui-rect-border: #d9d9d9;
+  --canvas-ui-circle-border: #d9d9d9;
+  --canvas-ui-text-color: #e6e6e6;
+  --canvas-ui-icon-color: #e6e6e6;
+  --canvas-ui-slider-track: #434343;
+  --canvas-ui-slider-active: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
+  --canvas-ui-slider-disabled-thumb: #595959;
+  --canvas-ui-switch-on: #1668dc;
+  --canvas-ui-switch-off: #434343;
+  --canvas-ui-tabs-background: #1f1f1f;
+  --canvas-ui-tabs-color: #bfbfbf;
+  --canvas-ui-tabs-active-color: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
+  --canvas-ui-tabs-indicator: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
+  --canvas-ui-tabs-disabled-color: #595959;
+}
+
+.theme-blue {
+  --canvas-ui-primary: #1668dc;
+  --canvas-ui-primary-light: rgb(90.862745098%, 94.0784313725%, 98.6274509804%);
+  --canvas-ui-primary-hover: rgb(7.0745098039%, 33.4431372549%, 70.7450980392%);
+  --canvas-ui-primary-dark: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
+  --canvas-ui-button-background: #1668dc;
+  --canvas-ui-button-border: #1668dc;
+  --canvas-ui-button-pressed-background: rgb(7.0745098039%, 33.4431372549%, 70.7450980392%);
+  --canvas-ui-carousel-active-dot: #1668dc;
+  --canvas-ui-choice-active: #1668dc;
+  --canvas-ui-dialog-confirm-background: #1668dc;
+  --canvas-ui-dropdown-focus-border: #1668dc;
+  --canvas-ui-input-focus-border: #1668dc;
+  --canvas-ui-progress-active: #1668dc;
+  --canvas-ui-slider-active: #1668dc;
+  --canvas-ui-switch-on: #1668dc;
+  --canvas-ui-tabs-active-color: #1668dc;
+  --canvas-ui-tabs-indicator: #1668dc;
+}
+
+.dark .theme-blue,
+.theme-blue.dark,
+.theme-blue[data-theme=dark] {
+  --canvas-ui-primary: #1668dc;
+  --canvas-ui-primary-light: rgb(90.862745098%, 94.0784313725%, 98.6274509804%);
+  --canvas-ui-primary-hover: rgb(7.0745098039%, 33.4431372549%, 70.7450980392%);
+  --canvas-ui-primary-dark: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
+  --canvas-ui-button-background: #1668dc;
+  --canvas-ui-button-border: #1668dc;
+  --canvas-ui-button-pressed-background: rgb(7.0745098039%, 33.4431372549%, 70.7450980392%);
+  --canvas-ui-carousel-active-dot: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
+  --canvas-ui-choice-active: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
+  --canvas-ui-dialog-confirm-background: #1668dc;
+  --canvas-ui-dropdown-focus-border: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
+  --canvas-ui-input-focus-border: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
+  --canvas-ui-progress-active: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
+  --canvas-ui-slider-active: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
+  --canvas-ui-switch-on: #1668dc;
+  --canvas-ui-tabs-active-color: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
+  --canvas-ui-tabs-indicator: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
+}
+
+.theme-green {
+  --canvas-ui-primary: #389e0d;
+  --canvas-ui-primary-light: rgb(92.1960784314%, 96.1960784314%, 90.5098039216%);
+  --canvas-ui-primary-hover: rgb(18.0078431373%, 50.8078431373%, 4.1803921569%);
+  --canvas-ui-primary-dark: rgb(30.6680426557%, 86.5276917785%, 7.1193670451%);
+  --canvas-ui-button-background: #389e0d;
+  --canvas-ui-button-border: #389e0d;
+  --canvas-ui-button-pressed-background: rgb(18.0078431373%, 50.8078431373%, 4.1803921569%);
+  --canvas-ui-carousel-active-dot: #389e0d;
+  --canvas-ui-choice-active: #389e0d;
+  --canvas-ui-dialog-confirm-background: #389e0d;
+  --canvas-ui-dropdown-focus-border: #389e0d;
+  --canvas-ui-input-focus-border: #389e0d;
+  --canvas-ui-progress-active: #389e0d;
+  --canvas-ui-slider-active: #389e0d;
+  --canvas-ui-switch-on: #389e0d;
+  --canvas-ui-tabs-active-color: #389e0d;
+  --canvas-ui-tabs-indicator: #389e0d;
+}
+
+.dark .theme-green,
+.theme-green.dark,
+.theme-green[data-theme=dark] {
+  --canvas-ui-primary: #389e0d;
+  --canvas-ui-primary-light: rgb(92.1960784314%, 96.1960784314%, 90.5098039216%);
+  --canvas-ui-primary-hover: rgb(18.0078431373%, 50.8078431373%, 4.1803921569%);
+  --canvas-ui-primary-dark: rgb(30.6680426557%, 86.5276917785%, 7.1193670451%);
+  --canvas-ui-button-background: #389e0d;
+  --canvas-ui-button-border: #389e0d;
+  --canvas-ui-button-pressed-background: rgb(18.0078431373%, 50.8078431373%, 4.1803921569%);
+  --canvas-ui-carousel-active-dot: rgb(30.6680426557%, 86.5276917785%, 7.1193670451%);
+  --canvas-ui-choice-active: rgb(30.6680426557%, 86.5276917785%, 7.1193670451%);
+  --canvas-ui-dialog-confirm-background: #389e0d;
+  --canvas-ui-dropdown-focus-border: rgb(30.6680426557%, 86.5276917785%, 7.1193670451%);
+  --canvas-ui-input-focus-border: rgb(30.6680426557%, 86.5276917785%, 7.1193670451%);
+  --canvas-ui-progress-active: rgb(30.6680426557%, 86.5276917785%, 7.1193670451%);
+  --canvas-ui-slider-active: rgb(30.6680426557%, 86.5276917785%, 7.1193670451%);
+  --canvas-ui-switch-on: #389e0d;
+  --canvas-ui-tabs-active-color: rgb(30.6680426557%, 86.5276917785%, 7.1193670451%);
+  --canvas-ui-tabs-indicator: rgb(30.6680426557%, 86.5276917785%, 7.1193670451%);
+}
+
+.theme-purple {
+  --canvas-ui-primary: #722ed1;
+  --canvas-ui-primary-light: rgb(94.4705882353%, 91.8039215686%, 98.1960784314%);
+  --canvas-ui-primary-hover: rgb(36.6588235294%, 14.7921568627%, 67.2078431373%);
+  --canvas-ui-primary-dark: rgb(55.7647058824%, 34.431372549%, 85.568627451%);
+  --canvas-ui-button-background: #722ed1;
+  --canvas-ui-button-border: #722ed1;
+  --canvas-ui-button-pressed-background: rgb(36.6588235294%, 14.7921568627%, 67.2078431373%);
+  --canvas-ui-carousel-active-dot: #722ed1;
+  --canvas-ui-choice-active: #722ed1;
+  --canvas-ui-dialog-confirm-background: #722ed1;
+  --canvas-ui-dropdown-focus-border: #722ed1;
+  --canvas-ui-input-focus-border: #722ed1;
+  --canvas-ui-progress-active: #722ed1;
+  --canvas-ui-slider-active: #722ed1;
+  --canvas-ui-switch-on: #722ed1;
+  --canvas-ui-tabs-active-color: #722ed1;
+  --canvas-ui-tabs-indicator: #722ed1;
+}
+
+.dark .theme-purple,
+.theme-purple.dark,
+.theme-purple[data-theme=dark] {
+  --canvas-ui-primary: #722ed1;
+  --canvas-ui-primary-light: rgb(94.4705882353%, 91.8039215686%, 98.1960784314%);
+  --canvas-ui-primary-hover: rgb(36.6588235294%, 14.7921568627%, 67.2078431373%);
+  --canvas-ui-primary-dark: rgb(55.7647058824%, 34.431372549%, 85.568627451%);
+  --canvas-ui-button-background: #722ed1;
+  --canvas-ui-button-border: #722ed1;
+  --canvas-ui-button-pressed-background: rgb(36.6588235294%, 14.7921568627%, 67.2078431373%);
+  --canvas-ui-carousel-active-dot: rgb(55.7647058824%, 34.431372549%, 85.568627451%);
+  --canvas-ui-choice-active: rgb(55.7647058824%, 34.431372549%, 85.568627451%);
+  --canvas-ui-dialog-confirm-background: #722ed1;
+  --canvas-ui-dropdown-focus-border: rgb(55.7647058824%, 34.431372549%, 85.568627451%);
+  --canvas-ui-input-focus-border: rgb(55.7647058824%, 34.431372549%, 85.568627451%);
+  --canvas-ui-progress-active: rgb(55.7647058824%, 34.431372549%, 85.568627451%);
+  --canvas-ui-slider-active: rgb(55.7647058824%, 34.431372549%, 85.568627451%);
+  --canvas-ui-switch-on: #722ed1;
+  --canvas-ui-tabs-active-color: rgb(55.7647058824%, 34.431372549%, 85.568627451%);
+  --canvas-ui-tabs-indicator: rgb(55.7647058824%, 34.431372549%, 85.568627451%);
+}
+
+.theme-orange {
+  --canvas-ui-primary: #d46b08;
+  --canvas-ui-primary-light: rgb(98.3137254902%, 94.1960784314%, 90.3137254902%);
+  --canvas-ui-primary-hover: rgb(68.1725490196%, 34.4078431373%, 2.5725490196%);
+  --canvas-ui-primary-dark: rgb(96.6916221034%, 53.2691622103%, 12.3279857398%);
+  --canvas-ui-button-background: #d46b08;
+  --canvas-ui-button-border: #d46b08;
+  --canvas-ui-button-pressed-background: rgb(68.1725490196%, 34.4078431373%, 2.5725490196%);
+  --canvas-ui-carousel-active-dot: #d46b08;
+  --canvas-ui-choice-active: #d46b08;
+  --canvas-ui-dialog-confirm-background: #d46b08;
+  --canvas-ui-dropdown-focus-border: #d46b08;
+  --canvas-ui-input-focus-border: #d46b08;
+  --canvas-ui-progress-active: #d46b08;
+  --canvas-ui-slider-active: #d46b08;
+  --canvas-ui-switch-on: #d46b08;
+  --canvas-ui-tabs-active-color: #d46b08;
+  --canvas-ui-tabs-indicator: #d46b08;
+}
+
+.dark .theme-orange,
+.theme-orange.dark,
+.theme-orange[data-theme=dark] {
+  --canvas-ui-primary: #d46b08;
+  --canvas-ui-primary-light: rgb(98.3137254902%, 94.1960784314%, 90.3137254902%);
+  --canvas-ui-primary-hover: rgb(68.1725490196%, 34.4078431373%, 2.5725490196%);
+  --canvas-ui-primary-dark: rgb(96.6916221034%, 53.2691622103%, 12.3279857398%);
+  --canvas-ui-button-background: #d46b08;
+  --canvas-ui-button-border: #d46b08;
+  --canvas-ui-button-pressed-background: rgb(68.1725490196%, 34.4078431373%, 2.5725490196%);
+  --canvas-ui-carousel-active-dot: rgb(96.6916221034%, 53.2691622103%, 12.3279857398%);
+  --canvas-ui-choice-active: rgb(96.6916221034%, 53.2691622103%, 12.3279857398%);
+  --canvas-ui-dialog-confirm-background: #d46b08;
+  --canvas-ui-dropdown-focus-border: rgb(96.6916221034%, 53.2691622103%, 12.3279857398%);
+  --canvas-ui-input-focus-border: rgb(96.6916221034%, 53.2691622103%, 12.3279857398%);
+  --canvas-ui-progress-active: rgb(96.6916221034%, 53.2691622103%, 12.3279857398%);
+  --canvas-ui-slider-active: rgb(96.6916221034%, 53.2691622103%, 12.3279857398%);
+  --canvas-ui-switch-on: #d46b08;
+  --canvas-ui-tabs-active-color: rgb(96.6916221034%, 53.2691622103%, 12.3279857398%);
+  --canvas-ui-tabs-indicator: rgb(96.6916221034%, 53.2691622103%, 12.3279857398%);
+}
+
+.theme-red {
+  --canvas-ui-primary: #cf1322;
+  --canvas-ui-primary-light: rgb(98.1176470588%, 90.7450980392%, 91.3333333333%);
+  --canvas-ui-primary-hover: rgb(66.5647058824%, 6.1098039216%, 10.9333333333%);
+  --canvas-ui-primary-dark: rgb(92.5094568801%, 18.3925039042%, 24.3060905778%);
+  --canvas-ui-button-background: #cf1322;
+  --canvas-ui-button-border: #cf1322;
+  --canvas-ui-button-pressed-background: rgb(66.5647058824%, 6.1098039216%, 10.9333333333%);
+  --canvas-ui-carousel-active-dot: #cf1322;
+  --canvas-ui-choice-active: #cf1322;
+  --canvas-ui-dialog-confirm-background: #cf1322;
+  --canvas-ui-dropdown-focus-border: #cf1322;
+  --canvas-ui-input-focus-border: #cf1322;
+  --canvas-ui-progress-active: #cf1322;
+  --canvas-ui-slider-active: #cf1322;
+  --canvas-ui-switch-on: #cf1322;
+  --canvas-ui-tabs-active-color: #cf1322;
+  --canvas-ui-tabs-indicator: #cf1322;
+}
+
+.dark .theme-red,
+.theme-red.dark,
+.theme-red[data-theme=dark] {
+  --canvas-ui-primary: #cf1322;
+  --canvas-ui-primary-light: rgb(98.1176470588%, 90.7450980392%, 91.3333333333%);
+  --canvas-ui-primary-hover: rgb(66.5647058824%, 6.1098039216%, 10.9333333333%);
+  --canvas-ui-primary-dark: rgb(92.5094568801%, 18.3925039042%, 24.3060905778%);
+  --canvas-ui-button-background: #cf1322;
+  --canvas-ui-button-border: #cf1322;
+  --canvas-ui-button-pressed-background: rgb(66.5647058824%, 6.1098039216%, 10.9333333333%);
+  --canvas-ui-carousel-active-dot: rgb(92.5094568801%, 18.3925039042%, 24.3060905778%);
+  --canvas-ui-choice-active: rgb(92.5094568801%, 18.3925039042%, 24.3060905778%);
+  --canvas-ui-dialog-confirm-background: #cf1322;
+  --canvas-ui-dropdown-focus-border: rgb(92.5094568801%, 18.3925039042%, 24.3060905778%);
+  --canvas-ui-input-focus-border: rgb(92.5094568801%, 18.3925039042%, 24.3060905778%);
+  --canvas-ui-progress-active: rgb(92.5094568801%, 18.3925039042%, 24.3060905778%);
+  --canvas-ui-slider-active: rgb(92.5094568801%, 18.3925039042%, 24.3060905778%);
+  --canvas-ui-switch-on: #cf1322;
+  --canvas-ui-tabs-active-color: rgb(92.5094568801%, 18.3925039042%, 24.3060905778%);
+  --canvas-ui-tabs-indicator: rgb(92.5094568801%, 18.3925039042%, 24.3060905778%);
+}
