@@ -74,5 +74,8 @@
     "license": "MIT",
     "author": "chunan-qiu wangqingzhou311@live.com https://github.com/Neo20161101/web-canvas-ui",
     "main": "canvas-ui/index.js",
-    "description": "web-canvas-ui"
+    "description": "Server app that uses the web-canvas-ui package",
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    }
 }
