@@ -5,18 +5,16 @@
 
 基于 Canvas 2D 的声明式组件库，提供 **React**、**Vue 3**、**Svelte 5+** 和 **Angular 17+** 适配器。各框架从独立入口导入并使用原生组件/模板语法；底层 Canvas engine 和控件绘制逻辑共用。控件外观由 Canvas 绘制。
 
-> **适配器说明：** React、Vue、Svelte、Angular 分别从 `/canvas-ui/react`、`/canvas-ui/vue`、`/canvas-ui/svelte`、`/canvas-ui/angular` 导入。请根据主Canvas框架选择入口，不要混用组件。它们可以复用同一套 engine 和控件绘制实现。
+> **适配器说明：** React、Vue、Svelte、Angular 分别从 `web-canvas-ui/react`、`web-canvas-ui/vue`、`web-canvas-ui/svelte`、`web-canvas-ui/angular` 导入。请根据主Canvas框架选择入口，不要混用组件。它们可以复用同一套 engine 和控件绘制实现。
 
-> **共享组件契约：** 每个控件按 `components/<Component>/` 归档，入口 `components.ts` 统一导出组件 API，`<component>.ts` 定义 Props 类型和 Canvas 绘制函数，`logic.ts`（需要时）保存该控件独有的交互/业务逻辑。公共类型统一从 `components/types.ts` 汇总，并由 `/canvas-ui/types.ts` 对外导出；React、Vue、Svelte、Angular 适配器共用此类型契约。
-
-新增控件时，为其建立独立目录并从目录入口导出公共 API；新增 Props 时同步检查 `CanvasComponentProps` 和框架适配器的属性映射。
+> **共享组件契约：** 每个控件按 `components/<Component>/` 归档，入口 `components.ts` 统一导出组件 API，`<component>.ts` 定义 Props 类型和 Canvas 绘制函数，`logic.ts`（需要时）保存该控件独有的交互/业务逻辑。公共类型统一从 `components/types.ts` 汇总，并由 `web-canvas-ui/types.ts` 对外导出；React、Vue、Svelte、Angular 适配器共用此类型契约。
 
 ## 全局主题色
 
 主题颜色集中定义在 [`theme.scss`](src/canvas-ui/theme.scss) 的 `$primary: #1668dc`。只需修改这个主色变量，就会统一更新按钮、选中态、聚焦边框、进度条等强调色。浅色由主色与白色混合派生，按压深色由主色降低亮度派生；公共色阶也会输出为 `--canvas-ui-primary*` CSS 变量。`theme.css` 是编译输出，应用全局 CSS 引入它，不要直接编辑生成文件：
 
 ```css
-@import '/canvas-ui/theme.css';
+@import 'web-canvas-ui/theme.css';
 ```
 
 修改 `theme.scss` 后运行 `npm run build:theme` 重新生成 CSS。编译后的 CSS 自定义属性适用于 React、Vue、Svelte 和 Angular，并提供 `.dark` 与 `[data-theme="dark"]` 深色主题。组件显式传入的颜色属性优先于主题变量。
@@ -64,10 +62,10 @@
 
 | 框架        | 入口                 |
 | ----------- | -------------------- |
-| React       | `/canvas-ui/react`   |
-| Vue 3       | `/canvas-ui/vue`     |
-| Svelte 5+   | `/canvas-ui/svelte`  |
-| Angular 17+ | `/canvas-ui/angular` |
+| React       | `web-canvas-ui/react`   |
+| Vue 3       | `web-canvas-ui/vue`     |
+| Svelte 5+   | `web-canvas-ui/svelte`  |
+| Angular 17+ | `web-canvas-ui/angular` |
 
 组件必须放在对应适配器的 Canvas 容器内，并使用该框架入口导出的场景组件。不要在 Canvas 场景里放普通 DOM 元素。
 
@@ -75,9 +73,9 @@
 
 ```tsx
 import { useRef, useState } from 'react';
-import { Canvas, Group, Rect, Text, Input, Button } from '/canvas-ui/react';
-import type { CanvasHandle } from '/canvas-ui/react';
-import 'theme.css';
+import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/react';
+import type { CanvasHandle } from 'web-canvas-ui/react';
+import 'web-canvas-ui/theme.css';
 
 export function ProfileCanvas() {
     const [name, setName] = useState('');
@@ -143,9 +141,9 @@ Vue 适配器位于独立的 `/canvas-ui/vue` 入口。直接在 `.vue` 文件�
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Canvas, Group, Rect, Text, Input, Button } from '/canvas-ui/vue';
-import type { CanvasHandle } from '/canvas-ui/vue';
-import 'theme.css';
+import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/vue';
+import type { CanvasHandle } from 'web-canvas-ui/vue';
+import 'web-canvas-ui/theme.css';
 
 const name = ref('');
 const canvasRef = ref<CanvasHandle | null>(null);
@@ -197,9 +195,9 @@ Vue 模板通过 `:value` 绑定响应式状态、通过 `@change` 更新；Canv
 
 ```svelte
 <script lang="ts">
-  import { Canvas, Group, Rect, Text, Input, Button } from '/canvas-ui/svelte';
-  import type { CanvasHandle } from '/canvas-ui/svelte';
-  import 'theme.css';
+  import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/svelte';
+  import type { CanvasHandle } from 'web-canvas-ui/svelte';
+  import 'web-canvas-ui/theme.css';
 
   let name = $state('');
   let canvas = $state<CanvasHandle>();
@@ -239,8 +237,8 @@ Angular 入口提供 standalone `Canvas` 组件和场景指令。在使用它们
 
 ```ts
 import { Component, ViewChild } from '@angular/core';
-import { Button, Canvas, Group, Input, Rect, Text } from '/canvas-ui/angular';
-import 'theme.css';
+import { Button, Canvas, Group, Input, Rect, Text } from 'web-canvas-ui/angular';
+import 'web-canvas-ui/theme.css';
 
 @Component({
     selector: 'profile-canvas',
@@ -366,7 +364,7 @@ Angular 使用 `<canvas-...>` 指令选择器声明 Canvas 场景节点。输入
 | `onPointerEvent`   | `(event: CanvasViewPointerEvent) => void` |   否 |           — | 提供映射后的 `pointerdown`、`pointermove`、`pointerup`、`pointercancel` 和 `click` 事件；不会自动向源 Canvas 派发合成事件。 |
 
 ```tsx
-import { Canvas, CanvasView } from '/canvas-ui/react';
+import { Canvas, CanvasView } from 'web-canvas-ui/react';
 
 <Canvas ref={canvasRef} width={640} height={360}>
     <CanvasView
@@ -405,7 +403,7 @@ canvasRef.current?.requestRender();
 | `hitTest`          | `(x: number, y: number, size: CustomDrawSize) => boolean`                              |   否 | 自定义图形命中测试；不传时使用整个宽高矩形。返回 `false` 时命中测试会继续检查下层组件。                   |
 
 ```tsx
-import { Canvas, CustomDraw } from '/canvas-ui/react';
+import { Canvas, CustomDraw } from 'web-canvas-ui/react';
 
 <Canvas width={320} height={180}>
     <CustomDraw

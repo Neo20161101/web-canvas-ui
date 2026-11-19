@@ -9,8 +9,6 @@
 
 > **共用元件契約：** 每個控制項依 `components/<Component>/` 歸檔，入口 `index.ts` 統一匯出元件 API，`<component>.ts` 定義 Props 型別和 Canvas 繪製函式，`logic.ts`（需要時）保存該控制項獨有的互動/業務邏輯。公共型別統一從 `components/types.ts` 匯總，並由 `/canvas-ui/types.ts` 對外匯出；React、Vue、Svelte、Angular 介面卡共用此型別契約。
 
-新增控制項時，為其建立獨立目錄並從目錄入口匯出公共 API；新增 Props 時同步檢查 `CanvasComponentProps` 和框架介面卡的屬性對應。
-
 ## 全域主題色
 
 主題顏色集中定義在 [`theme.scss`](theme.scss) 的 `$primary: #1668dc`。只需修改這個主色變數，就會統一更新按鈕、選取態、焦點邊框、進度條等強調色。淺色由主色與白色混合派生，按壓深色由主色降低亮度派生；公共色階也會輸出為 `--canvas-ui-primary*` CSS 變數。`theme.css` 是編譯輸出，應用程式的全域 CSS 匯入它，不要直接編輯產生檔案：

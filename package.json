@@ -1,8 +1,17 @@
 {
-    "name": "webcanvasui",
-    "private": true,
-    "version": "0.0.0",
+    "name": "web-canvas-ui",
+    "private": false,
+    "version": "0.1.1",
     "type": "module",
+    "keywords": [
+        "web",
+        "canvas",
+        "ui",
+        "vue",
+        "react",
+        "Svelte",
+        "Angular"
+    ],
     "scripts": {
         "dev": "vite",
         "build": "npm run build:theme && tsc && vite build",
@@ -58,5 +67,12 @@
         "vue": {
             "optional": true
         }
-    }
+    },
+    "dependencies": {
+        "web-canvas-ui": "^0.1.0"
+    },
+    "license": "MIT",
+    "author": "chunan-qiu wangqingzhou311@live.com https://github.com/Neo20161101/web-canvas-ui",
+    "main": "canvas-ui/index.js",
+    "description": "web-canvas-ui"
 }

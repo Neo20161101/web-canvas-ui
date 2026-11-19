@@ -9,8 +9,6 @@ Canvas 2D 기반 선언형 컴포넌트 라이브러리로 **React**, **Vue 3**,
 
 > **컴포넌트 계약:** 각 컨트롤은 `components/<Component>/` 아래에 위치합니다. `index.ts` entry가 공용 API를 export하고, `<component>.ts`가 Props 타입과 Canvas 렌더 함수를 정의하며, 필요 시 `logic.ts`에 해당 컨트롤 전용 인터랙션/비즈니스 로직을 둡니다. 공용 타입은 `components/types.ts`에 모이고 `/canvas-ui/types.ts`로 재export됩니다. React, Vue, Svelte, Angular 어댑터가 이 타입 계약을 공유합니다.
 
-컨트롤을 추가할 때는 전용 디렉터리를 만들고 그 entry에서 공용 API를 export하세요. Props를 추가할 때는 `CanvasComponentProps`와 각 프레임워크 어댑터의 속성 매핑도 함께 동기화해야 합니다.
-
 ## 전역 테마 색상
 
 테마 색상은 [`theme.scss`](theme.scss)의 `$primary: #1668dc`에 집중됩니다. 이 변수 하나만 수정해도 버튼, 선택 상태, 포커스 테두리, 진행률 막대 등 강조색이 일괄 갱신됩니다. 밝은 색은 primary와 흰색을 섞어 파생되고, 눌림 상태의 어두운 색은 primary 명도를 낮춰 파생되며, 공용 색상 스케일은 `--canvas-ui-primary*` CSS 변수로도 출력됩니다. `theme.css`는 컴파일 결과물이므로 전역 CSS에서 import하고 생성 파일을 직접 수정하지 마세요:

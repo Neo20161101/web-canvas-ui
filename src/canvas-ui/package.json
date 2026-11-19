@@ -1,0 +1,29 @@
+{
+  "name": "web-canvas-ui",
+  "version": "0.1.1",
+  "description": "A declarative component library built on Canvas 2D",
+  "keywords": [
+    "web",
+    "canvas",
+    "ui",
+    "vue",
+    "react",
+    "Svelte",
+    "Angular"
+  ],
+  "homepage": "https://github.com/Neo20161101/web-canvas-ui#readme",
+  "bugs": {
+    "url": "https://github.com/Neo20161101/web-canvas-ui/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Neo20161101/web-canvas-ui.git"
+  },
+  "license": "MIT",
+  "author": "chunan-qiu wangqingzhou311@live.com https://github.com/Neo20161101/web-canvas-ui",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
