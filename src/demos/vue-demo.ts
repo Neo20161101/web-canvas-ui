@@ -1,6 +1,6 @@
 import { createApp, defineComponent, h, ref } from 'vue';
-import '../canvas-ui/theme.css';
-import { Button, Canvas, Circle, Input, Rect, Slider, Switch, Text } from '../canvas-ui/vue';
+import 'web-canvas-ui/theme.css';
+import { Button, Canvas, Circle, Input, Rect, Slider, Switch, Text } from 'web-canvas-ui/vue';
 
 const DemoApp = defineComponent({
     name: 'VueCanvasDemo',

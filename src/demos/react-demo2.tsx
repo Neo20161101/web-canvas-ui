@@ -1,14 +1,14 @@
 import { StrictMode, useRef,useState,useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
-import '../canvas-ui/theme.css';
+import 'web-canvas-ui/theme.css';
 import {
     Canvas, Group,
     Input, Rect, Text, Dropdown, Slider, Textarea, Switch,
     Button, Grid, GridItem, Collapse, CollapseItem, Dialog,
     Tabs, TabItem, Progress, Image, DatePicker, Radio, Checkbox,
     Upload, Carousel, CarouselItem, CustomDraw,Icon,Circle
-} from '../canvas-ui/react';
-import type { CanvasExportOptions, CanvasHandle } from '../canvas-ui/canvas-handle';
+} from 'web-canvas-ui/react';
+import type { CanvasExportOptions, CanvasHandle } from 'web-canvas-ui/canvas-handle';
 
 function DemoApp() {
     const [count, setCount] = useState(0);

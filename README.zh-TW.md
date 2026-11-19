@@ -5,16 +5,16 @@
 
 基於 Canvas 2D 的宣告式元件庫，提供 **React**、**Vue 3**、**Svelte 5+** 和 **Angular 17+** 介面卡。各框架從獨立入口匯入並使用原生元件/範本語法；底層 Canvas engine 和控制繪製邏輯共用。控制項外觀由 Canvas 繪製。
 
-> **介面卡說明：** React、Vue、Svelte、Angular 分別從 `/canvas-ui/react`、`/canvas-ui/vue`、`/canvas-ui/svelte`、`/canvas-ui/angular` 匯入。請根據主 Canvas 框架選擇入口，不要混用元件。它們可以共用同一套 engine 和控制繪製實作。
+> **介面卡說明：** React、Vue、Svelte、Angular 分別從 `web-canvas-ui/react`、`web-canvas-ui/vue`、`web-canvas-ui/svelte`、`web-canvas-ui/angular` 匯入。請根據主 Canvas 框架選擇入口，不要混用元件。它們可以共用同一套 engine 和控制繪製實作。
 
-> **共用元件契約：** 每個控制項依 `components/<Component>/` 歸檔，入口 `index.ts` 統一匯出元件 API，`<component>.ts` 定義 Props 型別和 Canvas 繪製函式，`logic.ts`（需要時）保存該控制項獨有的互動/業務邏輯。公共型別統一從 `components/types.ts` 匯總，並由 `/canvas-ui/types.ts` 對外匯出；React、Vue、Svelte、Angular 介面卡共用此型別契約。
+> **共用元件契約：** 每個控制項依 `components/<Component>/` 歸檔，入口 `index.ts` 統一匯出元件 API，`<component>.ts` 定義 Props 型別和 Canvas 繪製函式，`logic.ts`（需要時）保存該控制項獨有的互動/業務邏輯。公共型別統一從 `components/types.ts` 匯總，並由 `web-canvas-ui/types.ts` 對外匯出；React、Vue、Svelte、Angular 介面卡共用此型別契約。
 
 ## 全域主題色
 
-主題顏色集中定義在 [`theme.scss`](theme.scss) 的 `$primary: #1668dc`。只需修改這個主色變數，就會統一更新按鈕、選取態、焦點邊框、進度條等強調色。淺色由主色與白色混合派生，按壓深色由主色降低亮度派生；公共色階也會輸出為 `--canvas-ui-primary*` CSS 變數。`theme.css` 是編譯輸出，應用程式的全域 CSS 匯入它，不要直接編輯產生檔案：
+主題顏色集中定義在 [`theme.scss`](src/canvas-ui/theme.scss) 的 `$primary: #1668dc`。只需修改這個主色變數，就會統一更新按鈕、選取態、焦點邊框、進度條等強調色。淺色由主色與白色混合派生，按壓深色由主色降低亮度派生；公共色階也會輸出為 `--canvas-ui-primary*` CSS 變數。`theme.css` 是編譯輸出，應用程式的全域 CSS 匯入它，不要直接編輯產生檔案：
 
 ```css
-@import '/canvas-ui/theme.css';
+@import 'web-canvas-ui/theme.css';
 ```
 
 修改 `theme.scss` 後執行 `npm run build:theme` 重新產生 CSS。編譯後的 CSS 自訂屬性適用於 React、Vue、Svelte 和 Angular，並提供 `.dark` 與 `[data-theme="dark"]` 深色主題。元件明確傳入的顏色屬性優先於主題變數。
@@ -58,14 +58,14 @@
 
 ## 環境與匯入
 
-將 `/canvas-ui/` 目錄放入專案，並確保主 Canvas 專案已設定對應框架：React 19+、Vue 3、Svelte 5+ 或 Angular 17+。Vue 使用單一檔案元件範本，不需要 JSX 外掛或 `jsxImportSource` 設定；Svelte 專案需要 Svelte 編譯器及對應建置外掛；Angular 專案需要 `@angular/core` 和 Angular 建置設定。框架相依由主 Canvas 專案提供，本目錄不強制其他框架的相依。
+將 `web-canvas-ui/` 目錄放入專案，並確保主 Canvas 專案已設定對應框架：React 19+、Vue 3、Svelte 5+ 或 Angular 17+。Vue 使用單一檔案元件範本，不需要 JSX 外掛或 `jsxImportSource` 設定；Svelte 專案需要 Svelte 編譯器及對應建置外掛；Angular 專案需要 `@angular/core` 和 Angular 建置設定。框架相依由主 Canvas 專案提供，本目錄不強制其他框架的相依。
 
 | 框架        | 入口                 |
 | ----------- | -------------------- |
-| React       | `/canvas-ui/react`   |
-| Vue 3       | `/canvas-ui/vue`     |
-| Svelte 5+   | `/canvas-ui/svelte`  |
-| Angular 17+ | `/canvas-ui/angular` |
+| React       | `web-canvas-ui/react`   |
+| Vue 3       | `web-canvas-ui/vue`     |
+| Svelte 5+   | `web-canvas-ui/svelte`  |
+| Angular 17+ | `web-canvas-ui/angular` |
 
 元件必須放在對應介面卡的 Canvas 容器內，並使用該框架入口匯出的場景元件。不要在 Canvas 場景裡放一般 DOM 元素。
 
@@ -73,8 +73,8 @@
 
 ```tsx
 import { useRef, useState } from 'react';
-import { Canvas, Group, Rect, Text, Input, Button } from '/canvas-ui/react';
-import type { CanvasHandle } from '/canvas-ui/react';
+import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/react';
+import type { CanvasHandle } from 'web-canvas-ui/react';
 import 'theme.css';
 
 export function ProfileCanvas() {

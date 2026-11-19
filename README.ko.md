@@ -5,16 +5,16 @@
 
 Canvas 2D 기반 선언형 컴포넌트 라이브러리로 **React**, **Vue 3**, **Svelte 5+**, **Angular 17+** 어댑터를 제공합니다. 각 프레임워크는 독립된 entry에서 import하고 네이티브 컴포넌트/템플릿 문법을 사용하며, 하위의 Canvas engine과 컨트롤 렌더링 로직은 공통으로 재사용됩니다. 모든 컨트롤의 외형은 Canvas가 직접 그립니다.
 
-> **어댑터 안내:** React, Vue, Svelte, Angular는 각각 `/canvas-ui/react`, `/canvas-ui/vue`, `/canvas-ui/svelte`, `/canvas-ui/angular`에서 import합니다. 호스트 Canvas 프레임워크에 맞는 entry를 선택하고, 어댑터 간 컴포넌트를 섞어 쓰지 마세요. 모든 entry가 동일한 engine과 렌더링 구현을 재사용합니다.
+> **어댑터 안내:** React, Vue, Svelte, Angular는 각각 `web-canvas-ui/react`, `web-canvas-ui/vue`, `web-canvas-ui/svelte`, `web-canvas-ui/angular`에서 import합니다. 호스트 Canvas 프레임워크에 맞는 entry를 선택하고, 어댑터 간 컴포넌트를 섞어 쓰지 마세요. 모든 entry가 동일한 engine과 렌더링 구현을 재사용합니다.
 
-> **컴포넌트 계약:** 각 컨트롤은 `components/<Component>/` 아래에 위치합니다. `index.ts` entry가 공용 API를 export하고, `<component>.ts`가 Props 타입과 Canvas 렌더 함수를 정의하며, 필요 시 `logic.ts`에 해당 컨트롤 전용 인터랙션/비즈니스 로직을 둡니다. 공용 타입은 `components/types.ts`에 모이고 `/canvas-ui/types.ts`로 재export됩니다. React, Vue, Svelte, Angular 어댑터가 이 타입 계약을 공유합니다.
+> **컴포넌트 계약:** 각 컨트롤은 `components/<Component>/` 아래에 위치합니다. `index.ts` entry가 공용 API를 export하고, `<component>.ts`가 Props 타입과 Canvas 렌더 함수를 정의하며, 필요 시 `logic.ts`에 해당 컨트롤 전용 인터랙션/비즈니스 로직을 둡니다. 공용 타입은 `components/types.ts`에 모이고 `web-canvas-ui/types.ts`로 재export됩니다. React, Vue, Svelte, Angular 어댑터가 이 타입 계약을 공유합니다.
 
 ## 전역 테마 색상
 
-테마 색상은 [`theme.scss`](theme.scss)의 `$primary: #1668dc`에 집중됩니다. 이 변수 하나만 수정해도 버튼, 선택 상태, 포커스 테두리, 진행률 막대 등 강조색이 일괄 갱신됩니다. 밝은 색은 primary와 흰색을 섞어 파생되고, 눌림 상태의 어두운 색은 primary 명도를 낮춰 파생되며, 공용 색상 스케일은 `--canvas-ui-primary*` CSS 변수로도 출력됩니다. `theme.css`는 컴파일 결과물이므로 전역 CSS에서 import하고 생성 파일을 직접 수정하지 마세요:
+테마 색상은 [`theme.scss`](web-canvas-ui/theme.scss)의 `$primary: #1668dc`에 집중됩니다. 이 변수 하나만 수정해도 버튼, 선택 상태, 포커스 테두리, 진행률 막대 등 강조색이 일괄 갱신됩니다. 밝은 색은 primary와 흰색을 섞어 파생되고, 눌림 상태의 어두운 색은 primary 명도를 낮춰 파생되며, 공용 색상 스케일은 `--canvas-ui-primary*` CSS 변수로도 출력됩니다. `theme.css`는 컴파일 결과물이므로 전역 CSS에서 import하고 생성 파일을 직접 수정하지 마세요:
 
 ```css
-@import '/canvas-ui/theme.css';
+@import 'web-canvas-ui/theme.css';
 ```
 
 `theme.scss`를 수정한 뒤 `npm run build:theme`를 실행해 CSS를 재생성합니다. 컴파일된 CSS 커스텀 프로퍼티는 React, Vue, Svelte, Angular에 동일하게 적용되며 `.dark`와 `[data-theme="dark"]` 다크 테마도 제공합니다. 컴포넌트에 명시적으로 전달한 색상이 테마 변수보다 우선합니다.
@@ -58,14 +58,14 @@ Canvas 2D 기반 선언형 컴포넌트 라이브러리로 **React**, **Vue 3**,
 
 ## 환경 및 import
 
-`/canvas-ui/` 디렉터리를 프로젝트에 배치하고 호스트 Canvas 프로젝트가 선택한 프레임워크(React 19+, Vue 3, Svelte 5+, Angular 17+)에 맞게 설정되어 있는지 확인하세요. Vue는 SFC 템플릿을 사용하므로 JSX 플러그인이나 `jsxImportSource` 설정이 필요 없습니다. Svelte 프로젝트에는 Svelte 컴파일러와 대응 빌드 플러그인이 필요합니다. Angular 프로젝트에는 `@angular/core`와 Angular 빌드 설정이 필요합니다. 프레임워크 의존성은 호스트 Canvas 프로젝트가 제공하며, 이 디렉터리는 다른 프레임워크의 의존성을 강제하지 않습니다.
+`web-canvas-ui/` 디렉터리를 프로젝트에 배치하고 호스트 Canvas 프로젝트가 선택한 프레임워크(React 19+, Vue 3, Svelte 5+, Angular 17+)에 맞게 설정되어 있는지 확인하세요. Vue는 SFC 템플릿을 사용하므로 JSX 플러그인이나 `jsxImportSource` 설정이 필요 없습니다. Svelte 프로젝트에는 Svelte 컴파일러와 대응 빌드 플러그인이 필요합니다. Angular 프로젝트에는 `@angular/core`와 Angular 빌드 설정이 필요합니다. 프레임워크 의존성은 호스트 Canvas 프로젝트가 제공하며, 이 디렉터리는 다른 프레임워크의 의존성을 강제하지 않습니다.
 
 | 프레임워크  | Entry                |
 | ----------- | -------------------- |
-| React       | `/canvas-ui/react`   |
-| Vue 3       | `/canvas-ui/vue`     |
-| Svelte 5+   | `/canvas-ui/svelte`  |
-| Angular 17+ | `/canvas-ui/angular` |
+| React       | `web-canvas-ui/react`   |
+| Vue 3       | `web-canvas-ui/vue`     |
+| Svelte 5+   | `web-canvas-ui/svelte`  |
+| Angular 17+ | `web-canvas-ui/angular` |
 
 컴포넌트는 반드시 대응 어댑터의 Canvas 컨테이너 내부에 배치하고, 해당 프레임워크 entry가 export하는 scene 컴포넌트를 사용해야 합니다. Canvas scene 안에 일반 DOM 요소를 넣지 마세요.
 
@@ -73,8 +73,8 @@ Canvas 2D 기반 선언형 컴포넌트 라이브러리로 **React**, **Vue 3**,
 
 ```tsx
 import { useRef, useState } from 'react';
-import { Canvas, Group, Rect, Text, Input, Button } from '/canvas-ui/react';
-import type { CanvasHandle } from '/canvas-ui/react';
+import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/react';
+import type { CanvasHandle } from 'web-canvas-ui/react';
 import 'theme.css';
 
 export function ProfileCanvas() {
@@ -136,13 +136,13 @@ export function ProfileCanvas() {
 
 ## 빠른 시작 (Vue 3 SFC)
 
-Vue 어댑터는 독립된 `/canvas-ui/vue` entry에 위치합니다. `.vue` 파일의 template에서 Canvas UI 컴포넌트를 그대로 중첩하면 됩니다. TSX, JSX 플러그인, Canvas 노드 배열을 직접 구성할 필요가 없습니다:
+Vue 어댑터는 독립된 `web-canvas-ui/vue` entry에 위치합니다. `.vue` 파일의 template에서 Canvas UI 컴포넌트를 그대로 중첩하면 됩니다. TSX, JSX 플러그인, Canvas 노드 배열을 직접 구성할 필요가 없습니다:
 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Canvas, Group, Rect, Text, Input, Button } from '/canvas-ui/vue';
-import type { CanvasHandle } from '/canvas-ui/vue';
+import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/vue';
+import type { CanvasHandle } from 'web-canvas-ui/vue';
 import 'theme.css';
 
 const name = ref('');
@@ -195,8 +195,8 @@ Svelte 5 템플릿에서 Svelte entry가 export하는 컴포넌트를 사용합�
 
 ```svelte
 <script lang="ts">
-  import { Canvas, Group, Rect, Text, Input, Button } from '/canvas-ui/svelte';
-  import type { CanvasHandle } from '/canvas-ui/svelte';
+  import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/svelte';
+  import type { CanvasHandle } from 'web-canvas-ui/svelte';
   import 'theme.css';
 
   let name = $state('');

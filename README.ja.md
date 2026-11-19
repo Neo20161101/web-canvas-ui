@@ -5,16 +5,16 @@
 
 Canvas 2D ベースの宣言的コンポーネントライブラリで、**React**、**Vue 3**、**Svelte 5+**、**Angular 17+** のアダプターを提供します。各フレームワークは専用のエントリからインポートし、ネイティブのコンポーネント／テンプレート構文を使用しますが、内部の Canvas エンジンとコントロール描画ロジックは共有されます。すべてのコントロールの外観は Canvas 自身によって描画されます。
 
-> **アダプターについて：** React、Vue、Svelte、Angular は、それぞれ `/canvas-ui/react`、`/canvas-ui/vue`、`/canvas-ui/svelte`、`/canvas-ui/angular` からインポートします。宿主 Canvas フレームワークに一致するエントリを選び、アダプター間でコンポーネントを混在しないでください。すべて同じエンジンとコントロール描画実装を再利用します。
+> **アダプターについて：** React、Vue、Svelte、Angular は、それぞれ `web-canvas-ui/react`、`web-canvas-ui/vue`、`web-canvas-ui/svelte`、`web-canvas-ui/angular` からインポートします。宿主 Canvas フレームワークに一致するエントリを選び、アダプター間でコンポーネントを混在しないでください。すべて同じエンジンとコントロール描画実装を再利用します。
 
-> **共有コンポーネント契約：** 各コントロールは `components/<Component>/` 配下に配置されます。`index.ts` エントリが公開 API をエクスポートし、`<component>.ts` が Props 型と Canvas 描画関数を定義し、必要に応じて `logic.ts` がそのコントロール固有のインタラクション／ビジネスロジックを保持します。共通型は `components/types.ts` に集約され、`/canvas-ui/types.ts` 経由で再エクスポートされます。React、Vue、Svelte、Angular のアダプターはこの型契約を共有します。
+> **共有コンポーネント契約：** 各コントロールは `components/<Component>/` 配下に配置されます。`index.ts` エントリが公開 API をエクスポートし、`<component>.ts` が Props 型と Canvas 描画関数を定義し、必要に応じて `logic.ts` がそのコントロール固有のインタラクション／ビジネスロジックを保持します。共通型は `components/types.ts` に集約され、`web-canvas-ui/types.ts` 経由で再エクスポートされます。React、Vue、Svelte、Angular のアダプターはこの型契約を共有します。
 
 ## グローバルテーマカラー
 
-テーマカラーは [`theme.scss`](theme.scss) の `$primary: #1668dc` に集約されています。この変数を 1 つ変更するだけで、ボタン、選択状態、フォーカスボーダー、プログレスバーなどのアクセントカラーがまとめて更新されます。淡色はプライマリと白の混合で、押下状態の濃色はプライマリの明度を下げて派生し、共通の色階は `--canvas-ui-primary*` CSS 変数としても出力されます。`theme.css` はビルド成果物なので、アプリのグローバル CSS から読み込み、生成ファイルを直接編集しないでください：
+テーマカラーは [`theme.scss`](src/canvas-ui/theme.scss) の `$primary: #1668dc` に集約されています。この変数を 1 つ変更するだけで、ボタン、選択状態、フォーカスボーダー、プログレスバーなどのアクセントカラーがまとめて更新されます。淡色はプライマリと白の混合で、押下状態の濃色はプライマリの明度を下げて派生し、共通の色階は `--canvas-ui-primary*` CSS 変数としても出力されます。`theme.css` はビルド成果物なので、アプリのグローバル CSS から読み込み、生成ファイルを直接編集しないでください：
 
 ```css
-@import '/canvas-ui/theme.css';
+@import 'web-canvas-ui/theme.css';
 ```
 
 `theme.scss` を編集した後は `npm run build:theme` を実行して CSS を再生成します。コンパイル済みの CSS カスタムプロパティは React、Vue、Svelte、Angular のすべてに適用され、`.dark` と `[data-theme="dark"]` のダークテーマも提供されます。コンポーネントに明示的に渡した色はテーマ変数より優先されます。
@@ -58,14 +58,14 @@ Canvas 2D ベースの宣言的コンポーネントライブラリで、**React
 
 ## 環境とインポート
 
-`/canvas-ui/` ディレクトリをプロジェクトに配置し、宿主 Canvas プロジェクトが選択したフレームワーク（React 19+、Vue 3、Svelte 5+、Angular 17+）用に設定済みであることを確認してください。Vue はシングルファイルコンポーネントのテンプレートを使い、JSX プラグインや `jsxImportSource` の設定は不要です。Svelte プロジェクトには Svelte コンパイラと対応するビルドプラグインが必要です。Angular プロジェクトには `@angular/core` と Angular ビルド設定が必要です。フレームワークの依存関係は宿主 Canvas プロジェクト側で提供され、このディレクトリでは他のフレームワークの依存を強制しません。
+`web-canvas-ui/` ディレクトリをプロジェクトに配置し、宿主 Canvas プロジェクトが選択したフレームワーク（React 19+、Vue 3、Svelte 5+、Angular 17+）用に設定済みであることを確認してください。Vue はシングルファイルコンポーネントのテンプレートを使い、JSX プラグインや `jsxImportSource` の設定は不要です。Svelte プロジェクトには Svelte コンパイラと対応するビルドプラグインが必要です。Angular プロジェクトには `@angular/core` と Angular ビルド設定が必要です。フレームワークの依存関係は宿主 Canvas プロジェクト側で提供され、このディレクトリでは他のフレームワークの依存を強制しません。
 
 | フレームワーク | エントリ             |
 | -------------- | -------------------- |
-| React          | `/canvas-ui/react`   |
-| Vue 3          | `/canvas-ui/vue`     |
-| Svelte 5+      | `/canvas-ui/svelte`  |
-| Angular 17+    | `/canvas-ui/angular` |
+| React          | `web-canvas-ui/react`   |
+| Vue 3          | `web-canvas-ui/vue`     |
+| Svelte 5+      | `web-canvas-ui/svelte`  |
+| Angular 17+    | `web-canvas-ui/angular` |
 
 コンポーネントは対応するアダプターの Canvas コンテナ内部に配置し、そのフレームワークのエントリからエクスポートされたシーンコンポーネントを使用してください。Canvas シーン内にプレーンな DOM 要素を置かないでください。
 
@@ -73,8 +73,8 @@ Canvas 2D ベースの宣言的コンポーネントライブラリで、**React
 
 ```tsx
 import { useRef, useState } from 'react';
-import { Canvas, Group, Rect, Text, Input, Button } from '/canvas-ui/react';
-import type { CanvasHandle } from '/canvas-ui/react';
+import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/react';
+import type { CanvasHandle } from 'web-canvas-ui/react';
 import 'theme.css';
 
 export function ProfileCanvas() {
@@ -136,13 +136,13 @@ export function ProfileCanvas() {
 
 ## クイックスタート（Vue 3 シングルファイルコンポーネント）
 
-Vue アダプターは専用の `/canvas-ui/vue` エントリに配置されています。`.vue` ファイルのテンプレート内で Canvas UI コンポーネントをそのまま入れ子にできます。TSX、JSX プラグイン、Canvas ノード配列の手動構築は不要です：
+Vue アダプターは専用の `web-canvas-ui/vue` エントリに配置されています。`.vue` ファイルのテンプレート内で Canvas UI コンポーネントをそのまま入れ子にできます。TSX、JSX プラグイン、Canvas ノード配列の手動構築は不要です：
 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Canvas, Group, Rect, Text, Input, Button } from '/canvas-ui/vue';
-import type { CanvasHandle } from '/canvas-ui/vue';
+import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/vue';
+import type { CanvasHandle } from 'web-canvas-ui/vue';
 import 'theme.css';
 
 const name = ref('');
@@ -195,8 +195,8 @@ Svelte 5 のテンプレートで、Svelte エントリからエクスポート�
 
 ```svelte
 <script lang="ts">
-  import { Canvas, Group, Rect, Text, Input, Button } from '/canvas-ui/svelte';
-  import type { CanvasHandle } from '/canvas-ui/svelte';
+  import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/svelte';
+  import type { CanvasHandle } from 'web-canvas-ui/svelte';
   import 'theme.css';
 
   let name = $state('');
@@ -237,7 +237,7 @@ Angular エントリは standalone の `Canvas` コンポーネントとシー�
 
 ```ts
 import { Component, ViewChild } from '@angular/core';
-import { Button, Canvas, Group, Input, Rect, Text } from '/canvas-ui/angular';
+import { Button, Canvas, Group, Input, Rect, Text } from 'web-canvas-ui/angular';
 import 'theme.css';
 
 @Component({
@@ -364,7 +364,7 @@ React の ref、Vue のテンプレート ref、Svelte の `bind:this`、Angular
 | `onPointerEvent`   | `(event: CanvasViewPointerEvent) => void` | いいえ |           — | マッピング済みの `pointerdown`、`pointermove`、`pointerup`、`pointercancel`、`click` を提供。ソース Canvas への合成イベントの自動ディスパッチは行われません。 |
 
 ```tsx
-import { Canvas, CanvasView } from '/canvas-ui/react';
+import { Canvas, CanvasView } from 'web-canvas-ui/react';
 
 <Canvas ref={canvasRef} width={640} height={360}>
     <CanvasView
@@ -403,7 +403,7 @@ canvasRef.current?.requestRender();
 | `hitTest`          | `(x: number, y: number, size: CustomDrawSize) => boolean`                              | いいえ | カスタムヒットテスト。省略時は幅と高さで構成される矩形全体を使います。`false` を返すと下のレイヤーのコンポーネントのヒットテストが続行されます。 |
 
 ```tsx
-import { Canvas, CustomDraw } from '/canvas-ui/react';
+import { Canvas, CustomDraw } from 'web-canvas-ui/react';
 
 <Canvas width={320} height={180}>
     <CustomDraw

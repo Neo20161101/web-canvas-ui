@@ -10,7 +10,7 @@ When adding a control, create its own directory and export the public API from t
 
 ## Global Theme Colors
 
-Theme colors are centralized in [`theme.scss`](web-canvas-ui/theme.scss) as `$primary: #1668dc`. Changing this single variable updates the accent color for buttons, selected states, focus borders, progress bars, and more. Light variants are mixed with white, and pressed variants darken the primary; the shared scales are also emitted as `--canvas-ui-primary*` CSS variables. `theme.css` is a build artifact — import it as global CSS and do not edit the generated file directly:
+Theme colors are centralized in [`theme.scss`](src/canvas-ui/theme.scss) as `$primary: #1668dc`. Changing this single variable updates the accent color for buttons, selected states, focus borders, progress bars, and more. Light variants are mixed with white, and pressed variants darken the primary; the shared scales are also emitted as `--canvas-ui-primary*` CSS variables. `theme.css` is a build artifact — import it as global CSS and do not edit the generated file directly:
 
 ```css
 @import 'web-canvas-ui/theme.css';
@@ -135,13 +135,13 @@ export function ProfileCanvas() {
 
 ## Quick Start (Vue 3 Single-File Component)
 
-The Vue adapter lives at the dedicated `/canvas-ui/vue` entry. Nest Canvas UI components directly in a `.vue` template — no TSX, no JSX plugin, no manual Canvas node arrays:
+The Vue adapter lives at the dedicated `web-canvas-ui/vue` entry. Nest Canvas UI components directly in a `.vue` template — no TSX, no JSX plugin, no manual Canvas node arrays:
 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Canvas, Group, Rect, Text, Input, Button } from '/canvas-ui/vue';
-import type { CanvasHandle } from '/canvas-ui/vue';
+import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/vue';
+import type { CanvasHandle } from 'web-canvas-ui/vue';
 import 'theme.css';
 
 const name = ref('');
@@ -194,8 +194,8 @@ Use the Svelte entry's components inside a Svelte 5 template. `Canvas` exposes i
 
 ```svelte
 <script lang="ts">
-  import { Canvas, Group, Rect, Text, Input, Button } from '/canvas-ui/svelte';
-  import type { CanvasHandle } from '/canvas-ui/svelte';
+  import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/svelte';
+  import type { CanvasHandle } from 'web-canvas-ui/svelte';
   import 'theme.css';
 
   let name = $state('');
@@ -236,7 +236,7 @@ The Angular entry provides a standalone `Canvas` component and scene directives.
 
 ```ts
 import { Component, ViewChild } from '@angular/core';
-import { Button, Canvas, Group, Input, Rect, Text } from '/canvas-ui/angular';
+import { Button, Canvas, Group, Input, Rect, Text } from 'web-canvas-ui/angular';
 import 'theme.css';
 
 @Component({
@@ -363,7 +363,7 @@ Renders the picture of an `HTMLCanvasElement` — from a third-party module or e
 | `onPointerEvent`   | `(event: CanvasViewPointerEvent) => void` |       No |           — | Provides mapped `pointerdown`, `pointermove`, `pointerup`, `pointercancel`, and `click` events; synthetic events are not dispatched to the source Canvas automatically. |
 
 ```tsx
-import { Canvas, CanvasView } from '/canvas-ui/react';
+import { Canvas, CanvasView } from 'web-canvas-ui/react';
 
 <Canvas ref={canvasRef} width={640} height={360}>
     <CanvasView
@@ -402,7 +402,7 @@ When built-in components cannot cover your drawing needs, use `CustomDraw` to pr
 | `hitTest`          | `(x: number, y: number, size: CustomDrawSize) => boolean`                              |       No | Custom hit testing for the shape; falls back to the full width/height rectangle when omitted. Returning `false` allows lower components to receive the hit. |
 
 ```tsx
-import { Canvas, CustomDraw } from '/canvas-ui/react';
+import { Canvas, CustomDraw } from 'web-canvas-ui/react';
 
 <Canvas width={320} height={180}>
     <CustomDraw

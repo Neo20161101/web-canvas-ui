@@ -1,7 +1,7 @@
 import { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import '../canvas-ui/theme.css';
-import { Button, Canvas, Circle, Input, Rect, Slider, Switch, Text } from '../canvas-ui/react';
+import 'web-canvas-ui/theme.css';
+import { Button, Canvas, Circle, Input, Rect, Slider, Switch, Text } from 'web-canvas-ui/react';
 
 function DemoApp() {
     const [count, setCount] = useState(0);

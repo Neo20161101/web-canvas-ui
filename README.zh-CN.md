@@ -58,7 +58,7 @@
 
 ## 环境与导入
 
-将 `/canvas-ui/` 目录放入项目，并确保主Canvas项目已配置相应框架：React 19+、Vue 3、Svelte 5+ 或 Angular 17+。Vue 使用单文件组件模板，不需要 JSX 插件或 `jsxImportSource` 配置；Svelte 项目需要 Svelte 编译器及对应构建插件；Angular 项目需要 `@angular/core` 和 Angular 构建配置。框架依赖由主Canvas项目提供，本目录不强制其他框架的依赖。
+将 `web-canvas-ui/` 目录放入项目，并确保主Canvas项目已配置相应框架：React 19+、Vue 3、Svelte 5+ 或 Angular 17+。Vue 使用单文件组件模板，不需要 JSX 插件或 `jsxImportSource` 配置；Svelte 项目需要 Svelte 编译器及对应构建插件；Angular 项目需要 `@angular/core` 和 Angular 构建配置。框架依赖由主Canvas项目提供，本目录不强制其他框架的依赖。
 
 | 框架        | 入口                 |
 | ----------- | -------------------- |
@@ -136,7 +136,7 @@ export function ProfileCanvas() {
 
 ## 快速开始（Vue 3 单文件组件）
 
-Vue 适配器位于独立的 `/canvas-ui/vue` 入口。直接在 `.vue` 文件的模板中嵌套 Canvas UI 组件即可，不需要 TSX、JSX 插件或手动创建 Canvas 节点数组：
+Vue 适配器位于独立的 `web-canvas-ui/vue` 入口。直接在 `.vue` 文件的模板中嵌套 Canvas UI 组件即可，不需要 TSX、JSX 插件或手动创建 Canvas 节点数组：
 
 ```vue
 <script setup lang="ts">

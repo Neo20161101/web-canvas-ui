@@ -5,9 +5,9 @@
 
 A declarative component library built on Canvas 2D, with **React**, **Vue 3**, **Svelte 5+**, and **Angular 17+** adapters. Each framework imports from its own entry and uses native component/template syntax, while the underlying Canvas engine and control drawing logic are shared. Every control's appearance is painted by Canvas itself.
 
-> **Adapters:** React, Vue, Svelte, and Angular import from `/canvas-ui/react`, `/canvas-ui/vue`, `/canvas-ui/svelte`, and `/canvas-ui/angular` respectively. Pick the entry that matches your host Canvas framework and do not mix components across adapters — they all reuse the same engine and control drawing implementation.
+> **Adapters:** React, Vue, Svelte, and Angular import from `web-canvas-ui/react`, `web-canvas-ui/vue`, `web-canvas-ui/svelte`, and `web-canvas-ui/angular` respectively. Pick the entry that matches your host Canvas framework and do not mix components across adapters — they all reuse the same engine and control drawing implementation.
 
-> **Shared component contract:** Each control lives under `components/<Component>/`. The `components.ts` entry exposes the public API, `<component>.ts` defines the Props type and the Canvas draw function, and `logic.ts` (when needed) holds interaction/business logic specific to that control. Common types are aggregated in `components/types.ts` and re-exported through `/canvas-ui/types.ts`. React, Vue, Svelte, and Angular adapters share this type contract.
+> **Shared component contract:** Each control lives under `components/<Component>/`. The `components.ts` entry exposes the public API, `<component>.ts` defines the Props type and the Canvas draw function, and `logic.ts` (when needed) holds interaction/business logic specific to that control. Common types are aggregated in `components/types.ts` and re-exported through `web-canvas-ui/types.ts`. React, Vue, Svelte, and Angular adapters share this type contract.
 
 ### Packages
 - [web-canvas-ui](https://www.npmjs.com/package/web-canvas-ui)
@@ -17,7 +17,7 @@ A declarative component library built on Canvas 2D, with **React**, **Vue 3**, *
 Theme colors are centralized in [`theme.scss`](src/canvas-ui/theme.scss) as `$primary: #1668dc`. Changing this single variable updates the accent color for buttons, selected states, focus borders, progress bars, and more. Light variants are mixed with white, and pressed variants darken the primary; the shared scales are also emitted as `--canvas-ui-primary*` CSS variables. `theme.css` is a build artifact — import it as global CSS and do not edit the generated file directly:
 
 ```css
-@import '/canvas-ui/theme.css';
+@import 'web-canvas-ui/theme.css';
 ```
 
 After editing `theme.scss`, run `npm run build:theme` to regenerate the CSS. The compiled CSS custom properties apply to React, Vue, Svelte, and Angular, and provide `.dark` and `[data-theme="dark"]` dark themes. Colors passed explicitly to a component take precedence over theme variables.
@@ -61,14 +61,14 @@ To customize the theme for a specific application, override only the variables y
 
 ## Environment and Imports
 
-Place the `/canvas-ui/` directory into your project and make sure the host Canvas project is already configured for the chosen framework: React 19+, Vue 3, Svelte 5+, or Angular 17+. Vue uses single-file component templates and does not require a JSX plugin or `jsxImportSource`. Svelte projects need the Svelte compiler and its matching build plugin. Angular projects need `@angular/core` and the Angular build setup. Framework dependencies are provided by the host Canvas project — this directory does not enforce dependencies on any particular framework.
+Place the `web-canvas-ui/` directory into your project and make sure the host Canvas project is already configured for the chosen framework: React 19+, Vue 3, Svelte 5+, or Angular 17+. Vue uses single-file component templates and does not require a JSX plugin or `jsxImportSource`. Svelte projects need the Svelte compiler and its matching build plugin. Angular projects need `@angular/core` and the Angular build setup. Framework dependencies are provided by the host Canvas project — this directory does not enforce dependencies on any particular framework.
 
 | Framework   | Entry                |
 | ----------- | -------------------- |
-| React       | `/canvas-ui/react`   |
-| Vue 3       | `/canvas-ui/vue`     |
-| Svelte 5+   | `/canvas-ui/svelte`  |
-| Angular 17+ | `/canvas-ui/angular` |
+| React       | `web-canvas-ui/react`   |
+| Vue 3       | `web-canvas-ui/vue`     |
+| Svelte 5+   | `web-canvas-ui/svelte`  |
+| Angular 17+ | `web-canvas-ui/angular` |
 
 Components must be placed inside the corresponding adapter's Canvas container and use the scene components exported by that framework's entry. Do not place plain DOM elements inside a Canvas scene.
 
@@ -76,8 +76,8 @@ Components must be placed inside the corresponding adapter's Canvas container an
 
 ```tsx
 import { useRef, useState } from 'react';
-import { Canvas, Group, Rect, Text, Input, Button } from '/canvas-ui/react';
-import type { CanvasHandle } from '/canvas-ui/react';
+import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/react';
+import type { CanvasHandle } from 'web-canvas-ui/react';
 import 'theme.css';
 
 export function ProfileCanvas() {
@@ -139,12 +139,12 @@ export function ProfileCanvas() {
 
 ## Quick Start (Vue 3 Single-File Component)
 
-The Vue adapter lives at the dedicated `/canvas-ui/vue` entry. Nest Canvas UI components directly in a `.vue` template — no TSX, no JSX plugin, no manual Canvas node arrays:
+The Vue adapter lives at the dedicated `web-canvas-ui/vue` entry. Nest Canvas UI components directly in a `.vue` template — no TSX, no JSX plugin, no manual Canvas node arrays:
 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Canvas, Group, Rect, Text, Input, Button } from '/canvas-ui/vue';
+import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/vue';
 import type { CanvasHandle } from '/canvas-ui/vue';
 import 'theme.css';
 
