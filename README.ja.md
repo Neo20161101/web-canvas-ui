@@ -1,3 +1,4 @@
+![Markdown Logo](./src/assets/web-canvas-ui-logo-bright.svg "web-canvas-ui")
 # Web Canvas UI (React, Vue 3, Svelte, Angular)
 
 [English](./README.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [繁體中文](./README.zh-TW.md) · [Русский](./README.ru.md) · [简体中文](./README.zh-CN.md)
@@ -42,7 +43,7 @@ Canvas 2D ベースの宣言的コンポーネントライブラリで、**React
 
 | コンポーネント                | CSS カスタムプロパティ                                                                                                                                                                                                                                                                               |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Button / Upload               | `--canvas-ui-button-background`、`--canvas-ui-button-color`、`--canvas-ui-button-border`、`--canvas-ui-button-pressed-background`、`--canvas-ui-button-disabled-background`、`--canvas-ui-button-disabled-color`                                                                                     |
+| Button / Upload               | `--canvas-ui-button-background`、`--canvas-ui-button-color`、`--canvas-ui-button-border`、`--canvas-ui-button-pressed-background`                                                                                                                                                                    |
 | Carousel                      | `--canvas-ui-carousel-arrow`、`--canvas-ui-carousel-dot`、`--canvas-ui-carousel-active-dot`                                                                                                                                                                                                          |
 | Radio / Checkbox              | `--canvas-ui-choice-active`、`--canvas-ui-choice-border`、`--canvas-ui-choice-color`、`--canvas-ui-choice-disabled`、`--canvas-ui-choice-disabled-background`                                                                                                                                        |
 | Collapse                      | `--canvas-ui-collapse-header-background`、`--canvas-ui-collapse-border`、`--canvas-ui-collapse-color`、`--canvas-ui-collapse-disabled-color`                                                                                                                                                         |
@@ -51,7 +52,7 @@ Canvas 2D ベースの宣言的コンポーネントライブラリで、**React
 | Input / Textarea / DatePicker | `--canvas-ui-input-background`、`--canvas-ui-input-color`、`--canvas-ui-input-placeholder-color`、`--canvas-ui-input-border`、`--canvas-ui-input-focus-border`                                                                                                                                       |
 | Progress                      | `--canvas-ui-progress-track`、`--canvas-ui-progress-active`、`--canvas-ui-progress-text`                                                                                                                                                                                                             |
 | Rect / Circle / Text / Icon   | `--canvas-ui-rect-background`、`--canvas-ui-rect-border`、`--canvas-ui-circle-background`、`--canvas-ui-circle-border`、`--canvas-ui-text-color`、`--canvas-ui-icon-color`                                                                                                                           |
-| Slider                        | `--canvas-ui-slider-track`、`--canvas-ui-slider-active`、`--canvas-ui-slider-thumb`、`--canvas-ui-slider-disabled-thumb`                                                                                                                                                                             |
+| Slider                        | `--canvas-ui-slider-track`、`--canvas-ui-slider-active`、`--canvas-ui-slider-thumb`                                                                                                                                                                                                                  |
 | Switch                        | `--canvas-ui-switch-on`、`--canvas-ui-switch-off`、`--canvas-ui-switch-thumb`                                                                                                                                                                                                                        |
 | Tabs                          | `--canvas-ui-tabs-background`、`--canvas-ui-tabs-color`、`--canvas-ui-tabs-active-color`、`--canvas-ui-tabs-indicator`、`--canvas-ui-tabs-disabled-color`                                                                                                                                            |
 
@@ -460,6 +461,8 @@ import { Canvas, CustomDraw } from '/canvas-ui/react';
 
 直接の子は自身の `x`、`y` を保持し、配置セルのオフセットが加算されます。`cellWidth` 未指定時は `(width - gap * (columns - 1)) / columns` で等幅列を算出します。子自身のサイズは自動的に引き伸ばされません。
 
+各子ノードには占有するセルのボックスも渡されます。`width` と `maxLines` を未指定の `<Text>` はセル幅で改行し、`cellHeight` に収まらない分を省略記号で打ち切ります。`<GridItem>` はスパン後の領域を内部のコントロールに引き渡します。いずれかを明示すればセルのボックスより常に優先されるため、セルより意図的に狭くできます。
+
 ```tsx
 <Grid columns={3} cellWidth={100} cellHeight={50} gap={8}>
     <Rect width={80} height={40} color="#f5f8fc" />
@@ -616,18 +619,18 @@ Angular では `<canvas-tabs>` と `<canvas-tab-item>` を使用し、選択変�
 
 各 `CollapseItem` のヘッダーバーをクリックして展開／折りたたみを切り替え、子要素をパネル内容として扱います。
 
-| コンポーネント | プロップ                                        | 型                         | 説明                                                         |
-| -------------- | ----------------------------------------------- | -------------------------- | ------------------------------------------------------------ |
-| `Collapse`     | `width`                                         | `number`                   | パネル幅。必須。                                             |
-| `Collapse`     | `activeKeys` / `defaultActiveKeys`              | `string[]`                 | 制御された展開項目／非制御時の初期展開項目。                 |
-| `Collapse`     | `accordion`                                     | `boolean`                  | デフォルト `false`。`true` の場合は単一項目のみ展開可。      |
-| `Collapse`     | `headerHeight`                                  | `number`                   | ヘッダーバー高さ。デフォルト `40`。                          |
-| `Collapse`     | `backgroundColor` / `textColor` / `borderColor` | `string`                   | すべてのヘッダーバーのデフォルト背景・テキスト・ボーダー色。 |
-| `Collapse`     | `onChange`                                      | `(keys: string[]) => void` | 展開集合の変化コールバック。                                 |
-| `CollapseItem` | `id` / `title`                                  | `string`                   | パネルの一意 ID とタイトル。必須。                           |
-| `CollapseItem` | `height`                                        | `number`                   | 展開時コンテンツの高さ。デフォルト `100`。                   |
-| `CollapseItem` | `disabled`                                      | `boolean`                  | 展開／折りたたみ禁止。                                       |
-| `CollapseItem` | `backgroundColor` / `textColor` / `borderColor` | `string`                   | この項目のヘッダーバーの色を上書き。                         |
+| コンポーネント | プロップ                                        | 型                         | 説明                                                                                               |
+| -------------- | ----------------------------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------- |
+| `Collapse`     | `width`                                         | `number`                   | パネル幅。必須。                                                                                   |
+| `Collapse`     | `activeKeys` / `defaultActiveKeys`              | `string[]`                 | 制御された展開項目／非制御時の初期展開項目。                                                       |
+| `Collapse`     | `accordion`                                     | `boolean`                  | デフォルト `false`。`true` の場合は単一項目のみ展開可。                                            |
+| `Collapse`     | `headerHeight`                                  | `number`                   | ヘッダーバー高さ。デフォルト `40`。                                                                |
+| `Collapse`     | `backgroundColor` / `textColor` / `borderColor` | `string`                   | すべてのヘッダーバーのデフォルト背景・テキスト・ボーダー色。                                       |
+| `Collapse`     | `onChange`                                      | `(keys: string[]) => void` | 展開集合の変化コールバック。                                                                       |
+| `CollapseItem` | `id` / `title`                                  | `string`                   | パネルの一意 ID とタイトル。必須。                                                                 |
+| `CollapseItem` | `height`                                        | `number`                   | 展開時のコンテンツの高さ。既定は子要素が必要とする高さで、最低 `100`。明示指定が常に優先されます。 |
+| `CollapseItem` | `disabled`                                      | `boolean`                  | 展開／折りたたみ禁止。                                                                             |
+| `CollapseItem` | `backgroundColor` / `textColor` / `borderColor` | `string`                   | この項目のヘッダーバーの色を上書き。                                                               |
 
 ```tsx
 <Collapse width={320} defaultActiveKeys={['details']} accordion>
@@ -702,18 +705,19 @@ Angular では `<canvas-dialog>` を使い、`open` 入力と `(confirm)` / `(ca
 
 ### `<Text>`
 
-1 行または自動改行テキストを描画します。[共通プロップ](#共通プロップ)に対応。
+1 行または自動改行テキストを描画します。ノードは折り返し後の各行が実際に必要とする領域のサイズを報告するため、`<CollapseItem>` などのコンテナは高さを自動調整できます。[共通プロップ](#共通プロップ)に対応。
 
-| プロップ     | 型                              |     デフォルト | 説明                                                               |
-| ------------ | ------------------------------- | -------------: | ------------------------------------------------------------------ |
-| `text`       | `string`                        |              — | テキスト内容。                                                     |
-| 子内容       | `string \| number`              |              — | 各フレームワークのテンプレートテキストで `text` を代用可。         |
-| `fontSize`   | `number`                        |           `16` | 文字サイズ（論理ピクセル単位）。                                   |
-| `width`      | `number`                        |              — | 最大行幅。超過後は自動改行。中文など等幅文字も計測幅に基づき改行。 |
-| `fontFamily` | `string`                        | `"sans-serif"` | フォントファミリ。                                                 |
-| `color`      | `string`                        |       `"#333"` | 文字色。                                                           |
-| `baseline`   | `CanvasTextBaseline`            |        `"top"` | Canvas のテキストベースライン。                                    |
-| `textAlign`  | `"left" \| "center" \| "right"` |       `"left"` | 水平方向の文字揃え。`width` 指定時はテキスト領域に対する配置。     |
+| プロップ     | 型                              |     デフォルト | 説明                                                                                                                                |
+| ------------ | ------------------------------- | -------------: | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `text`       | `string`                        |              — | テキスト内容。                                                                                                                      |
+| 子内容       | `string \| number`              |              — | 各フレームワークのテンプレートテキストで `text` を代用可。                                                                          |
+| `fontSize`   | `number`                        |           `16` | 文字サイズ（論理ピクセル単位）。                                                                                                    |
+| `width`      | `number`                        |              — | 最大行幅。超過後は自動改行。中文など等幅文字も計測幅に基づき改行。`<Grid>` 内で未指定時はセル幅を使用。                             |
+| `maxLines`   | `number`                        |              — | 表示する最大行数。最終行の超過分は省略記号で切り詰めます。`<Grid>` 内で未指定時はセルに収まる行数を使用し、どちらも不明なら無制限。 |
+| `fontFamily` | `string`                        | `"sans-serif"` | フォントファミリ。                                                                                                                  |
+| `color`      | `string`                        |       `"#333"` | 文字色。                                                                                                                            |
+| `baseline`   | `CanvasTextBaseline`            |        `"top"` | Canvas のテキストベースライン。                                                                                                     |
+| `textAlign`  | `"left" \| "center" \| "right"` |       `"left"` | 水平方向の文字揃え。`width` 指定時はテキスト領域に対する配置。                                                                      |
 
 ### `<Icon>`
 
@@ -779,19 +783,22 @@ Angular では `<canvas-dialog>` を使い、`open` 入力と `(confirm)` / `(ca
 
 ### `<Upload>`
 
-ファイル選択ボタンを描画します。クリックするとブラウザのローカルファイル選択ダイアログが開きますが、このコンポーネントはサーバーへのアップロードは行いません。
+ファイル選択ボタンを描画します。組み込みのベクターアイコンとラベルがひとまとまりになり、水平中央に配置されます。クリックするとブラウザのローカルファイル選択ダイアログが開きますが、このコンポーネントはサーバーへのアップロードは行いません。
 
-| プロップ           | 型                        |         デフォルト | 説明                                                           |
-| ------------------ | ------------------------- | -----------------: | -------------------------------------------------------------- |
-| `width` / `height` | `number`                  |       `120` / `40` | ボタンサイズ。                                                 |
-| `text`             | `string`                  | `"ファイルを選択"` | ボタンテキスト。                                               |
-| `accept`           | `string`                  |                  — | ファイルタイプ絞り込み。例：`"image/*,.pdf"`。                 |
-| `multiple`         | `boolean`                 |            `false` | 複数選択を許可するか。                                         |
-| `disabled`         | `boolean`                 |            `false` | ファイル選択を無効化。                                         |
-| `onChange`         | `(files: File[]) => void` |                  — | ファイル選択後のコールバック。選択キャンセル時は発火しません。 |
+| プロップ           | 型                        |       デフォルト | 説明                                                                                         |
+| ------------------ | ------------------------- | ---------------: | -------------------------------------------------------------------------------------------- |
+| `width` / `height` | `number`                  |     `120` / `40` | ボタンサイズ。                                                                               |
+| `text`             | `string`                  |  `"Choose File"` | ボタンテキスト。                                                                             |
+| `icon`             | `IconName`                |       `"upload"` | ラベルの前に描画される組み込みアイコン。[`<Icon>`](#icon) の任意のアイコン名を指定できます。 |
+| `iconSize`         | `number`                  | `fontSize × 1.1` | アイコンサイズ。                                                                             |
+| `accept`           | `string`                  |                — | ファイルタイプ絞り込み。例：`"image/*,.pdf"`。                                               |
+| `multiple`         | `boolean`                 |          `false` | 複数選択を許可するか。                                                                       |
+| `disabled`         | `boolean`                 |          `false` | ファイル選択を無効化。                                                                       |
+| `onChange`         | `(files: File[]) => void` |                — | ファイル選択後のコールバック。選択キャンセル時は発火しません。                               |
 
 ```tsx
 <Upload accept="image/*" multiple onChange={(files) => console.log(files)} />
+<Upload icon="cloud" text="Upload Photos" />
 ```
 
 Angular では `<canvas-upload>` を使い、`(change)` で `File[]` を受け取ります。

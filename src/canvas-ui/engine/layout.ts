@@ -2,6 +2,8 @@ import { descriptorKey } from '../scene';
 import type { SceneNode } from '../scene';
 import type { TextControlProps, Transform, VNode } from '../types';
 import { number } from '../components/draw-utils';
+import { measureTextBox } from '../components/Text';
+import type { TextBox, TextDrawProps } from '../components/Text';
 import { multiplyTransform } from './transform';
 import { setTreeVisibility } from './nodes';
 import {
@@ -19,6 +21,37 @@ import type { EngineCore, EngineState, TextControlDescription } from './state';
  * carousel, collapse, grid scroll, dialog centering, text-control overlays) into
  * engine-internal props before the scene graph is diffed.
  */
+
+/** Body height used when a collapse item declares nothing and its children need even less. */
+const COLLAPSE_MIN_BODY_HEIGHT = 100;
+
+/**
+ * Box a Text node needs once its content is wrapped and clamped. Shares {@link measureTextBox} with
+ * the renderer, so a measured box can never disagree with the painted glyphs.
+ */
+function measureTextNode(props: Record<string, unknown>): TextBox {
+    return measureTextBox(props as unknown as TextDrawProps);
+}
+
+/**
+ * Body height of an expanded collapse item. An explicit `height` always wins; otherwise the direct
+ * children decide the space, floored at the historical 100px default so existing trees keep their
+ * spacing while a wrapped (or clamped) Text pushes the next header down instead of being drawn over
+ * it. Measured on the raw vnodes, before the header offset is added to their `y`.
+ */
+function resolveCollapseBody(item: VNode): number {
+    const declared = number(item.props.height, 0);
+    if (declared > 0) return declared;
+    let bottom = COLLAPSE_MIN_BODY_HEIGHT;
+    for (const child of item.children) {
+        const height =
+            child.type === 'text'
+                ? measureTextNode(child.props).height
+                : number(child.props.height, 0);
+        bottom = Math.max(bottom, number(child.props.y, 0) + height);
+    }
+    return bottom;
+}
 
 function keyForState(props: Record<string, unknown>, key: string): string {
     const value = props[key];
@@ -77,8 +110,20 @@ export function layoutCollapseNodes(parent: SceneNode, active: Set<string>): voi
             _collapseHeaderHeight: headerHeight,
         });
         item.children.forEach((child) => setTreeVisibility(child, expanded));
-        top += headerHeight + (expanded ? number(item.props.height, 100) : 0);
+        top += headerHeight + (expanded ? collapseBodyHeight(item) : 0);
     }
+}
+
+/**
+ * Reads back the body height {@link prepare} resolved onto `_collapseBodyHeight`. Running the
+ * measurement here a second time would be wrong: by now the children's `y` already carries the
+ * header offset. The fallbacks keep hand-built scene nodes (and older trees) laying out as before.
+ */
+function collapseBodyHeight(item: SceneNode): number {
+    return number(
+        item.props._collapseBodyHeight,
+        number(item.props.height, COLLAPSE_MIN_BODY_HEIGHT),
+    );
 }
 
 export function prepare(
@@ -101,6 +146,14 @@ export function prepare(
         const nextProps = { ...props };
         nextProps._userVisible =
             typeof props._userVisible === 'boolean' ? props._userVisible : props.visible !== false;
+
+        if (vnode.type === 'text') {
+            // Wrapping decides how wide and tall this node is, so containers and hit-testing get the
+            // measured box instead of assuming a single fixed line.
+            const box = measureTextNode(nextProps);
+            nextProps._textWidth = box.width;
+            nextProps._textHeight = box.height;
+        }
 
         if (vnode.type === 'input' || vnode.type === 'datePicker' || vnode.type === 'textarea') {
             const id = `${vnode.type}:${path}`;
@@ -263,7 +316,8 @@ export function prepare(
             children = children.map((item) => {
                 if (item.type !== 'collapseItem') return item;
                 const expanded = activeKeys.has(String(item.props.id ?? ''));
-                const contentHeight = expanded ? number(item.props.height, 100) : 0;
+                const bodyHeight = resolveCollapseBody(item);
+                const contentHeight = expanded ? bodyHeight : 0;
                 const result: VNode = {
                     ...item,
                     props: {
@@ -276,6 +330,7 @@ export function prepare(
                         _expanded: expanded,
                         _collapseWidth: width,
                         _collapseHeaderHeight: headerHeight,
+                        _collapseBodyHeight: bodyHeight,
                         backgroundColor: item.props.backgroundColor ?? props.backgroundColor,
                         textColor: item.props.textColor ?? props.textColor,
                         borderColor: item.props.borderColor ?? props.borderColor,

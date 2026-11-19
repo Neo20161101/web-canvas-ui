@@ -1,5 +1,5 @@
 import type { TransformProps } from '../../types';
-import { number, string, themeColor } from '../draw-utils';
+import { fitText, number, string, themeColor } from '../draw-utils';
 import { createComponent } from '../shared';
 import type { ComponentSize } from '../size';
 
@@ -61,7 +61,11 @@ export function drawTabs(context: CanvasRenderingContext2D, props: TabsDrawProps
                     themeColor(context, '--canvas-ui-tabs-active-color', '#1677ff'),
                 )
               : string(props.textColor, themeColor(context, '--canvas-ui-tabs-color', '#595959'));
-        context.fillText(item.title, itemWidth * (index + 0.5), headerHeight / 2);
+        context.fillText(
+            fitText(context, item.title, Math.max(0, itemWidth - 16)),
+            itemWidth * (index + 0.5),
+            headerHeight / 2,
+        );
         if (item.selected) {
             context.fillStyle = string(
                 props.indicatorColor,

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { SceneNode } from '../../scene';
 import type { VNode } from '../../types';
+import { TEXT_LINE_HEIGHT, measureTextWidth } from '../../components/draw-utils';
 import { prepare, activeCollapseKeys, layoutCollapseNodes } from '../layout';
 import { EngineState } from '../state';
 import type { EngineCore, TextControlDescription } from '../state';
@@ -92,6 +93,50 @@ describe('prepare · text controls', () => {
     });
 });
 
+// --- text metrics -----------------------------------------------------------
+
+describe('prepare · text metrics', () => {
+    it('measures the wrapped box instead of assuming one line', () => {
+        const state = new EngineState();
+        const long = 'a'.repeat(40);
+        const out = prepare(
+            makeCore(),
+            state,
+            [
+                vnode('text', { text: long, width: 40, fontSize: 10 }, [], 't1'),
+                vnode('text', { text: long, width: 40, fontSize: 10, maxLines: 2 }, [], 't2'),
+            ],
+            [1, 0, 0, 1, 0, 0],
+            true,
+            'root',
+            [],
+        );
+
+        const wrapped = out[0].props._textHeight as number;
+        const clamped = out[1].props._textHeight as number;
+        // Clamping cuts lines, so the same paragraph must report a shorter box.
+        expect(clamped).toBeLessThan(wrapped);
+        expect(clamped).toBeCloseTo(2 * 10 * TEXT_LINE_HEIGHT);
+        expect(out[0].props._textWidth).toBe(40);
+    });
+
+    it('sizes the box to the painted line when no width is declared', () => {
+        const state = new EngineState();
+        const out = prepare(
+            makeCore(),
+            state,
+            [vnode('text', { text: 'abc', fontSize: 10 }, [], 't')],
+            [1, 0, 0, 1, 0, 0],
+            true,
+            'root',
+            [],
+        );
+
+        expect(out[0].props._textWidth).toBe(measureTextWidth('abc', '10px sans-serif'));
+        expect(out[0].props._textHeight).toBeCloseTo(10 * TEXT_LINE_HEIGHT);
+    });
+});
+
 // --- grid -------------------------------------------------------------------
 
 describe('prepare · grid', () => {
@@ -129,6 +174,80 @@ describe('prepare · grid', () => {
         expect(out[0].props._scrollTop).toBe(20);
         expect(out[0].children[0].props._gridBaseY).toBe(0);
         expect(out[0].children[0].props.y).toBe(-20);
+    });
+
+    it('hands each child the box of the cell it occupies', () => {
+        const state = new EngineState();
+        const tree = [
+            vnode(
+                'grid',
+                { columns: 2, cellHeight: 50, gap: 0, width: 200 },
+                [
+                    vnode('rect', {}, [], 'r'),
+                    vnode(
+                        'gridItem',
+                        { columnSpan: 2, rowSpan: 2 },
+                        [vnode('text', { text: 'x' }, [], 't')],
+                        'gi',
+                    ),
+                ],
+                'g',
+            ),
+        ];
+        const out = prepare(makeCore(), state, tree, [1, 0, 0, 1, 0, 0], true, 'root', []);
+        const [cell, spanning] = out[0].children;
+
+        // A direct child owns exactly one cell (200 / 2 columns × 50).
+        expect(cell.props._availableWidth).toBe(100);
+        expect(cell.props._availableHeight).toBe(50);
+        // A GridItem owns its span-expanded area and shares it with the controls it groups.
+        expect(spanning.props._availableWidth).toBe(200);
+        expect(spanning.props._availableHeight).toBe(100);
+        expect(spanning.children[0].props._availableWidth).toBe(200);
+        expect(spanning.children[0].props._availableHeight).toBe(100);
+    });
+
+    it('wraps and clamps a text child to its cell when it declares nothing', () => {
+        const state = new EngineState();
+        const tree = [
+            vnode(
+                'grid',
+                { columns: 2, cellHeight: 50, gap: 0, width: 200 },
+                [vnode('text', { text: 'a'.repeat(100), fontSize: 10 }, [], 't')],
+                'g',
+            ),
+        ];
+        const out = prepare(makeCore(), state, tree, [1, 0, 0, 1, 0, 0], true, 'root', []);
+        const child = out[0].children[0];
+
+        expect(child.props._textWidth).toBe(100);
+        // Four 12px lines fit the 50px cell; a fifth would hang out of it, so the paragraph stops
+        // with an ellipsis instead of bleeding into the next row.
+        expect(child.props._textHeight).toBeCloseTo(4 * 10 * TEXT_LINE_HEIGHT);
+    });
+
+    it('lets a declared width and maxLines override the cell box', () => {
+        const state = new EngineState();
+        const tree = [
+            vnode(
+                'grid',
+                { columns: 2, cellHeight: 50, gap: 0, width: 200 },
+                [
+                    vnode(
+                        'text',
+                        { text: 'a'.repeat(100), fontSize: 10, width: 40, maxLines: 2 },
+                        [],
+                        't',
+                    ),
+                ],
+                'g',
+            ),
+        ];
+        const out = prepare(makeCore(), state, tree, [1, 0, 0, 1, 0, 0], true, 'root', []);
+        const child = out[0].children[0];
+
+        expect(child.props._textWidth).toBe(40);
+        expect(child.props._textHeight).toBeCloseTo(2 * 10 * TEXT_LINE_HEIGHT);
     });
 });
 
@@ -225,6 +344,63 @@ describe('prepare · collapse', () => {
         // second header sits below header(40) + expanded content(100).
         expect(out[0].children[1].props.y).toBe(140);
         expect(out[0].children[1].props._expanded).toBe(false);
+    });
+
+    it('grows the body past the 100px floor when a wrapped text child needs the room', () => {
+        const state = new EngineState();
+        const tree = [
+            vnode(
+                'collapse',
+                { defaultActiveKeys: ['a'] },
+                [
+                    vnode(
+                        'collapseItem',
+                        { id: 'a' },
+                        [
+                            vnode(
+                                'text',
+                                { text: 'x'.repeat(200), width: 100, fontSize: 20 },
+                                [],
+                                'tx',
+                            ),
+                        ],
+                        'i0',
+                    ),
+                    vnode('collapseItem', { id: 'b' }, [], 'i1'),
+                ],
+                'c',
+            ),
+        ];
+        const out = prepare(makeCore(), state, tree, [1, 0, 0, 1, 0, 0], true, 'root', []);
+
+        const body = out[0].children[0].props._collapseBodyHeight as number;
+        expect(body).toBeGreaterThan(100);
+        // The next header starts below header(40) + the space the paragraph actually needs.
+        expect(out[0].children[1].props.y).toBe(40 + body);
+    });
+
+    it('keeps the historical 100px body when the content fits inside it', () => {
+        const state = new EngineState();
+        const tree = [
+            vnode(
+                'collapse',
+                { defaultActiveKeys: ['a'] },
+                [
+                    vnode(
+                        'collapseItem',
+                        { id: 'a' },
+                        [vnode('text', { text: 'short', width: 200, fontSize: 16 }, [], 'tx')],
+                        'i0',
+                    ),
+                    vnode('collapseItem', { id: 'b' }, [], 'i1'),
+                ],
+                'c',
+            ),
+        ];
+        const out = prepare(makeCore(), state, tree, [1, 0, 0, 1, 0, 0], true, 'root', []);
+
+        expect(out[0].children[0].props._collapseBodyHeight).toBe(100);
+        expect(out[0].children[1].props.y).toBe(140);
     });
 
     it('keeps only the first key when accordion mode is on', () => {

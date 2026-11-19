@@ -1,5 +1,5 @@
 import type { TransformProps } from '../../types';
-import { number, string, themeColor } from '../draw-utils';
+import { fitText, number, string, themeColor } from '../draw-utils';
 import { createComponent } from '../shared';
 
 export interface DropdownOption {
@@ -48,7 +48,15 @@ export function drawDropdown(context: CanvasRenderingContext2D, props: DropdownD
     context.fillStyle = selected
         ? string(props.color, themeColor(context, '--canvas-ui-dropdown-color', '#333'))
         : themeColor(context, '--canvas-ui-dropdown-placeholder-color', '#999');
-    context.fillText(selected?.label ?? string(props.placeholder, 'Select...'), 8, height / 2);
+    context.fillText(
+        fitText(
+            context,
+            selected?.label ?? string(props.placeholder, 'Select...'),
+            Math.max(0, width - 34),
+        ),
+        8,
+        height / 2,
+    );
     context.fillStyle = string(
         props.color,
         themeColor(context, '--canvas-ui-dropdown-color', '#555'),
@@ -77,7 +85,11 @@ export function drawDropdownOptions(
         context.fillStyle = option.disabled
             ? themeColor(context, '--canvas-ui-dropdown-disabled-color', '#aaa')
             : string(props.color, themeColor(context, '--canvas-ui-dropdown-color', '#333'));
-        context.fillText(option.label, 8, y + height / 2);
+        context.fillText(
+            fitText(context, option.label, Math.max(0, width - 16)),
+            8,
+            y + height / 2,
+        );
     });
 }
 

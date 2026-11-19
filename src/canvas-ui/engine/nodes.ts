@@ -94,6 +94,14 @@ export function controlSize(node: SceneNode): { width: number; height: number } 
             height: number(node.props.height, 0),
         };
     }
+    if (node.type === 'text') {
+        // A Text node has no intrinsic control size: `prepare` measures the box its wrapped lines
+        // need, and an explicitly declared width/height still takes precedence.
+        return {
+            width: componentWidth(node.props, number(node.props._textWidth, 0)),
+            height: componentHeight(node.props, number(node.props._textHeight, 0)),
+        };
+    }
     const widthFallback =
         node.type === 'upload'
             ? 120

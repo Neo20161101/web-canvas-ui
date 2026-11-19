@@ -7,8 +7,6 @@
   --canvas-ui-button-color: #ffffff;
   --canvas-ui-button-border: #1668dc;
   --canvas-ui-button-pressed-background: rgb(7.0745098039%, 33.4431372549%, 70.7450980392%);
-  --canvas-ui-button-disabled-background: #f5f5f5;
-  --canvas-ui-button-disabled-color: #bfbfbf;
   --canvas-ui-carousel-arrow: #ffffff;
   --canvas-ui-carousel-dot: rgba(255, 255, 255, 0.65);
   --canvas-ui-carousel-active-dot: #1668dc;
@@ -54,7 +52,6 @@
   --canvas-ui-slider-track: #f0f0f0;
   --canvas-ui-slider-active: #1668dc;
   --canvas-ui-slider-thumb: #ffffff;
-  --canvas-ui-slider-disabled-thumb: #bfbfbf;
   --canvas-ui-switch-on: #1668dc;
   --canvas-ui-switch-off: #d9d9d9;
   --canvas-ui-switch-thumb: #ffffff;
@@ -110,7 +107,6 @@
   --canvas-ui-icon-color: #e6e6e6;
   --canvas-ui-slider-track: #434343;
   --canvas-ui-slider-active: rgb(23.5650623886%, 52.0544482256%, 92.3565062389%);
-  --canvas-ui-slider-disabled-thumb: #595959;
   --canvas-ui-switch-on: #1668dc;
   --canvas-ui-switch-off: #434343;
   --canvas-ui-tabs-background: #1f1f1f;

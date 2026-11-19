@@ -10,11 +10,46 @@ interface MountedInput {
     events: InputEvents;
 }
 
+/**
+ * The CSS that makes the transparent element lay its text out where the Canvas drawing puts it: same
+ * font metrics, same horizontal inset. Left to the browser default font, a click is converted into a
+ * character index for one layout while the caret is painted for another, so the caret lands on the
+ * wrong glyph (and typing looks one character behind). Pure so it can be checked without a DOM.
+ */
+export function overlayTextStyle(
+    props: TextControlProps,
+    multiline: boolean,
+): Record<string, string> {
+    // DatePicker declares neither `padding` nor `fontFamily`; its drawing hard-codes 8px / sans-serif.
+    const padding = 'padding' in props && typeof props.padding === 'number' ? props.padding : 8;
+    const fontSize = typeof props.fontSize === 'number' ? props.fontSize : 14;
+    const declaredFont =
+        'fontFamily' in props && typeof props.fontFamily === 'string' ? props.fontFamily : '';
+    const fontFamily = declaredFont || 'sans-serif';
+    return {
+        fontFamily,
+        fontSize: `${fontSize}px`,
+        paddingLeft: `${padding}px`,
+        paddingRight: `${padding}px`,
+        // A textarea also needs the vertical inset and the 1.35 leading the Canvas line box uses.
+        ...(multiline
+            ? {
+                  paddingTop: `${padding}px`,
+                  paddingBottom: `${padding}px`,
+                  lineHeight: '1.35',
+                  overflowY: 'auto',
+                  overflowX: 'hidden',
+              }
+            : {}),
+    };
+}
+
 export class WebInputBridge implements WebInputBridgeContract {
     private readonly mounted = new Map<string, MountedInput>();
     private readonly fileInputs = new Set<HTMLInputElement>();
     private readonly originalDisplay: string;
     private overlayHidden = false;
+    private selectionTracked = 0;
     private readonly overlay: HTMLElement;
 
     constructor(overlay: HTMLElement) {
@@ -55,6 +90,7 @@ export class WebInputBridge implements WebInputBridgeContract {
         if (element instanceof HTMLTextAreaElement) {
             element.addEventListener('scroll', this.handleTextareaScroll);
         }
+        this.trackSelections();
         this.mounted.set(id, { element, events });
         this.overlay.appendChild(element);
         this.update(id, props, layout);
@@ -82,28 +118,18 @@ export class WebInputBridge implements WebInputBridgeContract {
             element.removeAttribute('maxLength');
         }
         if (element.value !== value) element.value = value;
+        const multiline = element instanceof HTMLTextAreaElement;
         Object.assign(element.style, {
             display: layout.visible ? 'block' : 'none',
             width: `${layout.width}px`,
             height: `${layout.height}px`,
             transform: `matrix(${layout.transform.join(',')})`,
             resize: 'none',
-            whiteSpace: element instanceof HTMLTextAreaElement ? 'pre-wrap' : 'normal',
+            whiteSpace: multiline ? 'pre-wrap' : 'normal',
+            ...overlayTextStyle(props, multiline),
         });
-        if (element instanceof HTMLTextAreaElement) {
-            const padding =
-                'padding' in props && typeof props.padding === 'number' ? props.padding : 8;
-            const fontSize = typeof props.fontSize === 'number' ? props.fontSize : 14;
+        if (multiline) {
             element.wrap = 'soft';
-            Object.assign(element.style, {
-                padding: `${padding}px`,
-                fontFamily:
-                    'fontFamily' in props ? (props.fontFamily ?? 'sans-serif') : 'sans-serif',
-                fontSize: `${fontSize}px`,
-                lineHeight: '1.35',
-                overflowY: 'auto',
-                overflowX: 'hidden',
-            });
             mounted.events.scroll(element.scrollTop, element.scrollHeight, element.clientHeight);
         }
     }
@@ -174,6 +200,7 @@ export class WebInputBridge implements WebInputBridgeContract {
         if (element instanceof HTMLTextAreaElement) {
             element.removeEventListener('scroll', this.handleTextareaScroll);
         }
+        this.untrackSelections();
         element.remove();
         this.mounted.delete(id);
     }
@@ -204,11 +231,43 @@ export class WebInputBridge implements WebInputBridgeContract {
 
     private readonly handleSelection = (event: Event) => {
         const mounted = this.find(event.currentTarget);
-        if (mounted) {
-            mounted.events.selection(
-                mounted.element.selectionStart ?? mounted.element.value.length,
+        if (!mounted) return;
+        mounted.events.selection(mounted.element.selectionStart ?? mounted.element.value.length);
+    };
+
+    /**
+     * `select` only fires when a range is created, so the interactions that just move the caret —
+     * clicking into the text, arrow keys, Home/End — report nothing, and the drawn caret stays pinned
+     * to wherever the last edit left it. `selectionchange` is the event that actually tracks the
+     * caret; it is document-scoped, hence one shared listener refcounted over the mounted controls
+     * (re-adding the same callback would be a no-op, and unmounting one must not stop the others).
+     */
+    private trackSelections(): void {
+        if (this.selectionTracked++ === 0) {
+            this.overlay.ownerDocument.addEventListener(
+                'selectionchange',
+                this.handleSelectionChange,
             );
         }
+    }
+
+    private untrackSelections(): void {
+        if (--this.selectionTracked === 0) {
+            this.overlay.ownerDocument.removeEventListener(
+                'selectionchange',
+                this.handleSelectionChange,
+            );
+        }
+    }
+
+    private readonly handleSelectionChange = () => {
+        const active = this.overlay.ownerDocument.activeElement;
+        if (!(active instanceof HTMLInputElement) && !(active instanceof HTMLTextAreaElement)) {
+            return;
+        }
+        const mounted = this.find(active);
+        if (!mounted) return;
+        mounted.events.selection(mounted.element.selectionStart ?? mounted.element.value.length);
     };
 
     private readonly handleFocus = (event: Event) => this.find(event.currentTarget)?.events.focus();

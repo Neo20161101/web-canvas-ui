@@ -14,6 +14,7 @@ import { syncImages } from './engine/images';
 import { prepare } from './engine/layout';
 import { advanceCarousels } from './engine/carousel';
 import { pointerDown, pointerMove, pointerUp, wheel } from './engine/interaction';
+import { invalidateThemeColors } from './components/draw-utils';
 import type { TextControlDescription } from './engine/state';
 import { EngineState } from './engine/state';
 import type { EngineCore } from './engine/state';
@@ -94,7 +95,12 @@ export class CanvasEngine {
         this.running = true;
         const Observer = this.context.canvas.ownerDocument.defaultView?.MutationObserver;
         if (Observer) {
-            this.themeObserver = new Observer(() => this.scene.markDirty());
+            this.themeObserver = new Observer(() => {
+                // A class/style change may flip any CSS custom property, so drop the memoised
+                // theme colours before repainting; the next draw recomputes them once per token.
+                invalidateThemeColors();
+                this.scene.markDirty();
+            });
             let element: Element | null = this.context.canvas;
             while (element) {
                 this.themeObserver.observe(element, {

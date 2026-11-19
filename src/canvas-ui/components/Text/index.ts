@@ -1,2 +1,2 @@
-export { Text, drawText } from './text';
-export type { TextProps } from './text';
+export { Text, drawText, measureTextBox } from './text';
+export type { TextBox, TextDrawProps, TextProps } from './text';

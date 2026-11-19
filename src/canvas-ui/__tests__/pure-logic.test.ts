@@ -4,6 +4,7 @@ import { checkboxSelection, radioSelection } from '../components/ChoiceGroup/log
 import { dropdownOptionAt, normalizeDropdownOptions } from '../components/Dropdown/logic';
 import { carouselControlIndex, carouselIndex } from '../components/Carousel/logic';
 import { sliderValueAt } from '../components/Slider/logic';
+import { overlayTextStyle } from '../input-bridge';
 
 describe('toggleCollapseKeys', () => {
     it('adds a new key and toggles it off when already active', () => {
@@ -111,5 +112,42 @@ describe('sliderValueAt', () => {
     });
     it('returns undefined for an inverted range', () => {
         expect(sliderValueAt({ min: 10, max: 10 }, 160, 80)).toBeUndefined();
+    });
+});
+
+describe('overlayTextStyle', () => {
+    it('mirrors the font and inset the Canvas draws with', () => {
+        expect(
+            overlayTextStyle({ fontSize: 20, fontFamily: 'monospace', padding: 12 }, false),
+        ).toMatchObject({
+            fontFamily: 'monospace',
+            fontSize: '20px',
+            paddingLeft: '12px',
+            paddingRight: '12px',
+        });
+    });
+
+    it('falls back to the drawing defaults when nothing is declared', () => {
+        const styles = overlayTextStyle({}, false);
+        expect(styles.fontSize).toBe('14px');
+        expect(styles.fontFamily).toBe('sans-serif');
+        expect(styles.paddingLeft).toBe('8px');
+        // A single-line control is vertically centred by the element itself, like the Canvas middle baseline.
+        expect(styles.paddingTop).toBeUndefined();
+    });
+
+    it('keeps the 1.35 leading and vertical padding for a textarea', () => {
+        expect(overlayTextStyle({ padding: 6 }, true)).toMatchObject({
+            paddingTop: '6px',
+            paddingBottom: '6px',
+            lineHeight: '1.35',
+        });
+    });
+
+    it('tolerates a datePicker, which declares neither padding nor fontFamily', () => {
+        expect(overlayTextStyle({ value: '2024-01-02' }, false)).toMatchObject({
+            paddingLeft: '8px',
+            fontFamily: 'sans-serif',
+        });
     });
 });

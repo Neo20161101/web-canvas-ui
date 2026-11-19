@@ -45,9 +45,10 @@ export function drawSlider(context: CanvasRenderingContext2D, props: SliderProps
     context.fill();
     context.beginPath();
     context.arc(thumbX, centerY, radius, 0, Math.PI * 2);
-    context.fillStyle = props.disabled
-        ? themeColor(context, '--canvas-ui-slider-disabled-thumb', '#bfbfbf')
-        : string(props.thumbColor, themeColor(context, '--canvas-ui-slider-thumb', '#fff'));
+    context.fillStyle = string(
+        props.thumbColor,
+        themeColor(context, '--canvas-ui-slider-thumb', '#fff'),
+    );
     context.fill();
     context.strokeStyle = string(
         props.activeColor,

@@ -1,3 +1,4 @@
+![Markdown Logo](./src/assets/web-canvas-ui-logo-bright.svg "web-canvas-ui")
 # Web Canvas UI (React, Vue 3, Svelte, Angular)
 
 [English](./README.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [繁體中文](./README.zh-TW.md) · [Русский](./README.ru.md) · [简体中文](./README.zh-CN.md)
@@ -42,7 +43,7 @@
 
 | 元件                          | CSS 自訂屬性                                                                                                                                                                                                                                                                                         |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Button / Upload               | `--canvas-ui-button-background`、`--canvas-ui-button-color`、`--canvas-ui-button-border`、`--canvas-ui-button-pressed-background`、`--canvas-ui-button-disabled-background`、`--canvas-ui-button-disabled-color`                                                                                     |
+| Button / Upload               | `--canvas-ui-button-background`、`--canvas-ui-button-color`、`--canvas-ui-button-border`、`--canvas-ui-button-pressed-background`                                                                                                                                                                    |
 | Carousel                      | `--canvas-ui-carousel-arrow`、`--canvas-ui-carousel-dot`、`--canvas-ui-carousel-active-dot`                                                                                                                                                                                                          |
 | Radio / Checkbox              | `--canvas-ui-choice-active`、`--canvas-ui-choice-border`、`--canvas-ui-choice-color`、`--canvas-ui-choice-disabled`、`--canvas-ui-choice-disabled-background`                                                                                                                                        |
 | Collapse                      | `--canvas-ui-collapse-header-background`、`--canvas-ui-collapse-border`、`--canvas-ui-collapse-color`、`--canvas-ui-collapse-disabled-color`                                                                                                                                                         |
@@ -51,7 +52,7 @@
 | Input / Textarea / DatePicker | `--canvas-ui-input-background`、`--canvas-ui-input-color`、`--canvas-ui-input-placeholder-color`、`--canvas-ui-input-border`、`--canvas-ui-input-focus-border`                                                                                                                                       |
 | Progress                      | `--canvas-ui-progress-track`、`--canvas-ui-progress-active`、`--canvas-ui-progress-text`                                                                                                                                                                                                             |
 | Rect / Circle / Text / Icon   | `--canvas-ui-rect-background`、`--canvas-ui-rect-border`、`--canvas-ui-circle-background`、`--canvas-ui-circle-border`、`--canvas-ui-text-color`、`--canvas-ui-icon-color`                                                                                                                           |
-| Slider                        | `--canvas-ui-slider-track`、`--canvas-ui-slider-active`、`--canvas-ui-slider-thumb`、`--canvas-ui-slider-disabled-thumb`                                                                                                                                                                             |
+| Slider                        | `--canvas-ui-slider-track`、`--canvas-ui-slider-active`、`--canvas-ui-slider-thumb`                                                                                                                                                                                                                  |
 | Switch                        | `--canvas-ui-switch-on`、`--canvas-ui-switch-off`、`--canvas-ui-switch-thumb`                                                                                                                                                                                                                        |
 | Tabs                          | `--canvas-ui-tabs-background`、`--canvas-ui-tabs-color`、`--canvas-ui-tabs-active-color`、`--canvas-ui-tabs-indicator`、`--canvas-ui-tabs-disabled-color`                                                                                                                                            |
 
@@ -460,6 +461,8 @@ import { Canvas, CustomDraw } from '/canvas-ui/react';
 
 直接子元件保留自己的 `x`、`y`，並疊加所在儲存格偏移。未傳 `cellWidth` 時按 `(width - gap * (columns - 1)) / columns` 計算等寬列；子元件自己的尺寸不會自動拉伸。
 
+每個子元件還會取得所在儲存格的可用盒子：沒有宣告 `width` 和 `maxLines` 的 `<Text>` 會依儲存格寬度換行，並在高度放不下時以省略符號截斷最後一行。`<GridItem>` 會把跨格後的區域下發給它分組的控制元件。顯式宣告這兩個屬性時永遠以宣告值為準，因此節點可以刻意比儲存格更窄。
+
 ```tsx
 <Grid columns={3} cellWidth={100} cellHeight={50} gap={8}>
     <Rect width={80} height={40} color="#f5f8fc" />
@@ -616,18 +619,18 @@ Angular 對應 `<canvas-tabs>` 和 `<canvas-tab-item>`，選取項變更使用 `
 
 每個 `CollapseItem` 的標題列可點擊展開或摺疊，子元件作為面板內容。
 
-| 元件           | 屬性                                            | 型別                       | 說明                                   |
-| -------------- | ----------------------------------------------- | -------------------------- | -------------------------------------- |
-| `Collapse`     | `width`                                         | `number`                   | 面板寬度，必需。                       |
-| `Collapse`     | `activeKeys` / `defaultActiveKeys`              | `string[]`                 | 受控展開項 / 非受控初始展開項。        |
-| `Collapse`     | `accordion`                                     | `boolean`                  | 預設 `false`；為 `true` 時單項展開。   |
-| `Collapse`     | `headerHeight`                                  | `number`                   | 標題列高度，預設 `40`。                |
-| `Collapse`     | `backgroundColor` / `textColor` / `borderColor` | `string`                   | 所有標題列的預設背景、文字和邊框顏色。 |
-| `Collapse`     | `onChange`                                      | `(keys: string[]) => void` | 展開項變化回呼。                       |
-| `CollapseItem` | `id` / `title`                                  | `string`                   | 面板唯一識別碼和標題，必需。           |
-| `CollapseItem` | `height`                                        | `number`                   | 展開內容高度，預設 `100`。             |
-| `CollapseItem` | `disabled`                                      | `boolean`                  | 禁止展開/摺疊。                        |
-| `CollapseItem` | `backgroundColor` / `textColor` / `borderColor` | `string`                   | 覆蓋該項標題列的顏色。                 |
+| 元件           | 屬性                                            | 型別                       | 說明                                                                         |
+| -------------- | ----------------------------------------------- | -------------------------- | ---------------------------------------------------------------------------- |
+| `Collapse`     | `width`                                         | `number`                   | 面板寬度，必需。                                                             |
+| `Collapse`     | `activeKeys` / `defaultActiveKeys`              | `string[]`                 | 受控展開項 / 非受控初始展開項。                                              |
+| `Collapse`     | `accordion`                                     | `boolean`                  | 預設 `false`；為 `true` 時單項展開。                                         |
+| `Collapse`     | `headerHeight`                                  | `number`                   | 標題列高度，預設 `40`。                                                      |
+| `Collapse`     | `backgroundColor` / `textColor` / `borderColor` | `string`                   | 所有標題列的預設背景、文字和邊框顏色。                                       |
+| `Collapse`     | `onChange`                                      | `(keys: string[]) => void` | 展開項變化回呼。                                                             |
+| `CollapseItem` | `id` / `title`                                  | `string`                   | 面板唯一識別碼和標題，必需。                                                 |
+| `CollapseItem` | `height`                                        | `number`                   | 展開內容高度。預設依子節點所需空間計算，且不低於 `100`；顯式指定時始終生效。 |
+| `CollapseItem` | `disabled`                                      | `boolean`                  | 禁止展開/摺疊。                                                              |
+| `CollapseItem` | `backgroundColor` / `textColor` / `borderColor` | `string`                   | 覆蓋該項標題列的顏色。                                                       |
 
 ```tsx
 <Collapse width={320} defaultActiveKeys={['details']} accordion>
@@ -702,18 +705,19 @@ Angular 使用 `<canvas-dialog>`，對應 `open` 輸入及 `(confirm)` / `(cance
 
 ### `<Text>`
 
-繪製單行或自動換行文字。支援[通用屬性](#通用屬性)。
+繪製單行或自動換行文字。節點會報告排版後各行的實際佔用尺寸，`<CollapseItem>` 等容器可據此自適應高度。支援[通用屬性](#通用屬性)。
 
-| 屬性         | 型別                            |         預設值 | 說明                                                       |
-| ------------ | ------------------------------- | -------------: | ---------------------------------------------------------- |
-| `text`       | `string`                        |              — | 文字內容。                                                 |
-| 子內容       | `string \| number`              |              — | 各框架可用對應的範本文字代替 `text`。                      |
-| `fontSize`   | `number`                        |           `16` | 字級，單位為邏輯像素。                                     |
-| `width`      | `number`                        |              — | 最大行寬；超出後自動換行。中文等寬字元也會依測量寬度換行。 |
-| `fontFamily` | `string`                        | `"sans-serif"` | 字體族。                                                   |
-| `color`      | `string`                        |       `"#333"` | 字型顏色。                                                 |
-| `baseline`   | `CanvasTextBaseline`            |        `"top"` | Canvas 文字基線。                                          |
-| `textAlign`  | `"left" \| "center" \| "right"` |       `"left"` | 文字水平對齊方式；設定 `width` 時相對於文字區域對齊。      |
+| 屬性         | 型別                            |         預設值 | 說明                                                                                                                 |
+| ------------ | ------------------------------- | -------------: | -------------------------------------------------------------------------------------------------------------------- |
+| `text`       | `string`                        |              — | 文字內容。                                                                                                           |
+| 子內容       | `string \| number`              |              — | 各框架可用對應的範本文字代替 `text`。                                                                                |
+| `fontSize`   | `number`                        |           `16` | 字級，單位為邏輯像素。                                                                                               |
+| `width`      | `number`                        |              — | 最大行寬；超出後自動換行。中文等寬字元也會依測量寬度換行。在 `<Grid>` 內未宣告時取儲存格寬度。                       |
+| `maxLines`   | `number`                        |              — | 最大顯示行數；最後一行超出部分以省略符號截斷。在 `<Grid>` 內未宣告時依儲存格能容納的行數取值；兩者都未給出時不限制。 |
+| `fontFamily` | `string`                        | `"sans-serif"` | 字體族。                                                                                                             |
+| `color`      | `string`                        |       `"#333"` | 字型顏色。                                                                                                           |
+| `baseline`   | `CanvasTextBaseline`            |        `"top"` | Canvas 文字基線。                                                                                                    |
+| `textAlign`  | `"left" \| "center" \| "right"` |       `"left"` | 文字水平對齊方式；設定 `width` 時相對於文字區域對齊。                                                                |
 
 ### `<Icon>`
 
@@ -773,19 +777,22 @@ Angular 使用 `<canvas-dialog>`，對應 `open` 輸入及 `(confirm)` / `(cance
 
 ### `<Upload>`
 
-繪製檔案選擇按鈕。點擊後開啟瀏覽器本地檔案選擇器；此元件不負責上傳到伺服器。
+繪製檔案選擇按鈕，內建向量圖示與文字會作為一個群組水平置中。點擊後開啟瀏覽器本地檔案選擇器；此元件不負責上傳到伺服器。
 
-| 屬性               | 型別                      |       預設值 | 說明                                  |
-| ------------------ | ------------------------- | -----------: | ------------------------------------- |
-| `width` / `height` | `number`                  | `120` / `40` | 按鈕寬高。                            |
-| `text`             | `string`                  | `"選擇檔案"` | 按鈕文字。                            |
-| `accept`           | `string`                  |            — | 檔案類型篩選，例如 `"image/*,.pdf"`。 |
-| `multiple`         | `boolean`                 |      `false` | 是否允許選擇多個檔案。                |
-| `disabled`         | `boolean`                 |      `false` | 停用檔案選擇。                        |
-| `onChange`         | `(files: File[]) => void` |            — | 選擇檔案後回呼；取消選擇時不觸發。    |
+| 屬性               | 型別                      |           預設值 | 說明                                                              |
+| ------------------ | ------------------------- | ---------------: | ----------------------------------------------------------------- |
+| `width` / `height` | `number`                  |     `120` / `40` | 按鈕寬高。                                                        |
+| `text`             | `string`                  |  `"Choose File"` | 按鈕文字。                                                        |
+| `icon`             | `IconName`                |       `"upload"` | 顯示在文字前的內建圖示，可傳 [`<Icon>`](#icon) 中的任意圖示名稱。 |
+| `iconSize`         | `number`                  | `fontSize × 1.1` | 圖示尺寸。                                                        |
+| `accept`           | `string`                  |                — | 檔案類型篩選，例如 `"image/*,.pdf"`。                             |
+| `multiple`         | `boolean`                 |          `false` | 是否允許選擇多個檔案。                                            |
+| `disabled`         | `boolean`                 |          `false` | 停用檔案選擇。                                                    |
+| `onChange`         | `(files: File[]) => void` |                — | 選擇檔案後回呼；取消選擇時不觸發。                                |
 
 ```tsx
 <Upload accept="image/*" multiple onChange={(files) => console.log(files)} />
+<Upload icon="cloud" text="Upload Photos" />
 ```
 
 Angular 使用 `<canvas-upload>` 並透過 `(change)` 取得 `File[]`。

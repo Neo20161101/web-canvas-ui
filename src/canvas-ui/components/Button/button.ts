@@ -1,5 +1,5 @@
 import type { TransformProps } from '../../types';
-import { number, string, themeColor } from '../draw-utils';
+import { fitText, number, string, themeColor } from '../draw-utils';
 import { createComponent } from '../shared';
 
 export interface ButtonProps extends TransformProps {
@@ -27,14 +27,12 @@ export function drawButton(context: CanvasRenderingContext2D, props: ButtonDrawP
     const radius = number(props.borderRadius, 6);
     context.beginPath();
     context.roundRect(0, 0, width, height, radius);
-    context.fillStyle = props.disabled
-        ? themeColor(context, '--canvas-ui-button-disabled-background', '#f5f5f5')
-        : props.pressed
-          ? themeColor(context, '--canvas-ui-button-pressed-background', '#0958d9')
-          : string(
-                props.backgroundColor,
-                themeColor(context, '--canvas-ui-button-background', '#1677ff'),
-            );
+    context.fillStyle = props.pressed
+        ? themeColor(context, '--canvas-ui-button-pressed-background', '#0958d9')
+        : string(
+              props.backgroundColor,
+              themeColor(context, '--canvas-ui-button-background', '#1677ff'),
+          );
     context.fill();
     if (props.borderColor) {
         context.strokeStyle = string(
@@ -50,6 +48,10 @@ export function drawButton(context: CanvasRenderingContext2D, props: ButtonDrawP
         props.fontColor,
         themeColor(context, '--canvas-ui-button-color', '#fff'),
     );
-    context.fillText(String(props.text ?? ''), width / 2, height / 2);
+    context.fillText(
+        fitText(context, String(props.text ?? ''), Math.max(0, width - 16)),
+        width / 2,
+        height / 2,
+    );
     context.textAlign = 'left';
 }

@@ -1,3 +1,4 @@
+![Markdown Logo](./src/assets/web-canvas-ui-logo-bright.svg "web-canvas-ui")
 # Web Canvas UI (React, Vue 3, Svelte, Angular)
 
 [English](./README.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [繁體中文](./README.zh-TW.md) · [Русский](./README.ru.md) · [简体中文](./README.zh-CN.md)
@@ -42,7 +43,7 @@ For example, adding both `dark` and `theme-purple` — or `data-theme="dark"` an
 
 | Component                     | CSS custom properties                                                                                                                                                                                                                                                                                |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Button / Upload               | `--canvas-ui-button-background`, `--canvas-ui-button-color`, `--canvas-ui-button-border`, `--canvas-ui-button-pressed-background`, `--canvas-ui-button-disabled-background`, `--canvas-ui-button-disabled-color`                                                                                     |
+| Button / Upload               | `--canvas-ui-button-background`, `--canvas-ui-button-color`, `--canvas-ui-button-border`, `--canvas-ui-button-pressed-background`                                                                                                                                                                    |
 | Carousel                      | `--canvas-ui-carousel-arrow`, `--canvas-ui-carousel-dot`, `--canvas-ui-carousel-active-dot`                                                                                                                                                                                                          |
 | Radio / Checkbox              | `--canvas-ui-choice-active`, `--canvas-ui-choice-border`, `--canvas-ui-choice-color`, `--canvas-ui-choice-disabled`, `--canvas-ui-choice-disabled-background`                                                                                                                                        |
 | Collapse                      | `--canvas-ui-collapse-header-background`, `--canvas-ui-collapse-border`, `--canvas-ui-collapse-color`, `--canvas-ui-collapse-disabled-color`                                                                                                                                                         |
@@ -51,7 +52,7 @@ For example, adding both `dark` and `theme-purple` — or `data-theme="dark"` an
 | Input / Textarea / DatePicker | `--canvas-ui-input-background`, `--canvas-ui-input-color`, `--canvas-ui-input-placeholder-color`, `--canvas-ui-input-border`, `--canvas-ui-input-focus-border`                                                                                                                                       |
 | Progress                      | `--canvas-ui-progress-track`, `--canvas-ui-progress-active`, `--canvas-ui-progress-text`                                                                                                                                                                                                             |
 | Rect / Circle / Text / Icon   | `--canvas-ui-rect-background`, `--canvas-ui-rect-border`, `--canvas-ui-circle-background`, `--canvas-ui-circle-border`, `--canvas-ui-text-color`, `--canvas-ui-icon-color`                                                                                                                           |
-| Slider                        | `--canvas-ui-slider-track`, `--canvas-ui-slider-active`, `--canvas-ui-slider-thumb`, `--canvas-ui-slider-disabled-thumb`                                                                                                                                                                             |
+| Slider                        | `--canvas-ui-slider-track`, `--canvas-ui-slider-active`, `--canvas-ui-slider-thumb`                                                                                                                                                                                                                  |
 | Switch                        | `--canvas-ui-switch-on`, `--canvas-ui-switch-off`, `--canvas-ui-switch-thumb`                                                                                                                                                                                                                        |
 | Tabs                          | `--canvas-ui-tabs-background`, `--canvas-ui-tabs-color`, `--canvas-ui-tabs-active-color`, `--canvas-ui-tabs-indicator`, `--canvas-ui-tabs-disabled-color`                                                                                                                                            |
 
@@ -460,6 +461,8 @@ Places children in order into fixed-size cells, wrapping to the next row once a 
 
 Direct children keep their own `x` and `y`, plus the offset of the cell they fall into. When `cellWidth` is not passed, columns are equal-width: `(width - gap * (columns - 1)) / columns`. A child's own size is not automatically stretched.
 
+Every child is also handed the box of the cell it occupies: a `<Text>` that declares neither `width` nor `maxLines` wraps to the cell width and stops with an ellipsis once the lines no longer fit `cellHeight`. A `<GridItem>` passes its span-expanded area down to the controls it groups. Declaring either prop overrides the cell box, so a node can stay deliberately narrower than its cell.
+
 ```tsx
 <Grid columns={3} cellWidth={100} cellHeight={50} gap={8}>
     <Rect width={80} height={40} color="#f5f8fc" />
@@ -616,18 +619,18 @@ Angular counterparts are `<canvas-tabs>` and `<canvas-tab-item>`; selection chan
 
 Each `CollapseItem` header toggles its panel; children serve as panel content.
 
-| Component      | Prop                                            | Type                       | Description                                                           |
-| -------------- | ----------------------------------------------- | -------------------------- | --------------------------------------------------------------------- |
-| `Collapse`     | `width`                                         | `number`                   | Panel width; required.                                                |
-| `Collapse`     | `activeKeys` / `defaultActiveKeys`              | `string[]`                 | Controlled expanded items / uncontrolled initial expanded items.      |
-| `Collapse`     | `accordion`                                     | `boolean`                  | Default `false`; when `true` only one item can be expanded at a time. |
-| `Collapse`     | `headerHeight`                                  | `number`                   | Header bar height; default `40`.                                      |
-| `Collapse`     | `backgroundColor` / `textColor` / `borderColor` | `string`                   | Default background, text, and border colors for all headers.          |
-| `Collapse`     | `onChange`                                      | `(keys: string[]) => void` | Fires when the expanded set changes.                                  |
-| `CollapseItem` | `id` / `title`                                  | `string`                   | Unique panel identifier and title; required.                          |
-| `CollapseItem` | `height`                                        | `number`                   | Expanded content height; default `100`.                               |
-| `CollapseItem` | `disabled`                                      | `boolean`                  | Blocks expand/collapse.                                               |
-| `CollapseItem` | `backgroundColor` / `textColor` / `borderColor` | `string`                   | Overrides the corresponding colors for this item's header.            |
+| Component      | Prop                                            | Type                       | Description                                                                                                         |
+| -------------- | ----------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `Collapse`     | `width`                                         | `number`                   | Panel width; required.                                                                                              |
+| `Collapse`     | `activeKeys` / `defaultActiveKeys`              | `string[]`                 | Controlled expanded items / uncontrolled initial expanded items.                                                    |
+| `Collapse`     | `accordion`                                     | `boolean`                  | Default `false`; when `true` only one item can be expanded at a time.                                               |
+| `Collapse`     | `headerHeight`                                  | `number`                   | Header bar height; default `40`.                                                                                    |
+| `Collapse`     | `backgroundColor` / `textColor` / `borderColor` | `string`                   | Default background, text, and border colors for all headers.                                                        |
+| `Collapse`     | `onChange`                                      | `(keys: string[]) => void` | Fires when the expanded set changes.                                                                                |
+| `CollapseItem` | `id` / `title`                                  | `string`                   | Unique panel identifier and title; required.                                                                        |
+| `CollapseItem` | `height`                                        | `number`                   | Expanded content height. Defaults to the space its children need, never below `100`; an explicit value always wins. |
+| `CollapseItem` | `disabled`                                      | `boolean`                  | Blocks expand/collapse.                                                                                             |
+| `CollapseItem` | `backgroundColor` / `textColor` / `borderColor` | `string`                   | Overrides the corresponding colors for this item's header.                                                          |
 
 ```tsx
 <Collapse width={320} defaultActiveKeys={['details']} accordion>
@@ -702,18 +705,19 @@ Draws a circle. Supports [Common Props](#common-props).
 
 ### `<Text>`
 
-Draws single-line or auto-wrapped text. Supports [Common Props](#common-props).
+Draws single-line or auto-wrapped text. The node reports the box its rendered lines actually need, so containers such as `<CollapseItem>` can size themselves to it. Supports [Common Props](#common-props).
 
-| Prop         | Type                            |        Default | Description                                                                                           |
-| ------------ | ------------------------------- | -------------: | ----------------------------------------------------------------------------------------------------- |
-| `text`       | `string`                        |              — | Text content.                                                                                         |
-| Children     | `string \| number`              |              — | Each framework can supply text via native template children in place of `text`.                       |
-| `fontSize`   | `number`                        |           `16` | Font size, in logical pixels.                                                                         |
-| `width`      | `number`                        |              — | Max line width; content wraps beyond it. Monospaced CJK characters also wrap based on measured width. |
-| `fontFamily` | `string`                        | `"sans-serif"` | Font family.                                                                                          |
-| `color`      | `string`                        |       `"#333"` | Font color.                                                                                           |
-| `baseline`   | `CanvasTextBaseline`            |        `"top"` | Canvas text baseline.                                                                                 |
-| `textAlign`  | `"left" \| "center" \| "right"` |       `"left"` | Horizontal text alignment; when `width` is set, alignment is relative to the text box.                |
+| Prop         | Type                            |        Default | Description                                                                                                                                                      |
+| ------------ | ------------------------------- | -------------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `text`       | `string`                        |              — | Text content.                                                                                                                                                    |
+| Children     | `string \| number`              |              — | Each framework can supply text via native template children in place of `text`.                                                                                  |
+| `fontSize`   | `number`                        |           `16` | Font size, in logical pixels.                                                                                                                                    |
+| `width`      | `number`                        |              — | Max line width; content wraps beyond it. Monospaced CJK characters also wrap based on measured width. Inside a `<Grid>`, defaults to the cell's width.           |
+| `maxLines`   | `number`                        |              — | Maximum lines to show; the last visible line is cut with an ellipsis. Inside a `<Grid>`, defaults to the lines that fit the cell; unlimited when neither is set. |
+| `fontFamily` | `string`                        | `"sans-serif"` | Font family.                                                                                                                                                     |
+| `color`      | `string`                        |       `"#333"` | Font color.                                                                                                                                                      |
+| `baseline`   | `CanvasTextBaseline`            |        `"top"` | Canvas text baseline.                                                                                                                                            |
+| `textAlign`  | `"left" \| "center" \| "right"` |       `"left"` | Horizontal text alignment; when `width` is set, alignment is relative to the text box.                                                                           |
 
 ### `<Icon>`
 
@@ -779,19 +783,22 @@ Multi-line text input; inherits value, size, style, and callback props from `<In
 
 ### `<Upload>`
 
-Draws a file-picker button. Clicking opens the browser's native file picker; this component does not upload to a server.
+Draws a file-picker button. A built-in vector icon and the label are drawn together as one horizontally centered group. Clicking opens the browser's native file picker; this component does not upload to a server.
 
-| Prop               | Type                      |          Default | Description                                                 |
-| ------------------ | ------------------------- | ---------------: | ----------------------------------------------------------- |
-| `width` / `height` | `number`                  |     `120` / `40` | Button size.                                                |
-| `text`             | `string`                  | `"Select Files"` | Button label.                                               |
-| `accept`           | `string`                  |                — | File type filter, e.g. `"image/*,.pdf"`.                    |
-| `multiple`         | `boolean`                 |          `false` | Allow multi-selection.                                      |
-| `disabled`         | `boolean`                 |          `false` | Disables file selection.                                    |
-| `onChange`         | `(files: File[]) => void` |                — | Fires after files are selected; canceled picks do not fire. |
+| Prop               | Type                      |          Default | Description                                                                |
+| ------------------ | ------------------------- | ---------------: | -------------------------------------------------------------------------- |
+| `width` / `height` | `number`                  |     `120` / `40` | Button size.                                                               |
+| `text`             | `string`                  |  `"Choose File"` | Button label.                                                              |
+| `icon`             | `IconName`                |       `"upload"` | Built-in icon drawn before the label; use any name from [`<Icon>`](#icon). |
+| `iconSize`         | `number`                  | `fontSize × 1.1` | Icon size.                                                                 |
+| `accept`           | `string`                  |                — | File type filter, e.g. `"image/*,.pdf"`.                                   |
+| `multiple`         | `boolean`                 |          `false` | Allow multi-selection.                                                     |
+| `disabled`         | `boolean`                 |          `false` | Disables file selection.                                                   |
+| `onChange`         | `(files: File[]) => void` |                — | Fires after files are selected; canceled picks do not fire.                |
 
 ```tsx
 <Upload accept="image/*" multiple onChange={(files) => console.log(files)} />
+<Upload icon="cloud" text="Upload Photos" />
 ```
 
 Angular uses `<canvas-upload>` and receives `File[]` via `(change)`.

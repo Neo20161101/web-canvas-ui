@@ -1,5 +1,5 @@
 import type { TransformProps } from '../../types';
-import { number, string, themeColor } from '../draw-utils';
+import { fitText, number, string, themeColor } from '../draw-utils';
 import { createComponent } from '../shared';
 
 export interface CollapseProps extends TransformProps {
@@ -58,7 +58,11 @@ export function drawCollapseItem(
         ? themeColor(context, '--canvas-ui-collapse-disabled-color', '#bfbfbf')
         : string(props.textColor, themeColor(context, '--canvas-ui-collapse-color', '#262626'));
     context.fillText(
-        `${props._expanded ? '−' : '+'}  ${String(props.title ?? '')}`,
+        fitText(
+            context,
+            `${props._expanded ? '−' : '+'}  ${String(props.title ?? '')}`,
+            Math.max(0, width - 24),
+        ),
         12,
         headerHeight / 2,
     );

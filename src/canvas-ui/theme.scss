@@ -89,8 +89,6 @@ $text-placeholder-dark: #8c8c8c;
   --canvas-ui-button-color: #{$white};
   --canvas-ui-button-border: #{$primary};
   --canvas-ui-button-pressed-background: #{$primary-hover};
-  --canvas-ui-button-disabled-background: #{$gray-100};
-  --canvas-ui-button-disabled-color: #{$gray-400};
 
   --canvas-ui-carousel-arrow: #{$white};
   --canvas-ui-carousel-dot: rgba(255, 255, 255, 0.65);
@@ -145,7 +143,6 @@ $text-placeholder-dark: #8c8c8c;
   --canvas-ui-slider-track: #{$gray-150};
   --canvas-ui-slider-active: #{$primary};
   --canvas-ui-slider-thumb: #{$white};
-  --canvas-ui-slider-disabled-thumb: #{$gray-400};
 
   --canvas-ui-switch-on: #{$primary};
   --canvas-ui-switch-off: #{$gray-300};
@@ -213,7 +210,6 @@ $text-placeholder-dark: #8c8c8c;
 
   --canvas-ui-slider-track: #{$gray-700};
   --canvas-ui-slider-active: #{$primary-dark};
-  --canvas-ui-slider-disabled-thumb: #{$gray-600};
 
   --canvas-ui-switch-on: #{$primary};
   --canvas-ui-switch-off: #{$gray-700};

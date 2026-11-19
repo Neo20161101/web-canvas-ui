@@ -36,6 +36,7 @@ const PROP_KEYS = [
     'fontFamily',
     'baseline',
     'textAlign',
+    'maxLines',
     'value',
     'defaultValue',
     'placeholder',
@@ -97,6 +98,8 @@ const PROP_KEYS = [
     'onScroll',
     'accept',
     'multiple',
+    'icon',
+    'iconSize',
     'activeIndex',
     'defaultActiveIndex',
     'autoplay',
@@ -146,6 +149,7 @@ export abstract class CanvasNodeDirective {
     @AngularInput() fontFamily?: CanvasNodePropValue<'fontFamily'>;
     @AngularInput() baseline?: CanvasNodePropValue<'baseline'>;
     @AngularInput() textAlign?: CanvasNodePropValue<'textAlign'>;
+    @AngularInput() maxLines?: CanvasNodePropValue<'maxLines'>;
 
     @AngularInput() value?: CanvasNodePropValue<'value'>;
     @AngularInput() defaultValue?: CanvasNodePropValue<'defaultValue'>;
@@ -204,6 +208,8 @@ export abstract class CanvasNodeDirective {
     @AngularInput() onScroll?: CanvasNodePropValue<'onScroll'>;
     @AngularInput() accept?: CanvasNodePropValue<'accept'>;
     @AngularInput() multiple?: CanvasNodePropValue<'multiple'>;
+    @AngularInput() icon?: CanvasNodePropValue<'icon'>;
+    @AngularInput() iconSize?: CanvasNodePropValue<'iconSize'>;
     @AngularInput() activeIndex?: CanvasNodePropValue<'activeIndex'>;
     @AngularInput() defaultActiveIndex?: CanvasNodePropValue<'defaultActiveIndex'>;
     @AngularInput() autoplay?: CanvasNodePropValue<'autoplay'>;

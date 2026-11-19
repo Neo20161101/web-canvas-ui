@@ -1,3 +1,4 @@
+![Markdown Logo](./src/assets/web-canvas-ui-logo-bright.svg "web-canvas-ui")
 # Web Canvas UI (React, Vue 3, Svelte, Angular)
 
 [English](./README.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [繁體中文](./README.zh-TW.md) · [Русский](./README.ru.md) · [简体中文](./README.zh-CN.md)
@@ -42,7 +43,7 @@ Canvas 2D 기반 선언형 컴포넌트 라이브러리로 **React**, **Vue 3**,
 
 | 컴포넌트                      | CSS 커스텀 프로퍼티                                                                                                                                                                                                                                                                                  |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Button / Upload               | `--canvas-ui-button-background`, `--canvas-ui-button-color`, `--canvas-ui-button-border`, `--canvas-ui-button-pressed-background`, `--canvas-ui-button-disabled-background`, `--canvas-ui-button-disabled-color`                                                                                     |
+| Button / Upload               | `--canvas-ui-button-background`, `--canvas-ui-button-color`, `--canvas-ui-button-border`, `--canvas-ui-button-pressed-background`                                                                                                                                                                    |
 | Carousel                      | `--canvas-ui-carousel-arrow`, `--canvas-ui-carousel-dot`, `--canvas-ui-carousel-active-dot`                                                                                                                                                                                                          |
 | Radio / Checkbox              | `--canvas-ui-choice-active`, `--canvas-ui-choice-border`, `--canvas-ui-choice-color`, `--canvas-ui-choice-disabled`, `--canvas-ui-choice-disabled-background`                                                                                                                                        |
 | Collapse                      | `--canvas-ui-collapse-header-background`, `--canvas-ui-collapse-border`, `--canvas-ui-collapse-color`, `--canvas-ui-collapse-disabled-color`                                                                                                                                                         |
@@ -51,7 +52,7 @@ Canvas 2D 기반 선언형 컴포넌트 라이브러리로 **React**, **Vue 3**,
 | Input / Textarea / DatePicker | `--canvas-ui-input-background`, `--canvas-ui-input-color`, `--canvas-ui-input-placeholder-color`, `--canvas-ui-input-border`, `--canvas-ui-input-focus-border`                                                                                                                                       |
 | Progress                      | `--canvas-ui-progress-track`, `--canvas-ui-progress-active`, `--canvas-ui-progress-text`                                                                                                                                                                                                             |
 | Rect / Circle / Text / Icon   | `--canvas-ui-rect-background`, `--canvas-ui-rect-border`, `--canvas-ui-circle-background`, `--canvas-ui-circle-border`, `--canvas-ui-text-color`, `--canvas-ui-icon-color`                                                                                                                           |
-| Slider                        | `--canvas-ui-slider-track`, `--canvas-ui-slider-active`, `--canvas-ui-slider-thumb`, `--canvas-ui-slider-disabled-thumb`                                                                                                                                                                             |
+| Slider                        | `--canvas-ui-slider-track`, `--canvas-ui-slider-active`, `--canvas-ui-slider-thumb`                                                                                                                                                                                                                  |
 | Switch                        | `--canvas-ui-switch-on`, `--canvas-ui-switch-off`, `--canvas-ui-switch-thumb`                                                                                                                                                                                                                        |
 | Tabs                          | `--canvas-ui-tabs-background`, `--canvas-ui-tabs-color`, `--canvas-ui-tabs-active-color`, `--canvas-ui-tabs-indicator`, `--canvas-ui-tabs-disabled-color`                                                                                                                                            |
 
@@ -460,6 +461,8 @@ import { Canvas, CustomDraw } from '/canvas-ui/react';
 
 직접 자식은 자신의 `x`, `y`를 유지하고 배치된 cell의 offset이 더해집니다. `cellWidth` 미지정 시 `(width - gap * (columns - 1)) / columns`로 균등 폭을 계산합니다. 자식의 크기는 자동으로 늘어나지 않습니다.
 
+각 자식에는 점유하는 cell의 박스도 전달됩니다. `width`와 `maxLines`를 지정하지 않은 `<Text>`는 cell 폭으로 줄바꿈하고 `cellHeight`에 넘치는 마지막 줄을 줄임표로 잘라냅니다. `<GridItem>`은 span 후의 영역을 내부 컨트롤에 전달합니다. 값을 직접 지정하면 cell 박스보다 항상 우선하므로 cell보다 의도적으로 좁게 둘 수 있습니다.
+
 ```tsx
 <Grid columns={3} cellWidth={100} cellHeight={50} gap={8}>
     <Rect width={80} height={40} color="#f5f8fc" />
@@ -616,18 +619,18 @@ Angular는 `<canvas-tabs>`와 `<canvas-tab-item>`을 사용하며, 선택 변경
 
 각 `CollapseItem`의 헤더 바를 클릭해 펼치기/접기를 전환하고, 자식 요소를 panel content로 사용합니다.
 
-| 컴포넌트       | 속성                                            | 타입                       | 설명                                                    |
-| -------------- | ----------------------------------------------- | -------------------------- | ------------------------------------------------------- |
-| `Collapse`     | `width`                                         | `number`                   | panel 너비. 필수.                                       |
-| `Collapse`     | `activeKeys` / `defaultActiveKeys`              | `string[]`                 | Controlled 펼쳐진 항목 / uncontrolled 초기 펼쳐진 항목. |
-| `Collapse`     | `accordion`                                     | `boolean`                  | 기본 `false`. `true`면 단일 항목만 펼쳐짐.              |
-| `Collapse`     | `headerHeight`                                  | `number`                   | 헤더 바 높이. 기본 `40`.                                |
-| `Collapse`     | `backgroundColor` / `textColor` / `borderColor` | `string`                   | 모든 헤더의 기본 배경·텍스트·border 색상.               |
-| `Collapse`     | `onChange`                                      | `(keys: string[]) => void` | 펼침 집합 변경 callback.                                |
-| `CollapseItem` | `id` / `title`                                  | `string`                   | panel 고유 식별자와 제목. 필수.                         |
-| `CollapseItem` | `height`                                        | `number`                   | 펼침 시 콘텐츠 높이. 기본 `100`.                        |
-| `CollapseItem` | `disabled`                                      | `boolean`                  | 펼치기/접기 금지.                                       |
-| `CollapseItem` | `backgroundColor` / `textColor` / `borderColor` | `string`                   | 해당 항목 헤더 색상 override.                           |
+| 컴포넌트       | 속성                                            | 타입                       | 설명                                                                                                |
+| -------------- | ----------------------------------------------- | -------------------------- | --------------------------------------------------------------------------------------------------- |
+| `Collapse`     | `width`                                         | `number`                   | panel 너비. 필수.                                                                                   |
+| `Collapse`     | `activeKeys` / `defaultActiveKeys`              | `string[]`                 | Controlled 펼쳐진 항목 / uncontrolled 초기 펼쳐진 항목.                                             |
+| `Collapse`     | `accordion`                                     | `boolean`                  | 기본 `false`. `true`면 단일 항목만 펼쳐짐.                                                          |
+| `Collapse`     | `headerHeight`                                  | `number`                   | 헤더 바 높이. 기본 `40`.                                                                            |
+| `Collapse`     | `backgroundColor` / `textColor` / `borderColor` | `string`                   | 모든 헤더의 기본 배경·텍스트·border 색상.                                                           |
+| `Collapse`     | `onChange`                                      | `(keys: string[]) => void` | 펼침 집합 변경 callback.                                                                            |
+| `CollapseItem` | `id` / `title`                                  | `string`                   | panel 고유 식별자와 제목. 필수.                                                                     |
+| `CollapseItem` | `height`                                        | `number`                   | 펼침 시 콘텐츠 높이. 자식 노드에 필요한 높이로 자동 계산되며 최소 `100`. 명시 값이 항상 우선됩니다. |
+| `CollapseItem` | `disabled`                                      | `boolean`                  | 펼치기/접기 금지.                                                                                   |
+| `CollapseItem` | `backgroundColor` / `textColor` / `borderColor` | `string`                   | 해당 항목 헤더 색상 override.                                                                       |
 
 ```tsx
 <Collapse width={320} defaultActiveKeys={['details']} accordion>
@@ -702,18 +705,19 @@ Angular는 `<canvas-dialog>`와 `open` input, `(confirm)` / `(cancel)` output을
 
 ### `<Text>`
 
-한 줄 또는 자동 줄바꿈 텍스트를 그립니다. [공통 속성](#공통-속성)을 지원합니다.
+한 줄 또는 자동 줄바꿈 텍스트를 그립니다. 노드는 줄바꿈 결과 실제로 필요한 크기를 보고하므로 `<CollapseItem>` 같은 컨테이너가 높이를 자동 조정할 수 있습니다. [공통 속성](#공통-속성)을 지원합니다.
 
-| 속성         | 타입                            |         기본값 | 설명                                                                                   |
-| ------------ | ------------------------------- | -------------: | -------------------------------------------------------------------------------------- |
-| `text`       | `string`                        |              — | 텍스트 내용.                                                                           |
-| 子内容       | `string \| number`              |              — | 각 프레임워크의 template text로 `text`를 대체할 수 있습니다.                           |
-| `fontSize`   | `number`                        |           `16` | 글자 크기(logical pixel 단위).                                                         |
-| `width`      | `number`                        |              — | 최대 줄 폭. 초과 시 자동 줄바꿈. 중국어 등 고정 폭 문자도 측정 폭에 따라 줄바꿈됩니다. |
-| `fontFamily` | `string`                        | `"sans-serif"` | 폰트 family.                                                                           |
-| `color`      | `string`                        |       `"#333"` | 글자색.                                                                                |
-| `baseline`   | `CanvasTextBaseline`            |        `"top"` | Canvas text baseline.                                                                  |
-| `textAlign`  | `"left" \| "center" \| "right"` |       `"left"` | 수평 정렬. `width` 지정 시 text box 기준 정렬.                                         |
+| 속성         | 타입                            |         기본값 | 설명                                                                                                                                                   |
+| ------------ | ------------------------------- | -------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `text`       | `string`                        |              — | 텍스트 내용.                                                                                                                                           |
+| Children     | `string \| number`              |              — | 각 프레임워크의 template text로 `text`를 대체할 수 있습니다.                                                                                           |
+| `fontSize`   | `number`                        |           `16` | 글자 크기(logical pixel 단위).                                                                                                                         |
+| `width`      | `number`                        |              — | 최대 줄 폭. 초과 시 자동 줄바꿈. 중국어 등 고정 폭 문자도 측정 폭에 따라 줄바꿈됩니다. `<Grid>` 안에서 지정하지 않으면 cell 폭을 사용합니다.           |
+| `maxLines`   | `number`                        |              — | 표시할 최대 줄 수. 마지막 줄의 초과분은 줄임표로 잘라냅니다. `<Grid>` 안에서 지정하지 않으면 cell에 들어가는 줄 수를 사용하며, 둘 다 없으면 제한 없음. |
+| `fontFamily` | `string`                        | `"sans-serif"` | 폰트 family.                                                                                                                                           |
+| `color`      | `string`                        |       `"#333"` | 글자색.                                                                                                                                                |
+| `baseline`   | `CanvasTextBaseline`            |        `"top"` | Canvas text baseline.                                                                                                                                  |
+| `textAlign`  | `"left" \| "center" \| "right"` |       `"left"` | 수평 정렬. `width` 지정 시 text box 기준 정렬.                                                                                                         |
 
 ### `<Icon>`
 
@@ -779,19 +783,22 @@ Angular는 `<canvas-dialog>`와 `open` input, `(confirm)` / `(cancel)` output을
 
 ### `<Upload>`
 
-파일 선택 버튼을 그립니다. 클릭 시 브라우저의 로컬 파일 선택 dialog를 엽니다. 서버 upload는 담당하지 않습니다.
+파일 선택 버튼을 그립니다. 내장 벡터 아이콘과 라벨이 하나의 그룹으로 수평 중앙 정렬됩니다. 클릭 시 브라우저의 로컬 파일 선택 dialog를 엽니다. 서버 upload는 담당하지 않습니다.
 
-| 속성               | 타입                      |        기본값 | 설명                                                      |
-| ------------------ | ------------------------- | ------------: | --------------------------------------------------------- |
-| `width` / `height` | `number`                  |  `120` / `40` | 버튼 크기.                                                |
-| `text`             | `string`                  | `"파일 선택"` | 버튼 텍스트.                                              |
-| `accept`           | `string`                  |             — | 파일 타입 필터. 예: `"image/*,.pdf"`.                     |
-| `multiple`         | `boolean`                 |       `false` | 복수 선택 허용 여부.                                      |
-| `disabled`         | `boolean`                 |       `false` | 파일 선택 비활성화.                                       |
-| `onChange`         | `(files: File[]) => void` |             — | 파일 선택 후 callback. 선택을 취소하면 발생하지 않습니다. |
+| 속성               | 타입                      |           기본값 | 설명                                                                                |
+| ------------------ | ------------------------- | ---------------: | ----------------------------------------------------------------------------------- |
+| `width` / `height` | `number`                  |     `120` / `40` | 버튼 크기.                                                                          |
+| `text`             | `string`                  |  `"Choose File"` | 버튼 텍스트.                                                                        |
+| `icon`             | `IconName`                |       `"upload"` | 라벨 앞에 그려지는 내장 아이콘. [`<Icon>`](#icon)의 아무 아이콘 이름이나 지정 가능. |
+| `iconSize`         | `number`                  | `fontSize × 1.1` | 아이콘 크기.                                                                        |
+| `accept`           | `string`                  |                — | 파일 타입 필터. 예: `"image/*,.pdf"`.                                               |
+| `multiple`         | `boolean`                 |          `false` | 복수 선택 허용 여부.                                                                |
+| `disabled`         | `boolean`                 |          `false` | 파일 선택 비활성화.                                                                 |
+| `onChange`         | `(files: File[]) => void` |                — | 파일 선택 후 callback. 선택을 취소하면 발생하지 않습니다.                           |
 
 ```tsx
 <Upload accept="image/*" multiple onChange={(files) => console.log(files)} />
+<Upload icon="cloud" text="Upload Photos" />
 ```
 
 Angular는 `<canvas-upload>`를 사용하고 `(change)`로 `File[]`를 받습니다.

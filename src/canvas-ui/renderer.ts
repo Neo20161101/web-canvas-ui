@@ -112,6 +112,11 @@ function eraseDraw<P>(draw: (context: CanvasRenderingContext2D, props: P) => voi
     return draw as unknown as LooseDraw;
 }
 
+// Single source of truth for the disabled look: every whole-control `disabled` state is rendered
+// the same way here, by fading the node subtree, instead of each component inventing its own graying
+// (which left Switch/Input/Textarea/DatePicker/Dropdown with no disabled feedback at all).
+const DISABLED_OPACITY = 0.5;
+
 export class CanvasRenderer {
     render(context: CanvasRenderingContext2D, root: SceneNode): void {
         const canvas = context.canvas;
@@ -127,6 +132,32 @@ export class CanvasRenderer {
         });
     }
 
+    /**
+     * Runs a single node's draw function behind a save/restore pair and a try/catch so that a
+     * throwing draw (an `<Icon>` with an unknown name, a `<CustomDraw>`/`<CanvasView>` with invalid
+     * props, or a faulty user draw callback) only skips that one node instead of aborting the whole
+     * frame. The save/restore also contains any partial context mutation the draw made before it
+     * threw, so sibling nodes and later overlays still render from a clean state.
+     */
+    private safeDraw(
+        context: CanvasRenderingContext2D,
+        draw: LooseDraw | undefined,
+        node: SceneNode,
+    ): void {
+        if (!draw) return;
+        context.save();
+        try {
+            draw(context, node.props);
+        } catch (error) {
+            console.error(
+                `[canvas-ui] Skipped drawing <${node.type}> after a render error:`,
+                error,
+            );
+        } finally {
+            context.restore();
+        }
+    }
+
     private drawNode(context: CanvasRenderingContext2D, node: SceneNode): void {
         if (node.props.visible === false) return;
         if (node.type === 'dialog') return;
@@ -134,11 +165,12 @@ export class CanvasRenderer {
         context.translate(number(node.props.x, 0), number(node.props.y, 0));
         context.rotate(number(node.props.rotation, 0));
         context.scale(number(node.props.scaleX, 1), number(node.props.scaleY, 1));
+        if (node.props.disabled === true) context.globalAlpha *= DISABLED_OPACITY;
 
         if (node.type === 'gridItem' && typeof node.props.backgroundColor === 'string') {
             drawGridItemBackground(context, node);
         }
-        if (node.type !== 'root') looseDrawComponent[node.type]?.(context, node.props);
+        if (node.type !== 'root') this.safeDraw(context, looseDrawComponent[node.type], node);
         if (node.type === 'grid' && typeof node.props.height === 'number') {
             context.save();
             context.beginPath();
@@ -169,7 +201,7 @@ export class CanvasRenderer {
             context.clip();
             node.children.forEach((child) => this.drawNode(context, child));
             context.restore();
-            eraseDraw(drawCarouselControls)(context, node.props);
+            this.safeDraw(context, eraseDraw(drawCarouselControls), node);
         } else {
             node.children.forEach((child) => this.drawNode(context, child));
         }
@@ -184,7 +216,8 @@ export class CanvasRenderer {
             context.translate(number(node.props.x, 0), number(node.props.y, 0));
             context.rotate(number(node.props.rotation, 0));
             context.scale(number(node.props.scaleX, 1), number(node.props.scaleY, 1));
-            eraseDraw(drawDialog)(context, node.props);
+            if (node.props.disabled === true) context.globalAlpha *= DISABLED_OPACITY;
+            this.safeDraw(context, eraseDraw(drawDialog), node);
             const x = number(node.props._dialogPanelX, 0);
             const y = number(node.props._dialogPanelY, 0);
             const width = number(node.props.width, 420);
@@ -207,9 +240,10 @@ export class CanvasRenderer {
         context.translate(number(node.props.x, 0), number(node.props.y, 0));
         context.rotate(number(node.props.rotation, 0));
         context.scale(number(node.props.scaleX, 1), number(node.props.scaleY, 1));
+        if (node.props.disabled === true) context.globalAlpha *= DISABLED_OPACITY;
 
         if (node.type === 'dropdown' && node.props.open) {
-            eraseDraw(drawDropdownOptions)(context, node.props);
+            this.safeDraw(context, eraseDraw(drawDropdownOptions), node);
         }
 
         if (

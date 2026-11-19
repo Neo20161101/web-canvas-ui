@@ -1,11 +1,14 @@
 import type { TransformProps } from '../../types';
-import { number, string, themeColor } from '../draw-utils';
+import { fitText, number, string, themeColor } from '../draw-utils';
+import { drawIcon, type IconName } from '../Icon';
 import { createComponent } from '../shared';
 
 export interface UploadProps extends TransformProps {
     width?: number;
     height?: number;
     text?: string;
+    icon?: IconName;
+    iconSize?: number;
     accept?: string;
     multiple?: boolean;
     disabled?: boolean;
@@ -25,23 +28,39 @@ export function drawUpload(context: CanvasRenderingContext2D, props: UploadProps
     const radius = number(props.borderRadius, 6);
     context.beginPath();
     context.roundRect(0, 0, width, height, radius);
-    context.fillStyle = props.disabled
-        ? themeColor(context, '--canvas-ui-button-disabled-background', '#f5f5f5')
-        : string(
-              props.backgroundColor,
-              themeColor(context, '--canvas-ui-button-background', '#1677ff'),
-          );
+    context.fillStyle = string(
+        props.backgroundColor,
+        themeColor(context, '--canvas-ui-button-background', '#1677ff'),
+    );
     context.fill();
     if (props.borderColor) {
         context.strokeStyle = string(props.borderColor, '#1677ff');
         context.stroke();
     }
-    context.font = `${number(props.fontSize, 15)}px sans-serif`;
+
+    const label = string(props.text, 'Choose File');
+    const color = string(props.textColor, themeColor(context, '--canvas-ui-button-color', '#fff'));
+    const fontSize = number(props.fontSize, 15);
+    const iconSize = number(props.iconSize, Math.round(fontSize * 1.1));
+    const gap = 6;
+
+    context.font = `${fontSize}px sans-serif`;
     context.textBaseline = 'middle';
-    context.textAlign = 'center';
-    context.fillStyle = props.disabled
-        ? themeColor(context, '--canvas-ui-button-disabled-color', '#bfbfbf')
-        : string(props.textColor, themeColor(context, '--canvas-ui-button-color', '#fff'));
-    context.fillText(string(props.text, '选择文件'), width / 2, height / 2);
     context.textAlign = 'left';
+    const fittedLabel = fitText(context, label, Math.max(0, width - 12 - iconSize - gap));
+    // A built-in glyph (defaults to the "upload" arrow; pass `icon` to customise) plus the
+    // label, kept as one centred group that never spills outside the button box.
+    const textWidth = fittedLabel ? context.measureText(fittedLabel).width : 0;
+    const contentWidth = iconSize + (fittedLabel ? gap : 0) + textWidth;
+    let cursorX = (width - contentWidth) / 2;
+    const centerY = height / 2;
+
+    context.save();
+    context.translate(cursorX, centerY - iconSize / 2);
+    drawIcon(context, { name: props.icon ?? 'upload', size: iconSize, color });
+    context.restore();
+    cursorX += iconSize + (fittedLabel ? gap : 0);
+
+    context.fillStyle = color;
+    context.fillText(fittedLabel, cursorX, centerY);
 }

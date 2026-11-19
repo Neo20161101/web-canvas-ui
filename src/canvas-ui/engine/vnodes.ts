@@ -103,25 +103,38 @@ export function layoutGridChildren(vnode: VNode): {
         );
         cursor++;
 
+        // The box this child has to fit in: one cell, or the span-expanded area for a GridItem.
+        // Content nodes read it as their wrap width and line budget unless they declare their own,
+        // so `cellWidth`/`cellHeight` no longer have to be copied into every child by hand.
+        const areaWidth = cellWidth * (columnSpan as number) + gap * ((columnSpan as number) - 1);
+        const areaHeight = cellHeight * (rowSpan as number) + gap * ((rowSpan as number) - 1);
+
         return {
             ...child,
             props: {
                 ...child.props,
                 x: number(child.props.x, 0) + column * (cellWidth + gap),
                 y: number(child.props.y, 0) + row * (cellHeight + gap),
-                ...(isGridItem
-                    ? {
-                          _gridItemWidth:
-                              cellWidth * (columnSpan as number) +
-                              gap * ((columnSpan as number) - 1),
-                          _gridItemHeight:
-                              cellHeight * (rowSpan as number) + gap * ((rowSpan as number) - 1),
-                      }
-                    : {}),
+                _availableWidth: areaWidth,
+                _availableHeight: areaHeight,
+                ...(isGridItem ? { _gridItemWidth: areaWidth, _gridItemHeight: areaHeight } : {}),
             },
+            // A GridItem paints nothing itself, so the controls it groups inherit its box. Only one
+            // level deep: a nested Group has no size of its own to hand down.
+            children: isGridItem
+                ? stampAvailable(child.children, areaWidth, areaHeight)
+                : child.children,
         };
     });
     return { children, contentHeight, width };
+}
+
+/** Rewrites `children` with the content box of the container they live in. */
+function stampAvailable(children: VNode[], width: number, height: number): VNode[] {
+    return children.map((child) => ({
+        ...child,
+        props: { ...child.props, _availableWidth: width, _availableHeight: height },
+    }));
 }
 
 function gridAreaIsFree(

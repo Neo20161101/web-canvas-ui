@@ -1,5 +1,5 @@
 import type { TransformProps } from '../../types';
-import { number, string, themeColor } from '../draw-utils';
+import { measureTextWidth, number, string, themeColor } from '../draw-utils';
 import { componentHeight, componentWidth } from '../size';
 
 export interface ChoiceOption {
@@ -40,7 +40,7 @@ export function choiceGroupSize(props: Record<string, unknown>): { width: number
     const fontSize = number(props.fontSize, 14);
     const optionHeight = number(props.optionHeight, 28);
     const naturalWidth =
-        options.reduce((total, option) => total + estimatedOptionWidth(option.label, fontSize), 0) +
+        options.reduce((total, option) => total + optionLayoutWidth(option.label, fontSize), 0) +
         gap * Math.max(0, options.length - 1);
     const naturalHeight = options.length * optionHeight + gap * Math.max(0, options.length - 1);
     return {
@@ -67,13 +67,14 @@ export function drawChoiceGroup(
     let offsetX = 0;
     let offsetY = 0;
     for (const option of options) {
-        const labelWidth = Math.max(24, context.measureText(option.label).width);
         const isSelected = Array.isArray(selected)
             ? selected.includes(option.value)
             : selected === option.value;
         const centerY = offsetY + optionHeight / 2;
         const controlX = offsetX + 9;
-        const disabled = Boolean(props.disabled) || option.disabled === true;
+        // Per-option disabling stays here; a whole-control `disabled` is handled uniformly by the
+        // renderer's opacity fade so it must not double-apply on top of the normal colours.
+        const disabled = option.disabled === true;
         context.strokeStyle = disabled
             ? string(
                   props.disabledColor,
@@ -129,7 +130,7 @@ export function drawChoiceGroup(
             : string(props.color, themeColor(context, '--canvas-ui-choice-color', '#333'));
         context.fillText(option.label, offsetX + 23, centerY);
         if (horizontal) {
-            offsetX += Math.max(24, labelWidth) + 24 + gap;
+            offsetX += optionLayoutWidth(option.label, fontSize) + gap;
         } else {
             offsetY += optionHeight + gap;
         }
@@ -150,7 +151,7 @@ export function choiceAt(
     if (horizontal) {
         let offsetX = 0;
         for (const option of options) {
-            const optionWidth = estimatedOptionWidth(option.label, fontSize);
+            const optionWidth = optionLayoutWidth(option.label, fontSize);
             if (x >= offsetX && x <= offsetX + optionWidth && y >= 0 && y <= size.height)
                 return option;
             offsetX += optionWidth + gap;
@@ -162,10 +163,10 @@ export function choiceAt(
     return rowOffset <= optionHeight && x >= 0 && x <= size.width ? options[row] : undefined;
 }
 
-function estimatedOptionWidth(label: string, fontSize: number): number {
-    const textWidth = Array.from(label).reduce((total, character) => {
-        const isWide = /[\u2e80-\u9fff\uac00-\ud7af]/u.test(character);
-        return total + fontSize * (isWide ? 1 : 0.62);
-    }, 0);
-    return Math.max(24, textWidth) + 24;
+/**
+ * The horizontal footprint an option occupies (control + label + trailing padding).
+ * Uses the shared real `measureText` so draw, hit-test and layout never diverge.
+ */
+function optionLayoutWidth(label: string, fontSize: number): number {
+    return Math.max(24, measureTextWidth(label, `${fontSize}px sans-serif`)) + 24;
 }

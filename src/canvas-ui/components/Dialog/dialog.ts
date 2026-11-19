@@ -1,5 +1,5 @@
 import type { TransformProps } from '../../types';
-import { number, themeColor } from '../draw-utils';
+import { fitText, number, themeColor } from '../draw-utils';
 import { createComponent } from '../shared';
 
 export interface DialogProps extends TransformProps {
@@ -36,7 +36,11 @@ export function drawDialog(context: CanvasRenderingContext2D, props: DialogDrawP
     context.fillStyle = themeColor(context, '--canvas-ui-dialog-title-color', '#1f1f1f');
     context.font = '600 16px sans-serif';
     context.textBaseline = 'middle';
-    context.fillText(String(props.title ?? 'Confirm'), x + 24, y + 28);
+    context.fillText(
+        fitText(context, String(props.title ?? 'Confirm'), Math.max(0, width - 48)),
+        x + 24,
+        y + 28,
+    );
     context.strokeStyle = themeColor(context, '--canvas-ui-dialog-border', '#f0f0f0');
     context.beginPath();
     context.moveTo(x, y + 56);
@@ -89,6 +93,10 @@ function drawDialogButton(
     context.font = '14px sans-serif';
     context.textAlign = 'center';
     context.textBaseline = 'middle';
-    context.fillText(label, x + width / 2, y + height / 2);
+    context.fillText(
+        fitText(context, label, Math.max(0, width - 16)),
+        x + width / 2,
+        y + height / 2,
+    );
     context.textAlign = 'left';
 }

@@ -1,3 +1,4 @@
+![Markdown Logo](./src/assets/web-canvas-ui-logo-bright.svg "web-canvas-ui")
 # Web Canvas UI (React, Vue 3, Svelte, Angular)
 
 [English](./README.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [繁體中文](./README.zh-TW.md) · [Русский](./README.ru.md) · [简体中文](./README.zh-CN.md)
@@ -42,7 +43,7 @@
 
 | Компонент                     | CSS custom properties                                                                                                                                                                                                                                                                                |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Button / Upload               | `--canvas-ui-button-background`, `--canvas-ui-button-color`, `--canvas-ui-button-border`, `--canvas-ui-button-pressed-background`, `--canvas-ui-button-disabled-background`, `--canvas-ui-button-disabled-color`                                                                                     |
+| Button / Upload               | `--canvas-ui-button-background`, `--canvas-ui-button-color`, `--canvas-ui-button-border`, `--canvas-ui-button-pressed-background`                                                                                                                                                                    |
 | Carousel                      | `--canvas-ui-carousel-arrow`, `--canvas-ui-carousel-dot`, `--canvas-ui-carousel-active-dot`                                                                                                                                                                                                          |
 | Radio / Checkbox              | `--canvas-ui-choice-active`, `--canvas-ui-choice-border`, `--canvas-ui-choice-color`, `--canvas-ui-choice-disabled`, `--canvas-ui-choice-disabled-background`                                                                                                                                        |
 | Collapse                      | `--canvas-ui-collapse-header-background`, `--canvas-ui-collapse-border`, `--canvas-ui-collapse-color`, `--canvas-ui-collapse-disabled-color`                                                                                                                                                         |
@@ -51,7 +52,7 @@
 | Input / Textarea / DatePicker | `--canvas-ui-input-background`, `--canvas-ui-input-color`, `--canvas-ui-input-placeholder-color`, `--canvas-ui-input-border`, `--canvas-ui-input-focus-border`                                                                                                                                       |
 | Progress                      | `--canvas-ui-progress-track`, `--canvas-ui-progress-active`, `--canvas-ui-progress-text`                                                                                                                                                                                                             |
 | Rect / Circle / Text / Icon   | `--canvas-ui-rect-background`, `--canvas-ui-rect-border`, `--canvas-ui-circle-background`, `--canvas-ui-circle-border`, `--canvas-ui-text-color`, `--canvas-ui-icon-color`                                                                                                                           |
-| Slider                        | `--canvas-ui-slider-track`, `--canvas-ui-slider-active`, `--canvas-ui-slider-thumb`, `--canvas-ui-slider-disabled-thumb`                                                                                                                                                                             |
+| Slider                        | `--canvas-ui-slider-track`, `--canvas-ui-slider-active`, `--canvas-ui-slider-thumb`                                                                                                                                                                                                                  |
 | Switch                        | `--canvas-ui-switch-on`, `--canvas-ui-switch-off`, `--canvas-ui-switch-thumb`                                                                                                                                                                                                                        |
 | Tabs                          | `--canvas-ui-tabs-background`, `--canvas-ui-tabs-color`, `--canvas-ui-tabs-active-color`, `--canvas-ui-tabs-indicator`, `--canvas-ui-tabs-disabled-color`                                                                                                                                            |
 
@@ -460,6 +461,8 @@ import { Canvas, CustomDraw } from '/canvas-ui/react';
 
 Дочерние компоненты сохраняют свои `x`, `y`, к которым добавляется смещение ячейки. Без `cellWidth` ширина столбцов считается как `(width - gap * (columns - 1)) / columns`; размеры детей автоматически не растягиваются.
 
+Каждому дочернему элементу передаётся и бокс занимаемой ячейки: `<Text>` без `width` и `maxLines` переносится по ширине ячейки и обрезаётся многоточием, когда строки не помещаются в `cellHeight`. `<GridItem>` передаёт расширенную span-область вложенным контролам. Явно заданное значение всегда приоритетнее бокса ячейки, поэтому элемент может сознательно быть уже ячейки.
+
 ```tsx
 <Grid columns={3} cellWidth={100} cellHeight={50} gap={8}>
     <Rect width={80} height={40} color="#f5f8fc" />
@@ -616,18 +619,18 @@ Angular: `<canvas-tabs>` и `<canvas-tab-item>`; смена активной в�
 
 Заголовок каждого `CollapseItem` разворачивается/сворачивается по клику, дети служат содержимым панели.
 
-| Компонент      | Свойство                                        | Тип                        | Описание                                                                 |
-| -------------- | ----------------------------------------------- | -------------------------- | ------------------------------------------------------------------------ |
-| `Collapse`     | `width`                                         | `number`                   | Ширина панели; обязательно.                                              |
-| `Collapse`     | `activeKeys` / `defaultActiveKeys`              | `string[]`                 | Контролируемые раскрытые элементы / начальные раскрытые элементы.        |
-| `Collapse`     | `accordion`                                     | `boolean`                  | По умолчанию `false`; `true` — одновременно раскрыт только один элемент. |
-| `Collapse`     | `headerHeight`                                  | `number`                   | Высота заголовка, по умолчанию `40`.                                     |
-| `Collapse`     | `backgroundColor` / `textColor` / `borderColor` | `string`                   | Цвета фона, текста и рамки для всех заголовков.                          |
-| `Collapse`     | `onChange`                                      | `(keys: string[]) => void` | Колбэк изменения набора раскрытых элементов.                             |
-| `CollapseItem` | `id` / `title`                                  | `string`                   | Уникальный id и заголовок панели; обязательны.                           |
-| `CollapseItem` | `height`                                        | `number`                   | Высота контента в раскрытом виде, по умолчанию `100`.                    |
-| `CollapseItem` | `disabled`                                      | `boolean`                  | Запрещает раскрытие/сворачивание.                                        |
-| `CollapseItem` | `backgroundColor` / `textColor` / `borderColor` | `string`                   | Переопределяют цвета заголовка.                                          |
+| Компонент      | Свойство                                        | Тип                        | Описание                                                                                                                                      |
+| -------------- | ----------------------------------------------- | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Collapse`     | `width`                                         | `number`                   | Ширина панели; обязательно.                                                                                                                   |
+| `Collapse`     | `activeKeys` / `defaultActiveKeys`              | `string[]`                 | Контролируемые раскрытые элементы / начальные раскрытые элементы.                                                                             |
+| `Collapse`     | `accordion`                                     | `boolean`                  | По умолчанию `false`; `true` — одновременно раскрыт только один элемент.                                                                      |
+| `Collapse`     | `headerHeight`                                  | `number`                   | Высота заголовка, по умолчанию `40`.                                                                                                          |
+| `Collapse`     | `backgroundColor` / `textColor` / `borderColor` | `string`                   | Цвета фона, текста и рамки для всех заголовков.                                                                                               |
+| `Collapse`     | `onChange`                                      | `(keys: string[]) => void` | Колбэк изменения набора раскрытых элементов.                                                                                                  |
+| `CollapseItem` | `id` / `title`                                  | `string`                   | Уникальный id и заголовок панели; обязательны.                                                                                                |
+| `CollapseItem` | `height`                                        | `number`                   | Высота контента в раскрытом виде. По умолчанию считается по высоте дочерних элементов, но не меньше `100`; явное значение всегда приоритетно. |
+| `CollapseItem` | `disabled`                                      | `boolean`                  | Запрещает раскрытие/сворачивание.                                                                                                             |
+| `CollapseItem` | `backgroundColor` / `textColor` / `borderColor` | `string`                   | Переопределяют цвета заголовка.                                                                                                               |
 
 ```tsx
 <Collapse width={320} defaultActiveKeys={['details']} accordion>
@@ -702,18 +705,19 @@ Angular использует `<canvas-dialog>` с входом `open` и вых�
 
 ### `<Text>`
 
-Рисует однострочный или автоматически перенесённый текст. Поддерживает [общие свойства](#общие-свойства).
+Рисует однострочный или автоматически перенесённый текст. Узел сообщает размер, который действительно занимают перенесённые строки, поэтому контейнеры вроде `<CollapseItem>` могут подстраивать высоту. Поддерживает [общие свойства](#общие-свойства).
 
-| Свойство     | Тип                             |   По умолчанию | Описание                                                                                                        |
-| ------------ | ------------------------------- | -------------: | --------------------------------------------------------------------------------------------------------------- |
-| `text`       | `string`                        |              — | Содержимое текста.                                                                                              |
-| Дети         | `string \| number`              |              — | В каждом фреймворке можно передавать текст через нативный template-контент вместо `text`.                       |
-| `fontSize`   | `number`                        |           `16` | Кегль в логических пикселях.                                                                                    |
-| `width`      | `number`                        |              — | Максимальная ширина строки; при превышении включает перенос. CJK-символы тоже переносятся по измеренной ширине. |
-| `fontFamily` | `string`                        | `"sans-serif"` | Семейство шрифтов.                                                                                              |
-| `color`      | `string`                        |       `"#333"` | Цвет текста.                                                                                                    |
-| `baseline`   | `CanvasTextBaseline`            |        `"top"` | Базовая линия Canvas-текста.                                                                                    |
-| `textAlign`  | `"left" \| "center" \| "right"` |       `"left"` | Выравнивание; при выставленном `width` — относительно текстовой области.                                        |
+| Свойство     | Тип                             |   По умолчанию | Описание                                                                                                                                                         |
+| ------------ | ------------------------------- | -------------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `text`       | `string`                        |              — | Содержимое текста.                                                                                                                                               |
+| Дети         | `string \| number`              |              — | В каждом фреймворке можно передавать текст через нативный template-контент вместо `text`.                                                                        |
+| `fontSize`   | `number`                        |           `16` | Кегль в логических пикселях.                                                                                                                                     |
+| `width`      | `number`                        |              — | Максимальная ширина строки; при превышении включает перенос. CJK-символы тоже переносятся по измеренной ширине. В `<Grid>` по умолчанию равен ширине ячейки.     |
+| `maxLines`   | `number`                        |              — | Максимум отображаемых строк; последняя урезается многоточием. В `<Grid>` по умолчанию равен числу строк, помещающихся в ячейку; без обоих значений не ограничен. |
+| `fontFamily` | `string`                        | `"sans-serif"` | Семейство шрифтов.                                                                                                                                               |
+| `color`      | `string`                        |       `"#333"` | Цвет текста.                                                                                                                                                     |
+| `baseline`   | `CanvasTextBaseline`            |        `"top"` | Базовая линия Canvas-текста.                                                                                                                                     |
+| `textAlign`  | `"left" \| "center" \| "right"` |       `"left"` | Выравнивание; при выставленном `width` — относительно текстовой области.                                                                                         |
 
 ### `<Icon>`
 
@@ -779,19 +783,22 @@ Angular использует `<canvas-dialog>` с входом `open` и вых�
 
 ### `<Upload>`
 
-Рисует кнопку выбора файла. По клику открывается нативный браузерный file picker; на сервер компонент ничего не загружает.
+Рисует кнопку выбора файла: встроенный векторный значок и надпись центрируются вместе как одна группа. По клику открывается нативный браузерный file picker; на сервер компонент ничего не загружает.
 
-| Свойство           | Тип                       |     По умолчанию | Описание                                        |
-| ------------------ | ------------------------- | ---------------: | ----------------------------------------------- |
-| `width` / `height` | `number`                  |     `120` / `40` | Размер кнопки.                                  |
-| `text`             | `string`                  | `"Выбрать файл"` | Текст кнопки.                                   |
-| `accept`           | `string`                  |                — | Фильтр типов файлов, например `"image/*,.pdf"`. |
-| `multiple`         | `boolean`                 |          `false` | Разрешить выбор нескольких файлов.              |
-| `disabled`         | `boolean`                 |          `false` | Отключает выбор файлов.                         |
-| `onChange`         | `(files: File[]) => void` |                — | Колбэк после выбора; при отмене не вызывается.  |
+| Свойство           | Тип                       |     По умолчанию | Описание                                                                        |
+| ------------------ | ------------------------- | ---------------: | ------------------------------------------------------------------------------- |
+| `width` / `height` | `number`                  |     `120` / `40` | Размер кнопки.                                                                  |
+| `text`             | `string`                  |  `"Choose File"` | Текст кнопки.                                                                   |
+| `icon`             | `IconName`                |       `"upload"` | Встроенный значок перед надписью; можно указать любое имя из [`<Icon>`](#icon). |
+| `iconSize`         | `number`                  | `fontSize × 1.1` | Размер значка.                                                                  |
+| `accept`           | `string`                  |                — | Фильтр типов файлов, например `"image/*,.pdf"`.                                 |
+| `multiple`         | `boolean`                 |          `false` | Разрешить выбор нескольких файлов.                                              |
+| `disabled`         | `boolean`                 |          `false` | Отключает выбор файлов.                                                         |
+| `onChange`         | `(files: File[]) => void` |                — | Колбэк после выбора; при отмене не вызывается.                                  |
 
 ```tsx
 <Upload accept="image/*" multiple onChange={(files) => console.log(files)} />
+<Upload icon="cloud" text="Upload Photos" />
 ```
 
 Angular: `<canvas-upload>` и `File[]` через `(change)`.

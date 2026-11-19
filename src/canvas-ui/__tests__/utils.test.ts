@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { number, string, wrapText } from '../components/draw-utils';
+import { measureLines, number, string, wrapText } from '../components/draw-utils';
 import { componentHeight, componentWidth } from '../components/size';
 
 // A measureText stub: every glyph is treated as 5px wide so wrapping is deterministic.
@@ -48,8 +48,47 @@ describe('wrapText', () => {
         expect(wrapText(makeContext(), 'aaaa', 15)).toEqual(['aaa', 'a']);
     });
 
+    it('keeps filling the line with a CJK run that does not fit whole', () => {
+        // 5px per glyph: 'aa ' is 15 wide, so one more character still fits before the break. A
+        // Latin word would have moved down whole instead - the DOM wraps CJK runs this way, and a
+        // textarea caret is resolved against those line breaks.
+        expect(wrapText(makeContext(), 'aa 甲甲甲', 20)).toEqual(['aa 甲', '甲甲']);
+    });
+
     it('honours explicit newlines', () => {
         expect(wrapText(makeContext(), 'a\nb', 20)).toEqual(['a', 'b']);
+    });
+});
+
+describe('measureLines', () => {
+    // Same 5px-per-glyph stub the wrapping tests use.
+    const measure = (text: string) => text.length * 5;
+
+    it('wraps without a limit when maxLines is omitted', () => {
+        expect(measureLines(measure, 'aaaa', 15)).toEqual(['aaa', 'a']);
+    });
+
+    it('keeps at most maxLines lines and marks the cut with a single ellipsis', () => {
+        expect(measureLines(measure, 'aaaa', 15, 1)).toEqual(['aa…']);
+    });
+
+    it('leaves a block untouched when it already fits the limit', () => {
+        expect(measureLines(measure, 'aa', 20, 2)).toEqual(['aa']);
+    });
+
+    it('counts hard newlines against the limit', () => {
+        // 'b' is the last visible line and still leaves room, but the dropped third line
+        // has to be signalled.
+        expect(measureLines(measure, 'a\nb\nc', 20, 2)).toEqual(['a', 'b…']);
+    });
+
+    it('treats a missing width as one unwrapped line', () => {
+        expect(measureLines(measure, 'aa bb cc', 0, 2)).toEqual(['aa bb cc']);
+    });
+
+    it('never clamps below one line and ignores non-positive limits', () => {
+        expect(measureLines(measure, 'aaaa', 15, 0.4)).toEqual(['aa…']);
+        expect(measureLines(measure, 'aaaa', 15, -1)).toEqual(['aaa', 'a']);
     });
 });
 

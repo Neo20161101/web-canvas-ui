@@ -1,5 +1,5 @@
 import type { TransformProps } from '../../types';
-import { number, string, themeColor, wrapText } from '../draw-utils';
+import { number, string, themeColor, verticalScrollbarWidth, wrapText } from '../draw-utils';
 import { createComponent } from '../shared';
 
 export interface InputProps extends TransformProps {
@@ -73,19 +73,23 @@ export function drawInput(
     context.fillStyle = value
         ? string(props.color, themeColor(context, '--canvas-ui-input-color', '#333'))
         : themeColor(context, '--canvas-ui-input-placeholder-color', '#999');
+    const lineHeight = fontSize * 1.35;
+    // The text being drawn is really the transparent DOM element's text, and that element wraps at its
+    // own content width: as soon as the value overflows, its vertical scrollbar takes room away from
+    // the text. Wrapping a few pixels wider here breaks the same paragraph at other words, and the
+    // caret - resolved from a character index the element reported - then lands on a line the reader
+    // never clicked. Reserve the gutter the element reserves to keep the two wrappings identical.
+    const gutter =
+        multiline && number(props._scrollHeight, 0) > height ? verticalScrollbarWidth() : 0;
+    const contentWidth = Math.max(1, width - padding * 2 - gutter);
+    const lines = multiline ? wrapText(context, text || placeholder, contentWidth) : [];
+    const contentHeight = multiline
+        ? Math.max(number(props._scrollHeight, 0), lines.length * lineHeight + padding * 2)
+        : 0;
+    const scrollTop = multiline
+        ? Math.max(0, Math.min(contentHeight - height, number(props._scrollTop, 0)))
+        : 0;
     if (multiline) {
-        const lineHeight = fontSize * 1.35;
-        const content = text || placeholder;
-        const contentWidth = Math.max(1, width - padding * 2 - 6);
-        const lines = wrapText(context, content, contentWidth);
-        const contentHeight = Math.max(
-            number(props._scrollHeight, 0),
-            lines.length * lineHeight + padding * 2,
-        );
-        const scrollTop = Math.max(
-            0,
-            Math.min(contentHeight - height, number(props._scrollTop, 0)),
-        );
         lines.forEach((line, index) => {
             context.fillText(line, padding, padding + index * lineHeight - scrollTop);
         });
@@ -98,11 +102,11 @@ export function drawInput(
     if (props.focused && !props.disabled) {
         const cursorPosition = number(props.cursorPos, value.length);
         const cursorLines = multiline
-            ? wrapText(context, text.slice(0, cursorPosition), Math.max(1, width - padding * 2 - 6))
+            ? wrapText(context, text.slice(0, cursorPosition), contentWidth)
             : text.slice(0, cursorPosition).split('\n');
         const cursorWidth = context.measureText(cursorLines[cursorLines.length - 1] ?? '').width;
         const cursorY = multiline
-            ? padding + (cursorLines.length - 1) * fontSize * 1.35 - number(props._scrollTop, 0)
+            ? padding + (cursorLines.length - 1) * lineHeight - scrollTop
             : (height - fontSize) / 2;
         context.fillStyle = string(
             props.color,
