@@ -9,6 +9,9 @@ A declarative component library built on Canvas 2D, with **React**, **Vue 3**, *
 
 > **Shared component contract:** Each control lives under `components/<Component>/`. The `components.ts` entry exposes the public API, `<component>.ts` defines the Props type and the Canvas draw function, and `logic.ts` (when needed) holds interaction/business logic specific to that control. Common types are aggregated in `components/types.ts` and re-exported through `/canvas-ui/types.ts`. React, Vue, Svelte, and Angular adapters share this type contract.
 
+### Packages
+- [web-canvas-ui](https://www.npmjs.com/package/web-canvas-ui)
+
 ## Global Theme Colors
 
 Theme colors are centralized in [`theme.scss`](src/canvas-ui/theme.scss) as `$primary: #1668dc`. Changing this single variable updates the accent color for buttons, selected states, focus borders, progress bars, and more. Light variants are mixed with white, and pressed variants darken the primary; the shared scales are also emitted as `--canvas-ui-primary*` CSS variables. `theme.css` is a build artifact — import it as global CSS and do not edit the generated file directly:
