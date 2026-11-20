@@ -1,11 +1,14 @@
-![Markdown Logo](./src/assets/web-canvas-ui-logo-bright.svg "web-canvas-ui")
+<div align="center">
+  <img src="./src/assets/web-canvas-ui-logo-bright.svg" alt="Project Logo" />
+</div>
+
 # Web Canvas UI (React, Vue 3, Svelte, Angular)
 
 [English](./README.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [繁體中文](./README.zh-TW.md) · [Русский](./README.ru.md) · [简体中文](./README.zh-CN.md)
 
 A declarative component library built on Canvas 2D, with **React**, **Vue 3**, **Svelte 5+**, and **Angular 17+** adapters. Each framework imports from its own entry and uses native component/template syntax, while the underlying Canvas engine and control drawing logic are shared. Every control's appearance is painted by Canvas itself.
 
-> **Adapters:** React, Vue, Svelte, and Angular import from `web-canvas-ui/react`, `web-canvas-ui/vue`, `web-canvas-ui/svelte`, and `web-canvas-ui/angular` respectively. Pick the entry that matches your host Canvas framework and do not mix components across adapters — they all reuse the same engine and control drawing implementation.
+> **Adapters:** React, Vue, Svelte, and Angular import from `@web-canvas-ui/react`, `@web-canvas-ui/vue`, `@web-canvas-ui/svelte`, and `@web-canvas-ui/angular` respectively. Pick the entry that matches your host Canvas framework and do not mix components across adapters — they all reuse the same engine and control drawing implementation.
 
 > **Shared component contract:** Each control lives under `components/<Component>/`. The `components.ts` entry exposes the public API, `<component>.ts` defines the Props type and the Canvas draw function, and `logic.ts` (when needed) holds interaction/business logic specific to that control. Common types are aggregated in `components/types.ts` and re-exported through `web-canvas-ui/types.ts`. React, Vue, Svelte, and Angular adapters share this type contract.
 
@@ -30,6 +33,10 @@ Five built-in primary palettes are provided: blue, green, purple, orange, and re
         <Button>Green theme</Button>
     </Canvas>
 </div>
+<p>--OR--</p>
+<Canvas width={400} height={240} className="theme-green">
+    <Button>Green theme</Button>
+</Canvas>
 ```
 
 | Palette        | class          | Primary   |
@@ -61,14 +68,28 @@ To customize the theme for a specific application, override only the variables y
 
 ## Environment and Imports
 
-Place the `web-canvas-ui/` directory into your project and make sure the host Canvas project is already configured for the chosen framework: React 19+, Vue 3, Svelte 5+, or Angular 17+. Vue uses single-file component templates and does not require a JSX plugin or `jsxImportSource`. Svelte projects need the Svelte compiler and its matching build plugin. Angular projects need `@angular/core` and the Angular build setup. Framework dependencies are provided by the host Canvas project — this directory does not enforce dependencies on any particular framework.
+Place the `web-canvas-ui` directory into your project and make sure the host Canvas project is already configured for the chosen framework: React 19+, Vue 3, Svelte 5+, or Angular 17+. Vue uses single-file component templates and does not require a JSX plugin or `jsxImportSource`. Svelte projects need the Svelte compiler and its matching build plugin. Angular projects need `@angular/core` and the Angular build setup. Framework dependencies are provided by the host Canvas project — this directory does not enforce dependencies on any particular framework.
 
-| Framework   | Entry                |
-| ----------- | -------------------- |
-| React       | `web-canvas-ui/react`   |
-| Vue 3       | `web-canvas-ui/vue`     |
-| Svelte 5+   | `web-canvas-ui/svelte`  |
-| Angular 17+ | `web-canvas-ui/angular` |
+```
+npm install web-canvas-ui
+```
+OR
+```
+npm install @web-canvas-ui/react
+
+npm install @web-canvas-ui/vue
+
+npm install @web-canvas-ui/svelte
+
+npm install @web-canvas-ui/angular
+```
+
+| Framework   | Entry                   |
+| ----------- |-------------------------|
+| React       | `web-canvas-ui/react \ @web-canvas-ui/react`     |
+| Vue 3       | `web-canvas-ui/vue \ @web-canvas-ui/vue`         |
+| Svelte 5+   | `web-canvas-ui/svelte \ @web-canvas-ui/svelte`   |
+| Angular 17+ | `web-canvas-ui/angular \ @web-canvas-ui/angular` |
 
 Components must be placed inside the corresponding adapter's Canvas container and use the scene components exported by that framework's entry. Do not place plain DOM elements inside a Canvas scene.
 
@@ -76,9 +97,9 @@ Components must be placed inside the corresponding adapter's Canvas container an
 
 ```tsx
 import { useRef, useState } from 'react';
-import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/react';
-import type { CanvasHandle } from 'web-canvas-ui/react';
-import 'theme.css';
+import { Canvas, Group, Rect, Text, Input, Button } from '@web-canvas-ui/react';
+import type { CanvasHandle } from '@web-canvas-ui/react';
+import './theme.css';
 
 export function ProfileCanvas() {
     const [name, setName] = useState('');
@@ -144,9 +165,9 @@ The Vue adapter lives at the dedicated `web-canvas-ui/vue` entry. Nest Canvas UI
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/vue';
-import type { CanvasHandle } from '/canvas-ui/vue';
-import 'theme.css';
+import { Canvas, Group, Rect, Text, Input, Button } from '@web-canvas-ui/vue';
+import type { CanvasHandle } from '@web-canvas-ui/vue';
+import './theme.css';
 
 const name = ref('');
 const canvasRef = ref<CanvasHandle | null>(null);
@@ -198,9 +219,9 @@ Use the Svelte entry's components inside a Svelte 5 template. `Canvas` exposes i
 
 ```svelte
 <script lang="ts">
-  import { Canvas, Group, Rect, Text, Input, Button } from '/canvas-ui/svelte';
-  import type { CanvasHandle } from '/canvas-ui/svelte';
-  import 'theme.css';
+  import { Canvas, Group, Rect, Text, Input, Button } from '@web-canvas-ui/svelte';
+  import type { CanvasHandle } from '@web-canvas-ui/svelte';
+  import './theme.css';
 
   let name = $state('');
   let canvas = $state<CanvasHandle>();
@@ -240,11 +261,11 @@ The Angular entry provides a standalone `Canvas` component and scene directives.
 
 ```ts
 import { Component, ViewChild } from '@angular/core';
-import { Button, Canvas, Group, Input, Rect, Text } from '/canvas-ui/angular';
-import 'theme.css';
+import { Button, Canvas, Group, Input, Rect, Text } from '@web-canvas-ui/angular';
 
 @Component({
-    selector: 'profile-canvas',
+    selector: 'app-root',
+    styleUrl: './theme.css',
     standalone: true,
     imports: [Canvas, Group, Rect, Text, Input, Button],
     template: `
@@ -262,7 +283,7 @@ import 'theme.css';
                     [y]="48"
                     [value]="name"
                     placeholder="Your name"
-                    (valueChange)="name = $event"
+                    (valueChange)="onInputChange($event)"
                 ></canvas-input>
                 <canvas-text
                     [x]="16"
@@ -290,6 +311,9 @@ export class ProfileCanvas {
         link.href = dataUrl;
         link.download = 'profile.png';
         link.click();
+    }
+    onInputChange(e:any) {
+        this.name = e;
     }
 }
 ```
@@ -367,7 +391,7 @@ Renders the picture of an `HTMLCanvasElement` — from a third-party module or e
 | `onPointerEvent`   | `(event: CanvasViewPointerEvent) => void` |       No |           — | Provides mapped `pointerdown`, `pointermove`, `pointerup`, `pointercancel`, and `click` events; synthetic events are not dispatched to the source Canvas automatically. |
 
 ```tsx
-import { Canvas, CanvasView } from '/canvas-ui/react';
+import { Canvas, CanvasView } from '@web-canvas-ui/react';
 
 <Canvas ref={canvasRef} width={640} height={360}>
     <CanvasView
@@ -406,7 +430,7 @@ When built-in components cannot cover your drawing needs, use `CustomDraw` to pr
 | `hitTest`          | `(x: number, y: number, size: CustomDrawSize) => boolean`                              |       No | Custom hit testing for the shape; falls back to the full width/height rectangle when omitted. Returning `false` allows lower components to receive the hit. |
 
 ```tsx
-import { Canvas, CustomDraw } from '/canvas-ui/react';
+import { Canvas, CustomDraw } from '@web-canvas-ui/react';
 
 <Canvas width={320} height={180}>
     <CustomDraw

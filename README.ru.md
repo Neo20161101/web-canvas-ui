@@ -1,11 +1,14 @@
-![Markdown Logo](./src/assets/web-canvas-ui-logo-bright.svg "web-canvas-ui")
+<div align="center">
+  <img src="./src/assets/web-canvas-ui-logo-bright.svg" alt="Project Logo" />
+</div>
+
 # Web Canvas UI (React, Vue 3, Svelte, Angular)
 
 [English](./README.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [繁體中文](./README.zh-TW.md) · [Русский](./README.ru.md) · [简体中文](./README.zh-CN.md)
 
 Декларативная библиотека компонентов на базе Canvas 2D с адаптерами для **React**, **Vue 3**, **Svelte 5+** и **Angular 17+**. Каждый фреймворк импортируется из собственного входа и использует нативный синтаксис компонентов/шаблонов; движок Canvas и логика отрисовки контролов — общие. Внешний вид контролов рисуется самим Canvas.
 
-> **Про адаптеры:** React, Vue, Svelte и Angular импортируются из `web-canvas-ui/react`, `web-canvas-ui/vue`, `web-canvas-ui/svelte` и `web-canvas-ui/angular` соответственно. Выбирайте вход под ваш основной Canvas-фреймворк и не смешивайте компоненты из разных адаптеров — все они повторно используют один и тот же движок и реализацию отрисовки.
+> **Про адаптеры:** React, Vue, Svelte и Angular импортируются из `@web-canvas-ui/react`, `@web-canvas-ui/vue`, `@web-canvas-ui/svelte` и `@web-canvas-ui/angular` соответственно. Выбирайте вход под ваш основной Canvas-фреймворк и не смешивайте компоненты из разных адаптеров — все они повторно используют один и тот же движок и реализацию отрисовки.
 
 > **Общий контракт компонентов:** Каждый контрол находится в каталоге `components/<Component>/`. `index.ts` экспортирует публичный API компонента, `<component>.ts` определяет тип Props и функцию отрисовки на Canvas, а `logic.ts` (при необходимости) хранит логику взаимодействия, специфичную для этого контрола. Общие типы собраны в `components/types.ts` и реэкспортируются через `web-canvas-ui/types.ts`. Адаптеры React, Vue, Svelte и Angular используют один и тот же типовой контракт.
 
@@ -27,6 +30,10 @@
         <Button>Green theme</Button>
     </Canvas>
 </div>
+<p>--OR--</p>
+<Canvas width={400} height={240} className="theme-green">
+    <Button>Green theme</Button>
+</Canvas>
 ```
 
 | Палитра              | class          | Primary   |
@@ -58,14 +65,28 @@
 
 ## Окружение и импорт
 
-Поместите каталог `web-canvas-ui/` в проект и убедитесь, что основной Canvas-проект уже настроен под выбранный фреймворк: React 19+, Vue 3, Svelte 5+ или Angular 17+. Vue использует шаблоны однофайловых компонентов — JSX-плагин и `jsxImportSource` не нужны. Для Svelte требуются компилятор Svelte и соответствующий сборочный плагин. Для Angular требуются `@angular/core` и конфигурация сборки Angular. Зависимости фреймворка предоставляет основной Canvas-проект; этот каталог не навязывает зависимости к другим фреймворкам.
+Поместите каталог `web-canvas-ui` в проект и убедитесь, что основной Canvas-проект уже настроен под выбранный фреймворк: React 19+, Vue 3, Svelte 5+ или Angular 17+. Vue использует шаблоны однофайловых компонентов — JSX-плагин и `jsxImportSource` не нужны. Для Svelte требуются компилятор Svelte и соответствующий сборочный плагин. Для Angular требуются `@angular/core` и конфигурация сборки Angular. Зависимости фреймворка предоставляет основной Canvas-проект; этот каталог не навязывает зависимости к другим фреймворкам.
 
-| Фреймворк   | Вход                 |
-| ----------- | -------------------- |
-| React       | `web-canvas-ui/react`   |
-| Vue 3       | `web-canvas-ui/vue`     |
-| Svelte 5+   | `web-canvas-ui/svelte`  |
-| Angular 17+ | `web-canvas-ui/angular` |
+```
+npm install web-canvas-ui
+```
+OR
+```
+npm install @web-canvas-ui/react
+
+npm install @web-canvas-ui/vue
+
+npm install @web-canvas-ui/svelte
+
+npm install @web-canvas-ui/angular
+```
+
+| Фреймворк   | Вход                    |
+| ----------- |-------------------------|
+| React       | `web-canvas-ui/react \ @web-canvas-ui/react`     |
+| Vue 3       | `web-canvas-ui/vue \ @web-canvas-ui/vue`         |
+| Svelte 5+   | `web-canvas-ui/svelte \ @web-canvas-ui/svelte`   |
+| Angular 17+ | `web-canvas-ui/angular \ @web-canvas-ui/angular` |
 
 Компоненты должны находиться внутри Canvas-контейнера соответствующего адаптера и использовать компонентные сцены, экспортируемые из входа данного фреймворка. Не помещайте обычные DOM-элементы внутрь Canvas-сцены.
 
@@ -73,9 +94,9 @@
 
 ```tsx
 import { useRef, useState } from 'react';
-import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/react';
-import type { CanvasHandle } from 'web-canvas-ui/react';
-import 'theme.css';
+import { Canvas, Group, Rect, Text, Input, Button } from '@web-canvas-ui/react';
+import type { CanvasHandle } from '@web-canvas-ui/react';
+import './theme.css';
 
 export function ProfileCanvas() {
     const [name, setName] = useState('');
@@ -136,14 +157,14 @@ export function ProfileCanvas() {
 
 ## Быстрый старт (Vue 3 SFC)
 
-Vue-адаптер расположен в отдельном входе `/canvas-ui/vue`. Встраивайте компоненты Canvas UI прямо в шаблон `.vue`-файла — TSX, JSX-плагины и ручная сборка массивов узлов Canvas не нужны:
+Vue-адаптер расположен в отдельном входе `web-canvas-ui/vue`. Встраивайте компоненты Canvas UI прямо в шаблон `.vue`-файла — TSX, JSX-плагины и ручная сборка массивов узлов Canvas не нужны:
 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Canvas, Group, Rect, Text, Input, Button } from '/canvas-ui/vue';
-import type { CanvasHandle } from '/canvas-ui/vue';
-import 'theme.css';
+import { Canvas, Group, Rect, Text, Input, Button } from '@web-canvas-ui/vue';
+import type { CanvasHandle } from '@web-canvas-ui/vue';
+import './theme.css';
 
 const name = ref('');
 const canvasRef = ref<CanvasHandle | null>(null);
@@ -195,9 +216,9 @@ function exportPng() {
 
 ```svelte
 <script lang="ts">
-  import { Canvas, Group, Rect, Text, Input, Button } from '/canvas-ui/svelte';
-  import type { CanvasHandle } from '/canvas-ui/svelte';
-  import 'theme.css';
+  import { Canvas, Group, Rect, Text, Input, Button } from '@web-canvas-ui/svelte';
+  import type { CanvasHandle } from '@web-canvas-ui/svelte';
+  import './theme.css';
 
   let name = $state('');
   let canvas = $state<CanvasHandle>();
@@ -237,11 +258,11 @@ Angular-вход предоставляет standalone-компонент `Canva
 
 ```ts
 import { Component, ViewChild } from '@angular/core';
-import { Button, Canvas, Group, Input, Rect, Text } from '/canvas-ui/angular';
-import 'theme.css';
+import { Button, Canvas, Group, Input, Rect, Text } from '@web-canvas-ui/angular';
 
 @Component({
-    selector: 'profile-canvas',
+    selector: 'app-root',
+    styleUrl: './theme.css',
     standalone: true,
     imports: [Canvas, Group, Rect, Text, Input, Button],
     template: `
@@ -259,7 +280,7 @@ import 'theme.css';
                     [y]="48"
                     [value]="name"
                     placeholder="Your name"
-                    (valueChange)="name = $event"
+                    (valueChange)="onInputChange($event)"
                 ></canvas-input>
                 <canvas-text
                     [x]="16"
@@ -287,6 +308,9 @@ export class ProfileCanvas {
         link.href = dataUrl;
         link.download = 'profile.png';
         link.click();
+    }
+    onInputChange(e:any) {
+        this.name = e;
     }
 }
 ```
@@ -364,7 +388,7 @@ Angular объявляет узлы Canvas-сцены через селекто�
 | `onPointerEvent`   | `(event: CanvasViewPointerEvent) => void` |          нет |            — | Возвращает сопоставленные `pointerdown`, `pointermove`, `pointerup`, `pointercancel`, `click`; синтетические события в исходный Canvas автоматически не рассылаются. |
 
 ```tsx
-import { Canvas, CanvasView } from '/canvas-ui/react';
+import { Canvas, CanvasView } from '@web-canvas-ui/react';
 
 <Canvas ref={canvasRef} width={640} height={360}>
     <CanvasView
@@ -403,7 +427,7 @@ canvasRef.current?.requestRender();
 | `hitTest`          | `(x: number, y: number, size: CustomDrawSize) => boolean`                              |          нет | Пользовательский hit test для фигуры; если не задан, используется весь прямоугольник. Возврат `false` передаёт проверку компонентам нижележащего слоя. |
 
 ```tsx
-import { Canvas, CustomDraw } from '/canvas-ui/react';
+import { Canvas, CustomDraw } from '@web-canvas-ui/react';
 
 <Canvas width={320} height={180}>
     <CustomDraw

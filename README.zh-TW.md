@@ -1,11 +1,14 @@
-![Markdown Logo](./src/assets/web-canvas-ui-logo-bright.svg "web-canvas-ui")
+<div align="center">
+  <img src="./src/assets/web-canvas-ui-logo-bright.svg" alt="Project Logo" />
+</div>
+
 # Web Canvas UI (React, Vue 3, Svelte, Angular)
 
 [English](./README.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [繁體中文](./README.zh-TW.md) · [Русский](./README.ru.md) · [简体中文](./README.zh-CN.md)
 
 基於 Canvas 2D 的宣告式元件庫，提供 **React**、**Vue 3**、**Svelte 5+** 和 **Angular 17+** 介面卡。各框架從獨立入口匯入並使用原生元件/範本語法；底層 Canvas engine 和控制繪製邏輯共用。控制項外觀由 Canvas 繪製。
 
-> **介面卡說明：** React、Vue、Svelte、Angular 分別從 `web-canvas-ui/react`、`web-canvas-ui/vue`、`web-canvas-ui/svelte`、`web-canvas-ui/angular` 匯入。請根據主 Canvas 框架選擇入口，不要混用元件。它們可以共用同一套 engine 和控制繪製實作。
+> **介面卡說明：** React、Vue、Svelte、Angular 分別從 `@web-canvas-ui/react`、`@web-canvas-ui/vue`、`@web-canvas-ui/svelte`、`@web-canvas-ui/angular` 匯入。請根據主 Canvas 框架選擇入口，不要混用元件。它們可以共用同一套 engine 和控制繪製實作。
 
 > **共用元件契約：** 每個控制項依 `components/<Component>/` 歸檔，入口 `index.ts` 統一匯出元件 API，`<component>.ts` 定義 Props 型別和 Canvas 繪製函式，`logic.ts`（需要時）保存該控制項獨有的互動/業務邏輯。公共型別統一從 `components/types.ts` 匯總，並由 `web-canvas-ui/types.ts` 對外匯出；React、Vue、Svelte、Angular 介面卡共用此型別契約。
 
@@ -27,6 +30,10 @@
         <Button>Green theme</Button>
     </Canvas>
 </div>
+<p>--OR--</p>
+<Canvas width={400} height={240} className="theme-green">
+    <Button>Green theme</Button>
+</Canvas>
 ```
 
 | 主題         | class          | 主色      |
@@ -58,14 +65,28 @@
 
 ## 環境與匯入
 
-將 `web-canvas-ui/` 目錄放入專案，並確保主 Canvas 專案已設定對應框架：React 19+、Vue 3、Svelte 5+ 或 Angular 17+。Vue 使用單一檔案元件範本，不需要 JSX 外掛或 `jsxImportSource` 設定；Svelte 專案需要 Svelte 編譯器及對應建置外掛；Angular 專案需要 `@angular/core` 和 Angular 建置設定。框架相依由主 Canvas 專案提供，本目錄不強制其他框架的相依。
+將 `web-canvas-ui` 目錄放入專案，並確保主 Canvas 專案已設定對應框架：React 19+、Vue 3、Svelte 5+ 或 Angular 17+。Vue 使用單一檔案元件範本，不需要 JSX 外掛或 `jsxImportSource` 設定；Svelte 專案需要 Svelte 編譯器及對應建置外掛；Angular 專案需要 `@angular/core` 和 Angular 建置設定。框架相依由主 Canvas 專案提供，本目錄不強制其他框架的相依。
 
-| 框架        | 入口                 |
-| ----------- | -------------------- |
-| React       | `web-canvas-ui/react`   |
-| Vue 3       | `web-canvas-ui/vue`     |
-| Svelte 5+   | `web-canvas-ui/svelte`  |
-| Angular 17+ | `web-canvas-ui/angular` |
+```
+npm install web-canvas-ui
+```
+OR
+```
+npm install @web-canvas-ui/react
+
+npm install @web-canvas-ui/vue
+
+npm install @web-canvas-ui/svelte
+
+npm install @web-canvas-ui/angular
+```
+
+| 框架        | 入口                      |
+| ----------- |-------------------------|
+| React       | `web-canvas-ui/react \ @web-canvas-ui/react`     |
+| Vue 3       | `web-canvas-ui/vue \ @web-canvas-ui/vue`         |
+| Svelte 5+   | `web-canvas-ui/svelte \ @web-canvas-ui/svelte`   |
+| Angular 17+ | `web-canvas-ui/angular \ @web-canvas-ui/angular` |
 
 元件必須放在對應介面卡的 Canvas 容器內，並使用該框架入口匯出的場景元件。不要在 Canvas 場景裡放一般 DOM 元素。
 
@@ -73,9 +94,9 @@
 
 ```tsx
 import { useRef, useState } from 'react';
-import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/react';
-import type { CanvasHandle } from 'web-canvas-ui/react';
-import 'theme.css';
+import { Canvas, Group, Rect, Text, Input, Button } from '@web-canvas-ui/react';
+import type { CanvasHandle } from '@web-canvas-ui/react';
+import './theme.css';
 
 export function ProfileCanvas() {
     const [name, setName] = useState('');
@@ -136,14 +157,14 @@ export function ProfileCanvas() {
 
 ## 快速開始（Vue 3 單一檔案元件）
 
-Vue 介面卡位於獨立的 `/canvas-ui/vue` 入口。直接在 `.vue` 檔案的範本中巢狀 Canvas UI 元件即可，不需要 TSX、JSX 外掛或手動建立 Canvas 節點陣列：
+Vue 介面卡位於獨立的 `web-canvas-ui/vue` 入口。直接在 `.vue` 檔案的範本中巢狀 Canvas UI 元件即可，不需要 TSX、JSX 外掛或手動建立 Canvas 節點陣列：
 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Canvas, Group, Rect, Text, Input, Button } from '/canvas-ui/vue';
-import type { CanvasHandle } from '/canvas-ui/vue';
-import 'theme.css';
+import { Canvas, Group, Rect, Text, Input, Button } from '@web-canvas-ui/vue';
+import type { CanvasHandle } from '@web-canvas-ui/vue';
+import './theme.css';
 
 const name = ref('');
 const canvasRef = ref<CanvasHandle | null>(null);
@@ -195,9 +216,9 @@ Vue 範本透過 `:value` 綁定響應式狀態、透過 `@change` 更新；Canv
 
 ```svelte
 <script lang="ts">
-  import { Canvas, Group, Rect, Text, Input, Button } from '/canvas-ui/svelte';
-  import type { CanvasHandle } from '/canvas-ui/svelte';
-  import 'theme.css';
+  import { Canvas, Group, Rect, Text, Input, Button } from '@web-canvas-ui/svelte';
+  import type { CanvasHandle } from '@web-canvas-ui/svelte';
+  import './theme.css';
 
   let name = $state('');
   let canvas = $state<CanvasHandle>();
@@ -237,11 +258,11 @@ Angular 入口提供 standalone `Canvas` 元件和場景指令。在使用它們
 
 ```ts
 import { Component, ViewChild } from '@angular/core';
-import { Button, Canvas, Group, Input, Rect, Text } from '/canvas-ui/angular';
-import 'theme.css';
+import { Button, Canvas, Group, Input, Rect, Text } from '@web-canvas-ui/angular';
 
 @Component({
-    selector: 'profile-canvas',
+    selector: 'app-root',
+    styleUrl: './theme.css',
     standalone: true,
     imports: [Canvas, Group, Rect, Text, Input, Button],
     template: `
@@ -259,7 +280,7 @@ import 'theme.css';
                     [y]="48"
                     [value]="name"
                     placeholder="Your name"
-                    (valueChange)="name = $event"
+                    (valueChange)="onInputChange($event)"
                 ></canvas-input>
                 <canvas-text
                     [x]="16"
@@ -287,6 +308,9 @@ export class ProfileCanvas {
         link.href = dataUrl;
         link.download = 'profile.png';
         link.click();
+    }
+    onInputChange(e:any) {
+        this.name = e;
     }
 }
 ```
@@ -364,7 +388,7 @@ Angular 使用 `<canvas-...>` 指令選擇器宣告 Canvas 場景節點。輸入
 | `onPointerEvent`   | `(event: CanvasViewPointerEvent) => void` |   否 |           — | 提供映射後的 `pointerdown`、`pointermove`、`pointerup`、`pointercancel` 和 `click` 事件；不會自動向來源 Canvas 派送合成事件。 |
 
 ```tsx
-import { Canvas, CanvasView } from '/canvas-ui/react';
+import { Canvas, CanvasView } from '@web-canvas-ui/react';
 
 <Canvas ref={canvasRef} width={640} height={360}>
     <CanvasView
@@ -403,7 +427,7 @@ canvasRef.current?.requestRender();
 | `hitTest`          | `(x: number, y: number, size: CustomDrawSize) => boolean`                              |   否 | 自訂圖形命中測試；不傳時使用整個寬高矩形。返回 `false` 時命中測試會繼續檢查下層元件。                     |
 
 ```tsx
-import { Canvas, CustomDraw } from '/canvas-ui/react';
+import { Canvas, CustomDraw } from '@web-canvas-ui/react';
 
 <Canvas width={320} height={180}>
     <CustomDraw

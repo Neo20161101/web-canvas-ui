@@ -1,0 +1,4 @@
+@import '../canvas-ui/theme.css';
+.brand {
+    --canvas-ui-circle-background: #ccc;
+}

@@ -1,13 +1,16 @@
-![Markdown Logo](./src/assets/web-canvas-ui-logo-bright.svg "web-canvas-ui")
+<div align="center">
+  <img src="./src/assets/web-canvas-ui-logo-bright.svg" alt="Project Logo" />
+</div>
+
 # Web Canvas UI (React, Vue 3, Svelte, Angular)
 
 [English](./README.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [繁體中文](./README.zh-TW.md) · [Русский](./README.ru.md) · [简体中文](./README.zh-CN.md)
 
 Canvas 2D 기반 선언형 컴포넌트 라이브러리로 **React**, **Vue 3**, **Svelte 5+**, **Angular 17+** 어댑터를 제공합니다. 각 프레임워크는 독립된 entry에서 import하고 네이티브 컴포넌트/템플릿 문법을 사용하며, 하위의 Canvas engine과 컨트롤 렌더링 로직은 공통으로 재사용됩니다. 모든 컨트롤의 외형은 Canvas가 직접 그립니다.
 
-> **어댑터 안내:** React, Vue, Svelte, Angular는 각각 `web-canvas-ui/react`, `web-canvas-ui/vue`, `web-canvas-ui/svelte`, `web-canvas-ui/angular`에서 import합니다. 호스트 Canvas 프레임워크에 맞는 entry를 선택하고, 어댑터 간 컴포넌트를 섞어 쓰지 마세요. 모든 entry가 동일한 engine과 렌더링 구현을 재사용합니다.
+> **어댑터 안내:** React, Vue, Svelte, Angular는 각각 `@web-canvas-ui/react`, `@web-canvas-ui/vue`, `@web-canvas-ui/svelte`, `@web-canvas-ui/angular`에서 import합니다. 호스트 Canvas 프레임워크에 맞는 entry를 선택하고, 어댑터 간 컴포넌트를 섞어 쓰지 마세요. 모든 entry가 동일한 engine과 렌더링 구현을 재사용합니다.
 
-> **컴포넌트 계약:** 각 컨트롤은 `components/<Component>/` 아래에 위치합니다. `index.ts` entry가 공용 API를 export하고, `<component>.ts`가 Props 타입과 Canvas 렌더 함수를 정의하며, 필요 시 `logic.ts`에 해당 컨트롤 전용 인터랙션/비즈니스 로직을 둡니다. 공용 타입은 `components/types.ts`에 모이고 `web-canvas-ui/types.ts`로 재export됩니다. React, Vue, Svelte, Angular 어댑터가 이 타입 계약을 공유합니다.
+> **컴포넌트 계약:** 각 컨트롤은 `components/<Component>/` 아래에 위치합니다. `index.ts` entry가 공용 API를 export하고, `<component>.ts`가 Props 타입과 Canvas 렌더 함수를 정의하며, 필요 시 `logic.ts`에 해당 컨트롤 전용 인터랙션/비즈니스 로직을 둡니다. 공용 타입은 `components/types.ts`에 모이고 `@web-canvas-ui/types.ts`로 재export됩니다. React, Vue, Svelte, Angular 어댑터가 이 타입 계약을 공유합니다.
 
 ## 전역 테마 색상
 
@@ -27,6 +30,10 @@ Canvas 2D 기반 선언형 컴포넌트 라이브러리로 **React**, **Vue 3**,
         <Button>Green theme</Button>
     </Canvas>
 </div>
+<p>--OR--</p>
+<Canvas width={400} height={240} className="theme-green">
+    <Button>Green theme</Button>
+</Canvas>
 ```
 
 | 팔레트     | class          | Primary   |
@@ -58,14 +65,28 @@ Canvas 2D 기반 선언형 컴포넌트 라이브러리로 **React**, **Vue 3**,
 
 ## 환경 및 import
 
-`web-canvas-ui/` 디렉터리를 프로젝트에 배치하고 호스트 Canvas 프로젝트가 선택한 프레임워크(React 19+, Vue 3, Svelte 5+, Angular 17+)에 맞게 설정되어 있는지 확인하세요. Vue는 SFC 템플릿을 사용하므로 JSX 플러그인이나 `jsxImportSource` 설정이 필요 없습니다. Svelte 프로젝트에는 Svelte 컴파일러와 대응 빌드 플러그인이 필요합니다. Angular 프로젝트에는 `@angular/core`와 Angular 빌드 설정이 필요합니다. 프레임워크 의존성은 호스트 Canvas 프로젝트가 제공하며, 이 디렉터리는 다른 프레임워크의 의존성을 강제하지 않습니다.
+`web-canvas-ui` 디렉터리를 프로젝트에 배치하고 호스트 Canvas 프로젝트가 선택한 프레임워크(React 19+, Vue 3, Svelte 5+, Angular 17+)에 맞게 설정되어 있는지 확인하세요. Vue는 SFC 템플릿을 사용하므로 JSX 플러그인이나 `jsxImportSource` 설정이 필요 없습니다. Svelte 프로젝트에는 Svelte 컴파일러와 대응 빌드 플러그인이 필요합니다. Angular 프로젝트에는 `@angular/core`와 Angular 빌드 설정이 필요합니다. 프레임워크 의존성은 호스트 Canvas 프로젝트가 제공하며, 이 디렉터리는 다른 프레임워크의 의존성을 강제하지 않습니다.
 
-| 프레임워크  | Entry                |
-| ----------- | -------------------- |
-| React       | `web-canvas-ui/react`   |
-| Vue 3       | `web-canvas-ui/vue`     |
-| Svelte 5+   | `web-canvas-ui/svelte`  |
-| Angular 17+ | `web-canvas-ui/angular` |
+```
+npm install web-canvas-ui
+```
+OR
+```
+npm install @web-canvas-ui/react
+
+npm install @web-canvas-ui/vue
+
+npm install @web-canvas-ui/svelte
+
+npm install @web-canvas-ui/angular
+```
+
+| 프레임워크  | Entry                   |
+| ----------- |-------------------------|
+| React       | `web-canvas-ui/react \ @web-canvas-ui/react`     |
+| Vue 3       | `web-canvas-ui/vue \ @web-canvas-ui/vue`         |
+| Svelte 5+   | `web-canvas-ui/svelte \ @web-canvas-ui/svelte`   |
+| Angular 17+ | `web-canvas-ui/angular \ @web-canvas-ui/angular` |
 
 컴포넌트는 반드시 대응 어댑터의 Canvas 컨테이너 내부에 배치하고, 해당 프레임워크 entry가 export하는 scene 컴포넌트를 사용해야 합니다. Canvas scene 안에 일반 DOM 요소를 넣지 마세요.
 
@@ -73,9 +94,9 @@ Canvas 2D 기반 선언형 컴포넌트 라이브러리로 **React**, **Vue 3**,
 
 ```tsx
 import { useRef, useState } from 'react';
-import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/react';
-import type { CanvasHandle } from 'web-canvas-ui/react';
-import 'theme.css';
+import { Canvas, Group, Rect, Text, Input, Button } from '@web-canvas-ui/react';
+import type { CanvasHandle } from '@web-canvas-ui/react';
+import './theme.css';
 
 export function ProfileCanvas() {
     const [name, setName] = useState('');
@@ -141,9 +162,9 @@ Vue 어댑터는 독립된 `web-canvas-ui/vue` entry에 위치합니다. `.vue` 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/vue';
-import type { CanvasHandle } from 'web-canvas-ui/vue';
-import 'theme.css';
+import { Canvas, Group, Rect, Text, Input, Button } from '@web-canvas-ui/vue';
+import type { CanvasHandle } from '@web-canvas-ui/vue';
+import './theme.css';
 
 const name = ref('');
 const canvasRef = ref<CanvasHandle | null>(null);
@@ -195,9 +216,9 @@ Svelte 5 템플릿에서 Svelte entry가 export하는 컴포넌트를 사용합�
 
 ```svelte
 <script lang="ts">
-  import { Canvas, Group, Rect, Text, Input, Button } from 'web-canvas-ui/svelte';
-  import type { CanvasHandle } from 'web-canvas-ui/svelte';
-  import 'theme.css';
+  import { Canvas, Group, Rect, Text, Input, Button } from '@web-canvas-ui/svelte';
+  import type { CanvasHandle } from '@web-canvas-ui/svelte';
+  import './theme.css';
 
   let name = $state('');
   let canvas = $state<CanvasHandle>();
@@ -237,11 +258,11 @@ Angular entry는 standalone `Canvas` 컴포넌트와 scene 디렉터리를 제�
 
 ```ts
 import { Component, ViewChild } from '@angular/core';
-import { Button, Canvas, Group, Input, Rect, Text } from '/canvas-ui/angular';
-import 'theme.css';
+import { Button, Canvas, Group, Input, Rect, Text } from '@web-canvas-ui/angular';
 
 @Component({
-    selector: 'profile-canvas',
+    selector: 'app-root',
+    styleUrl: './theme.css',
     standalone: true,
     imports: [Canvas, Group, Rect, Text, Input, Button],
     template: `
@@ -259,7 +280,7 @@ import 'theme.css';
                     [y]="48"
                     [value]="name"
                     placeholder="Your name"
-                    (valueChange)="name = $event"
+                    (valueChange)="onInputChange($event)"
                 ></canvas-input>
                 <canvas-text
                     [x]="16"
@@ -287,6 +308,9 @@ export class ProfileCanvas {
         link.href = dataUrl;
         link.download = 'profile.png';
         link.click();
+    }
+    onInputChange(e:any) {
+        this.name = e;
     }
 }
 ```
@@ -364,7 +388,7 @@ React ref, Vue template ref, Svelte `bind:this`, Angular template reference로 �
 | `onPointerEvent`   | `(event: CanvasViewPointerEvent) => void` | 아니오 |           — | 매핑된 `pointerdown`, `pointermove`, `pointerup`, `pointercancel`, `click` 이벤트 제공. source Canvas로 composite event를 자동 dispatch하지는 않습니다. |
 
 ```tsx
-import { Canvas, CanvasView } from '/canvas-ui/react';
+import { Canvas, CanvasView } from '@web-canvas-ui/react';
 
 <Canvas ref={canvasRef} width={640} height={360}>
     <CanvasView
@@ -403,7 +427,7 @@ canvasRef.current?.requestRender();
 | `hitTest`          | `(x: number, y: number, size: CustomDrawSize) => boolean`                              | 아니오 | shape용 custom hit test. 미지정 시 width/height의 전 영역 rectangle을 사용. `false`를 반환하면 아래 레이어 컴포넌트의 hit test를 계속 진행합니다. |
 
 ```tsx
-import { Canvas, CustomDraw } from '/canvas-ui/react';
+import { Canvas, CustomDraw } from '@web-canvas-ui/react';
 
 <Canvas width={320} height={180}>
     <CustomDraw

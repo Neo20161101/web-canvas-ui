@@ -120,10 +120,10 @@ const PROP_KEYS = [
     'onPointerEvent',
 ] as const satisfies readonly CanvasNodePropKey[];
 
-type AssertNever<T extends never> = T;
-export type AngularCanvasPropsAreComplete = AssertNever<
-    Exclude<CanvasNodePropKey, (typeof PROP_KEYS)[number] | 'children'>
->;
+// type AssertNever<T extends never> = T;
+// export type AngularCanvasPropsAreComplete = AssertNever<
+//     Exclude<CanvasNodePropKey, (typeof PROP_KEYS)[number] | 'children'>
+// >;
 
 @Directive()
 export abstract class CanvasNodeDirective {

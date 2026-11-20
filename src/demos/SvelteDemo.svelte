@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Button, Canvas, Circle, Input, Rect, Slider, Switch, Text } from 'web-canvas-ui/svelte';
+    import { Button, Canvas, Circle, Input, Rect, Slider, Switch, Text } from '../canvas-ui/svelte';
 
     let count = $state(0);
     let volume = $state(40);

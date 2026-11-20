@@ -1,7 +1,7 @@
 import { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import 'web-canvas-ui/theme.css';
-import { Button, Canvas, Circle, Input, Rect, Slider, Switch, Text } from 'web-canvas-ui/react';
+import { Button, Canvas, Circle, Input, Rect, Slider, Switch, Text } from '../canvas-ui/react';
+import './index.css';
 
 function DemoApp() {
     const [count, setCount] = useState(0);
@@ -26,6 +26,7 @@ function DemoApp() {
                 height={420}
                 ariaLabel="React canvas demo"
                 style={{ border: '1px solid #ddd', borderRadius: 12 }}
+                className='brand theme-purple'
             >
                 <Rect
                     x={16}
@@ -45,7 +46,7 @@ function DemoApp() {
                     text={`Clicks: ${count}   ·   Volume: ${volume}`}
                 />
 
-                <Circle x={600} y={70} radius={30} color="#e74c3c" />
+                <Circle x={600} y={70} radius={30} />
 
                 <Input
                     x={40}
